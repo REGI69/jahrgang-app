@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1c0f26">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Jahrgang">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<title>Jahrgang Musikspiel</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Outfit:wght@400;600;800&family=Space+Mono:wght@700&display=swap">
+<style>
+/* Layout: eine Bühne in der Mitte – Plattenspieler oben, Zeitleiste des Spielers darunter, Bedienung am Fuss. Bewusst nur ein dunkles "Clubnacht"-Look. */
+:root{
+  --bg:#1c0f26; --bg2:#2a1736; --line:#4a2d5c;
+  --fg:#fbefe6; --muted:#c2aac8;
+  --amber:#ffb23f; --coral:#ff5d73; --teal:#3fd0c9; --bad:#ff6b5b;
+  --f-display:"Bungee","Arial Black",Impact,sans-serif;
+  --f-body:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-num:"Space Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.45;
+  background-image:radial-gradient(circle at 15% -10%,#4a1d4f 0,transparent 45%),radial-gradient(circle at 110% 30%,#3a1a2a 0,transparent 40%);
+  background-attachment:fixed;min-height:100%}
+#app{max-width:880px;margin:0 auto;padding-block:20px 48px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:20px}
+h1,h2{font-family:var(--f-display);font-weight:400;margin:0;text-wrap:balance;letter-spacing:.01em}
+h1{font-size:clamp(2.4rem,9vw,4rem);line-height:1;color:var(--amber);text-shadow:3px 3px 0 var(--coral)}
+h2{font-size:1.3rem}
+.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600}
+p{margin:0}
+.muted{color:var(--muted)}
+button,.btn{font:inherit;font-weight:600;border:0;border-radius:999px;padding:.7em 1.2em;cursor:pointer;
+  background:var(--bg2);color:var(--fg);border:1px solid var(--line);text-decoration:none;display:inline-flex;align-items:center;gap:.4em;justify-content:center}
+button:hover:not(:disabled),.btn:hover{border-color:var(--amber)}
+button:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+button:disabled{opacity:.4;cursor:not-allowed}
+.primary{background:var(--amber);color:#2a1205;border-color:var(--amber);font-weight:800}
+.primary:hover:not(:disabled){background:#ffc56a}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.panel{background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:14px}
+
+/* Setup */
+.hero{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.hero .lead{max-width:46ch;margin-top:10px;color:var(--muted)}
+.players{display:flex;flex-direction:column;gap:8px}
+.players .row input{flex:1;min-width:0}
+input[type=text]{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:.6em .8em}
+.chip{padding:.45em .9em;font-size:.9rem}
+.chip[aria-pressed=true]{background:var(--coral);border-color:var(--coral);color:#2a0710}
+.rules{margin:0;padding-left:1.2em;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+
+/* Vinyl */
+.vinyl{width:150px;aspect-ratio:1;max-width:100%;border-radius:50%;position:relative;flex:none;
+  background:repeating-radial-gradient(circle at 50% 50%,#111 0 2px,#1d1d1d 2px 4px);
+  box-shadow:0 0 0 3px #000,0 10px 30px rgba(0,0,0,.5)}
+.vinyl::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 30deg,transparent 0 40deg,rgba(255,255,255,.12) 60deg,transparent 80deg 220deg,rgba(255,255,255,.08) 240deg,transparent 260deg)}
+.vinyl .label{position:absolute;inset:32%;border-radius:50%;background:var(--coral);display:grid;place-items:center;
+  font-family:var(--f-display);color:#2a0710;font-size:1.6rem;box-shadow:inset 0 0 0 4px var(--amber)}
+.vinyl.big{width:180px}
+.spin{animation:spin 1.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+
+/* Scoreboard */
+.score{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.pl{flex:none;border:1px solid var(--line);border-radius:14px;padding:8px 12px;background:var(--bg2);min-width:110px}
+.pl.on{border-color:var(--amber);box-shadow:0 0 0 2px var(--amber) inset}
+.pl b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.pl small{color:var(--muted);font-variant-numeric:tabular-nums}
+.tok{color:var(--amber);letter-spacing:.1em}
+
+/* Deck */
+.deck{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
+.deck .ctrl{display:flex;flex-direction:column;gap:10px;min-width:0}
+.secret{font-size:.95rem;background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:8px 12px}
+.note{font-size:.85rem;color:var(--muted)}
+
+/* Timeline */
+.tl-wrap{overflow-x:auto;padding:6px 2px 10px}
+.tl{display:flex;align-items:stretch;gap:6px;width:max-content;min-width:100%}
+.card{width:118px;flex:none;border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:4px;color:#1b0b20;position:relative}
+.card .y{font-family:var(--f-num);font-size:1.6rem;line-height:1}
+.card .a{font-size:.78rem;font-weight:800;line-height:1.15}
+.card .t{font-size:.78rem;line-height:1.15}
+.card.new{outline:3px solid var(--fg);outline-offset:2px}
+.slot{width:44px;flex:none;border-radius:14px;border:2px dashed var(--line);background:transparent;color:var(--muted);padding:0;font-size:1.3rem}
+.slot.sel{border-style:solid;border-color:var(--amber);background:var(--amber);color:#2a1205;width:64px}
+.slot.ch{border-style:solid;border-color:var(--coral);background:var(--coral);color:#2a0710;width:64px}
+.slot.mark-ok{border-color:var(--teal)}
+
+/* Reveal */
+.reveal{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.big-card{width:190px;padding:16px;border-radius:18px;color:#1b0b20;display:flex;flex-direction:column;gap:6px}
+.big-card .y{font-family:var(--f-num);font-size:3rem;line-height:1}
+.big-card .a{font-weight:800}
+.verdict{font-family:var(--f-display);font-size:1.6rem}
+.ok{color:var(--teal)} .no{color:var(--bad)}
+label.check{display:flex;gap:8px;align-items:center;cursor:pointer}
+label.check input{width:20px;height:20px;accent-color:var(--amber)}
+
+@media (max-width:560px){
+  .hero{grid-template-columns:1fr}.hero .vinyl{display:none}
+  .deck{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .deck .ctrl{align-items:center;width:100%}
+  .vinyl.big{width:140px}
+}
+</style>
+
+</head>
+<body>
+<div id="app"></div>
+<audio id="audio" preload="none"></audio>
+
+<script>
+// [Interpret, Titel, Jahr, deutschsprachig?]
+const SONGS=[
+["ABBA","Waterloo",1974],["Queen","Bohemian Rhapsody",1975],["ABBA","Dancing Queen",1976],["Bee Gees","Stayin' Alive",1977],
+["Baccara","Yes Sir, I Can Boogie",1977],["Boney M.","Rasputin",1978],["Village People","Y.M.C.A.",1978],["Gloria Gaynor","I Will Survive",1978],
+["Earth, Wind & Fire","September",1978],["Sister Sledge","We Are Family",1979],["Dschinghis Khan","Dschinghis Khan",1979,1],
+["Kim Wilde","Kids in America",1981],["Spider Murphy Gang","Skandal im Sperrbezirk",1981,1],["Survivor","Eye of the Tiger",1982],["Toto","Africa",1982],
+["Dexys Midnight Runners","Come On Eileen",1982],["Trio","Da Da Da",1982,1],["Nena","99 Luftballons",1983,1],["Peter Schilling","Major Tom (völlig losgelöst)",1983,1],
+["Cyndi Lauper","Girls Just Want to Have Fun",1983],["Bonnie Tyler","Total Eclipse of the Heart",1983],["Eurythmics","Sweet Dreams (Are Made of This)",1983],
+["Culture Club","Karma Chameleon",1983],["Spandau Ballet","True",1983],["Wham!","Wake Me Up Before You Go-Go",1984],["Modern Talking","You're My Heart, You're My Soul",1984],
+["Opus","Live Is Life",1984],["Madonna","Like a Virgin",1984],["Falco","Rock Me Amadeus",1985],["Tears for Fears","Everybody Wants to Rule the World",1985],
+["Starship","We Built This City",1985],["Modern Talking","Cheri Cheri Lady",1985],["Münchener Freiheit","Ohne dich",1985,1],["Europe","The Final Countdown",1986],
+["Bon Jovi","Livin' on a Prayer",1986],["Bananarama","Venus",1986],["Cutting Crew","(I Just) Died in Your Arms",1986],["Rick Astley","Never Gonna Give You Up",1987],
+["Whitney Houston","I Wanna Dance with Somebody",1987],["Kylie Minogue","I Should Be So Lucky",1987],["Gipsy Kings","Bamboleo",1987],
+["Milli Vanilli","Girl You Know It's True",1988],["Bobby McFerrin","Don't Worry, Be Happy",1988],["Die Ärzte","Westerland",1988,1],["Kaoma","Lambada",1989],
+["Roxette","The Look",1989],["Vanilla Ice","Ice Ice Baby",1990],["MC Hammer","U Can't Touch This",1990],["Matthias Reim","Verdammt, ich lieb' dich",1990,1],
+["Right Said Fred","I'm Too Sexy",1991],["Michael Jackson","Black or White",1991],["Dr. Alban","It's My Life",1992],["Snap!","Rhythm Is a Dancer",1992],
+["Ace of Base","All That She Wants",1992],["DJ BoBo","Somebody Dance with Me",1992],["Haddaway","What Is Love",1993],["2 Unlimited","No Limit",1993],
+["Culture Beat","Mr. Vain",1993],["Ace of Base","The Sign",1993],["Corona","The Rhythm of the Night",1993],["4 Non Blondes","What's Up?",1993],
+["Scatman John","Scatman (Ski-Ba-Bop-Ba-Dop-Bop)",1994],["Rednex","Cotton Eye Joe",1994],["Mariah Carey","All I Want for Christmas Is You",1994],
+["Mo-Do","Eins, Zwei, Polizei",1994,1],["La Bouche","Be My Lover",1995],["Captain Jack","Captain Jack",1995],["Blümchen","Herz an Herz",1995,1],
+["Spice Girls","Wannabe",1996],["Mr. President","Coco Jamboo",1996],["No Doubt","Don't Speak",1996],["Aqua","Barbie Girl",1997],["Hanson","MMMBop",1997],
+["Backstreet Boys","Everybody (Backstreet's Back)",1997],["Celine Dion","My Heart Will Go On",1997],["Chumbawamba","Tubthumping",1997],
+["Natalie Imbruglia","Torn",1997],["Savage Garden","Truly Madly Deeply",1997],["Robbie Williams","Angels",1997],["Bellini","Samba de Janeiro",1997],
+["Tic Tac Toe","Warum?",1997,1],["Britney Spears","...Baby One More Time",1998],["Cher","Believe",1998],["Vengaboys","Boom, Boom, Boom, Boom!!",1998],
+["Eiffel 65","Blue (Da Ba Dee)",1998],["ATB","9 PM (Till I Come)",1998],["Lou Bega","Mambo No. 5",1999],["Backstreet Boys","I Want It That Way",1999],
+["Ricky Martin","Livin' la Vida Loca",1999],["Vengaboys","We're Going to Ibiza!",1999],["Darude","Sandstorm",1999],["Bloodhound Gang","The Bad Touch",1999],
+["Smash Mouth","All Star",1999],["Westlife","Flying Without Wings",1999],["Christina Aguilera","Genie in a Bottle",1999],["DJ Ötzi","Hey Baby",2000],
+["Shaggy","It Wasn't Me",2000],["*NSYNC","Bye Bye Bye",2000],["Wheatus","Teenage Dirtbag",2000],["Alcazar","Crying at the Discoteque",2000],
+["Kylie Minogue","Can't Get You Out of My Head",2001],["Atomic Kitten","Whole Again",2001],["S Club 7","Don't Stop Movin'",2001],
+["Andrea Berg","Du hast mich tausendmal belogen",2001,1],["Las Ketchup","Aserejé (The Ketchup Song)",2002],["Avril Lavigne","Complicated",2002],
+["Nelly","Hot in Herre",2002],["Jennifer Lopez","Jenny from the Block",2002],["O-Zone","Dragostea din tei",2003],["OutKast","Hey Ya!",2003],
+["Beyoncé","Crazy in Love",2003],["DJ BoBo","Chihuahua",2003],["Usher","Yeah!",2004],["Kelly Clarkson","Since U Been Gone",2004],["Daddy Yankee","Gasolina",2004],
+["Crazy Frog","Axel F",2005],["Pussycat Dolls","Don't Cha",2005],["Gwen Stefani","Hollaback Girl",2005],["Madonna","Hung Up",2005],["Daniel Powter","Bad Day",2005],
+["Shakira","Hips Don't Lie",2006],["Nelly Furtado","Promiscuous",2006],["Baschi","Bring en hei",2006,1],["Rihanna","Umbrella",2007],["Avril Lavigne","Girlfriend",2007],
+["Mika","Grace Kelly",2007],["Katy Perry","I Kissed a Girl",2008],["Lady Gaga","Poker Face",2008],["Beyoncé","Single Ladies (Put a Ring on It)",2008],
+["Inna","Hot",2008],["Peter Fox","Haus am See",2008,1],["Black Eyed Peas","I Gotta Feeling",2009],["Kesha","Tik Tok",2009],["Cascada","Evacuate the Dancefloor",2009],
+["Shakira","Waka Waka (This Time for Africa)",2010],["Justin Bieber","Baby",2010],["Lena","Satellite",2010],["Yolanda Be Cool","We No Speak Americano",2010],
+["Alexandra Stan","Mr. Saxobeat",2010],["Bruno Mars","Just the Way You Are",2010],["LMFAO","Party Rock Anthem",2011],["Carly Rae Jepsen","Call Me Maybe",2011],
+["Gotye","Somebody That I Used to Know",2011],["Rihanna","We Found Love",2011],["Jennifer Lopez","On the Floor",2011],["Psy","Gangnam Style",2012],
+["Icona Pop","I Love It",2012],["Pharrell Williams","Happy",2013],["Helene Fischer","Atemlos durch die Nacht",2013,1],["Ylvis","The Fox (What Does the Fox Say?)",2013],
+["Avicii","Wake Me Up",2013],["Taylor Swift","Shake It Off",2014],["Mark Ronson feat. Bruno Mars","Uptown Funk",2014],["Meghan Trainor","All About That Bass",2014],
+["Felix Jaehn","Ain't Nobody (Loves Me Better)",2015],["Lukas Graham","7 Years",2015],["Mark Forster","Chöre",2016,1],["Ed Sheeran","Shape of You",2017],
+["Luis Fonsi feat. Daddy Yankee","Despacito",2017],["Lizzo","Truth Hurts",2017],["The Weeknd","Blinding Lights",2019],["Dua Lipa","Levitating",2020],
+["Harry Styles","As It Was",2022],["Miley Cyrus","Flowers",2023]
+].map(([a,t,y,de],i)=>({i,a,t,y,de:!!de}));
+
+const DECADES=[1970,1980,1990,2000,2010,2020];
+const decLabel=d=>d===2000?"2000er":d===2010?"2010er":d===2020?"2020er":`${String(d).slice(2)}er`;
+const decColor=y=>({1970:"#ffb23f",1980:"#ff7aa8",1990:"#7fe0b7",2000:"#9fb7ff",2010:"#ffd36b",2020:"#d9a3ff"})[Math.floor(y/10)*10]||"#ddd";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const MAXTOK=5;
+
+let S;
+const fresh=()=>({phase:"setup",names:["Spieler 1","Spieler 2","Spieler 3"],target:10,decades:[...DECADES],deOnly:false,
+  players:[],cur:0,deck:[],card:null,pick:null,guessed:false,chMode:false,ch:null,showSecret:false,result:null,round:1});
+
+function save(){try{localStorage.setItem("jahrgang-v1",JSON.stringify(S))}catch(e){}}
+function load(){try{const s=JSON.parse(localStorage.getItem("jahrgang-v1"));if(s&&s.phase)return s}catch(e){}return null}
+
+// ---------- Spiellogik ----------
+function pool(){return SONGS.filter(s=>S.decades.includes(Math.floor(s.y/10)*10)&&(!S.deOnly||s.de)).map(s=>s.i)}
+function start(){
+  const names=S.names.map(n=>n.trim()).filter(Boolean);
+  S.deck=shuffle(pool());
+  S.players=names.map(name=>({name,tokens:2,line:[S.deck.pop()]}));
+  S.cur=0;S.round=1;draw();S.phase="turn";
+}
+function draw(){
+  if(!S.deck.length)S.deck=shuffle(pool().filter(i=>!S.players.some(p=>p.line.includes(i))));
+  S.card=S.deck.pop();S.pick=null;S.guessed=false;S.chMode=false;S.ch=null;S.showSecret=false;stopAudio();
+  findPreview(SONGS[S.card]).catch(()=>{});
+}
+const sorted=p=>p.line.slice().sort((a,b)=>SONGS[a].y-SONGS[b].y);
+function fits(line,idx,y){const L=line.map(i=>SONGS[i].y);return (idx===0||L[idx-1]<=y)&&(idx===L.length||y<=L[idx])}
+function insert(p,i){p.line.push(i)}
+function reveal(){
+  const p=S.players[S.cur],song=SONGS[S.card],line=sorted(p);
+  const ok=fits(line,S.pick,song.y);
+  let chOk=false,chName=null;
+  if(S.ch){const c=S.players[S.ch.who];c.tokens--;chName=c.name;chOk=!ok&&fits(line,S.ch.pick,song.y);if(chOk)insert(c,S.card)}
+  if(ok)insert(p,S.card);
+  let bonus=false;if(S.guessed&&p.tokens<MAXTOK){p.tokens++;bonus=true}
+  S.result={ok,chOk,chName,bonus,card:S.card,player:S.cur,winner:null};
+  const w=S.players.findIndex(q=>q.line.length>=S.target);
+  if(w>=0)S.result.winner=w;
+  S.phase="reveal";stopAudio();
+}
+function next(){
+  if(S.result&&S.result.winner!=null){S.phase="win";return}
+  S.cur=(S.cur+1)%S.players.length;if(S.cur===0)S.round++;draw();S.phase="turn";
+}
+
+// ---------- Audio (30-Sekunden-Vorschau über die iTunes-Suche, falls erreichbar) ----------
+const audio=document.getElementById("audio");let playing=false,audioMsg="";
+const cache={},pending={};
+// Sucht die Vorschau schon beim Ziehen der Karte, damit der Tipp auf «Abspielen» sofort abspielt (iOS verlangt das).
+function findPreview(s){
+  if(s.i in cache)return Promise.resolve(cache[s.i]);
+  if(pending[s.i])return pending[s.i];
+  return pending[s.i]=fetch("https://itunes.apple.com/search?entity=song&limit=8&country=CH&term="+encodeURIComponent(s.a.split(" feat.")[0]+" "+s.t))
+    .then(r=>r.json()).then(j=>{
+      const first=s.a.toLowerCase().split(/[ ,&]/)[0].replace(/[^a-z0-9*]/g,"");
+      const hit=j.results.find(x=>x.previewUrl&&x.artistName.toLowerCase().includes(first))||j.results.find(x=>x.previewUrl);
+      return cache[s.i]=hit?hit.previewUrl:null;
+    }).finally(()=>{delete pending[s.i]});
+}
+async function playPreview(){
+  const s=SONGS[S.card];
+  if(playing){stopAudio();render();return}
+  try{
+    let url=cache[s.i];
+    if(url){audio.src=url;const pr=audio.play();playing=true;audioMsg="";render();await pr;return}
+    audioMsg="Lade Vorschau …";render();
+    url=await findPreview(s);
+    if(!url)throw new Error("none");
+    audio.src=url;await audio.play();playing=true;audioMsg="";
+  }catch(e){
+    playing=false;
+    audioMsg=e&&e.name==="NotAllowedError"?"Nochmals auf «Abspielen» tippen.":"Vorschau hier nicht verfügbar. Der DJ spielt den Song über Spotify oder YouTube ab.";
+  }
+  render();
+}
+function stopAudio(){try{audio.pause()}catch(e){}playing=false;audioMsg=""}
+audio.addEventListener("ended",()=>{playing=false;render()});
+
+// ---------- Darstellung ----------
+const app=document.getElementById("app");
+function cardHTML(i,cls=""){const s=SONGS[i];return `<div class="card ${cls}" style="background:${decColor(s.y)}"><span class="y">${s.y}</span><span class="a">${esc(s.a)}</span><span class="t">${esc(s.t)}</span></div>`}
+function scoreHTML(){return `<div class="score" role="list">${S.players.map((p,k)=>`<div role="listitem" class="pl ${k===S.cur&&S.phase==="turn"?"on":""}"><b>${esc(p.name)}</b><small>${p.line.length}/${S.target} Karten · <span class="tok" aria-label="${p.tokens} Jetons">${"●".repeat(p.tokens)}${"○".repeat(Math.max(0,MAXTOK-p.tokens))}</span></small></div>`).join("")}</div>`}
+
+function render(){
+  if(S.phase==="setup")return renderSetup();
+  if(S.phase==="turn")return renderTurn();
+  if(S.phase==="reveal")return renderReveal();
+  if(S.phase==="win")return renderWin();
+}
+
+function renderSetup(){
+  const n=pool().length;
+  app.innerHTML=`
+  <header class="hero">
+    <div><p class="eyebrow">Das Musik-Partyspiel</p><h1>Jahrgang</h1>
+    <p class="lead">Hör rein, rate das Jahr und sortier jeden Hit an der richtigen Stelle in deine Zeitleiste ein. Wer zuerst ${S.target} Karten hat, gewinnt.</p></div>
+    <div class="vinyl spin" aria-hidden="true"><div class="label">?</div></div>
+  </header>
+  <section class="panel" aria-labelledby="h-pl">
+    <h2 id="h-pl">Mitspielende</h2>
+    <div class="players">${S.names.map((nm,k)=>`<div class="row"><input type="text" id="name-${k}" data-name="${k}" value="${esc(nm)}" aria-label="Name ${k+1}" maxlength="20">
+      <button data-act="del" data-k="${k}" ${S.names.length<=2?"disabled":""} aria-label="Entfernen">✕</button></div>`).join("")}</div>
+    <div class="row"><button data-act="add" ${S.names.length>=10?"disabled":""}>+ Person hinzufügen</button></div>
+  </section>
+  <section class="panel" aria-labelledby="h-set">
+    <h2 id="h-set">Einstellungen</h2>
+    <div><p class="eyebrow">Karten zum Sieg</p><div class="row">${[5,8,10,12].map(t=>`<button class="chip" data-act="target" data-t="${t}" aria-pressed="${S.target===t}">${t}</button>`).join("")}</div></div>
+    <div><p class="eyebrow">Jahrzehnte</p><div class="row">${DECADES.map(d=>`<button class="chip" data-act="dec" data-d="${d}" aria-pressed="${S.decades.includes(d)}">${decLabel(d)}</button>`).join("")}</div></div>
+    <label class="check"><input type="checkbox" id="deonly" ${S.deOnly?"checked":""}> Nur deutschsprachige Songs</label>
+    <p class="note">${n} Songs im Stapel.</p>
+  </section>
+  <section class="panel" aria-labelledby="h-r">
+    <h2 id="h-r">So wird gespielt</h2>
+    <ol class="rules">
+      <li>Alle starten mit einer aufgedeckten Karte und 2 Jetons.</li>
+      <li>Wer am Zug ist, hört den Song und tippt die Lücke in der Zeitleiste an, wo er hingehört.</li>
+      <li>Titel und Interpret richtig genannt? Dafür gibt es 1 Jeton (max. ${MAXTOK}).</li>
+      <li>Einspruch: Andere können 1 Jeton setzen und eine andere Lücke wählen. Liegen sie richtig, bekommen sie die Karte.</li>
+      <li>Mit 1 Jeton überspringst du einen Song, mit 3 Jetons kaufst du dir eine Karte.</li>
+    </ol>
+    <p class="note">Ohne Vorschau übernimmt eine Person die Rolle des DJs: Sie schaut sich heimlich den Titel an und spielt ihn über Spotify oder YouTube ab.</p>
+  </section>
+  <div class="row"><button class="primary" data-act="start" ${n<S.names.length*2+5||S.names.filter(x=>x.trim()).length<2?"disabled":""}>Spiel starten</button></div>`;
+}
+
+function renderTurn(){
+  const p=S.players[S.cur],s=SONGS[S.card],line=sorted(p);
+  const q=encodeURIComponent(s.a+" "+s.t);
+  const eligible=S.players.map((x,k)=>({x,k})).filter(o=>o.k!==S.cur&&o.x.tokens>0);
+  let tl="";for(let k=0;k<=line.length;k++){
+    const cls=S.pick===k?"sel":(S.ch&&S.ch.pick===k?"ch":"");
+    const lbl=S.pick===k?"?":(S.ch&&S.ch.pick===k?"✋":"+");
+    tl+=`<button class="slot ${cls}" data-act="slot" data-k="${k}" aria-label="Lücke ${k+1}">${lbl}</button>`;
+    if(k<line.length)tl+=cardHTML(line[k]);
+  }
+  app.innerHTML=`
+  ${scoreHTML()}
+  <section class="panel">
+    <p class="eyebrow">Runde ${S.round} · am Zug</p>
+    <h2>${esc(p.name)}</h2>
+    <div class="deck">
+      <div class="vinyl big ${playing?"spin":""}" aria-hidden="true"><div class="label">?</div></div>
+      <div class="ctrl">
+        <div class="row"><button class="primary" data-act="play">${playing?"■ Stopp":"▶ Abspielen"}</button>
+        <button data-act="secret" aria-pressed="${S.showSecret}">${S.showSecret?"Titel verbergen":"DJ: Titel zeigen"}</button></div>
+        ${audioMsg?`<p class="note" role="status">${esc(audioMsg)}</p>`:""}
+        ${S.showSecret?`<div class="secret"><b>${esc(s.a)}</b> · ${esc(s.t)}<div class="row" style="margin-top:6px"><a class="btn chip" href="https://open.spotify.com/search/${q}" target="_blank" rel="noopener">Spotify</a><a class="btn chip" href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener">YouTube</a></div></div>`:""}
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <div><p class="eyebrow">${S.chMode&&S.ch?`Einspruch von ${esc(S.players[S.ch.who].name)}: andere Lücke wählen`:"Zeitleiste – wo gehört der Song hin?"}</p></div>
+    <div class="tl-wrap"><div class="tl">${tl}</div></div>
+    <label class="check"><input type="checkbox" id="guess" ${S.guessed?"checked":""} ${p.tokens>=MAXTOK?"disabled":""}> Titel und Interpret richtig genannt (+1 Jeton)</label>
+    ${S.pick!=null&&eligible.length?`<div class="row"><span class="muted">Einspruch:</span>${eligible.map(o=>`<button class="chip" data-act="ch" data-k="${o.k}" aria-pressed="${!!(S.ch&&S.ch.who===o.k)}">${esc(o.x.name)}</button>`).join("")}${S.ch?`<button class="chip" data-act="chx">Kein Einspruch</button>`:""}</div>`:""}
+    <div class="row">
+      <button class="primary" data-act="reveal" ${S.pick==null||(S.ch&&S.ch.pick==null)?"disabled":""}>Aufdecken</button>
+      <button data-act="skip" ${p.tokens<1?"disabled":""}>Überspringen (1 Jeton)</button>
+      <button data-act="buy" ${p.tokens<3?"disabled":""}>Karte kaufen (3 Jetons)</button>
+    </div>
+  </section>
+  <div class="row"><button data-act="quit" class="chip">Spiel beenden</button></div>`;
+}
+
+function renderReveal(){
+  const r=S.result,p=S.players[r.player],s=SONGS[r.card];
+  const line=sorted(p);
+  const verdict=r.bought?`<span class="ok">Gekauft!</span>`:r.ok?`<span class="ok">Richtig!</span>`:`<span class="no">Daneben.</span>`;
+  const extra=[];
+  if(r.bought)extra.push(`${esc(p.name)} hat 3 Jetons eingelöst.`);
+  else if(r.ok)extra.push(`Die Karte kommt in die Zeitleiste von ${esc(p.name)}.`);
+  if(r.chName)extra.push(r.chOk?`Einspruch erfolgreich: ${esc(r.chName)} bekommt die Karte.`:`Einspruch von ${esc(r.chName)} ging ins Leere.`);
+  if(r.bonus)extra.push(`+1 Jeton für ${esc(p.name)}.`);
+  app.innerHTML=`
+  ${scoreHTML()}
+  <section class="panel">
+    <div class="reveal">
+      <div class="big-card" style="background:${decColor(s.y)}"><span class="y">${s.y}</span><span class="a">${esc(s.a)}</span><span>${esc(s.t)}</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1">
+        <p class="verdict">${verdict}</p>${extra.map(e=>`<p>${e}</p>`).join("")}
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <p class="eyebrow">Zeitleiste von ${esc(p.name)} · ${p.line.length}/${S.target}</p>
+    <div class="tl-wrap"><div class="tl">${line.map(i=>cardHTML(i,i===r.card?"new":"")).join("")}</div></div>
+    <div class="row"><button class="primary" data-act="next">${r.winner!=null?"Zur Siegerehrung":"Nächste Person"}</button></div>
+  </section>`;
+}
+
+function renderWin(){
+  const w=S.players[S.result.winner];
+  app.innerHTML=`
+  <header class="hero"><div><p class="eyebrow">Gewonnen nach ${S.round} Runden</p><h1>${esc(w.name)}</h1>
+  <p class="lead">${S.target} Hits sauber in der richtigen Reihenfolge.</p></div><div class="vinyl spin" aria-hidden="true"><div class="label">★</div></div></header>
+  <section class="panel"><div class="tl-wrap"><div class="tl">${sorted(w).map(i=>cardHTML(i)).join("")}</div></div></section>
+  ${scoreHTML()}
+  <div class="row"><button class="primary" data-act="again">Nochmals mit denselben Leuten</button><button data-act="quit">Neues Spiel einrichten</button></div>`;
+}
+
+// ---------- Eingaben ----------
+app.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act;
+  if(a==="add"){S.names.push(`Spieler ${S.names.length+1}`)}
+  else if(a==="del"){S.names.splice(+b.dataset.k,1)}
+  else if(a==="target"){S.target=+b.dataset.t}
+  else if(a==="dec"){const d=+b.dataset.d;S.decades=S.decades.includes(d)?S.decades.filter(x=>x!==d):[...S.decades,d];if(!S.decades.length)S.decades=[d]}
+  else if(a==="start"){start()}
+  else if(a==="play"){playPreview();return}
+  else if(a==="secret"){S.showSecret=!S.showSecret}
+  else if(a==="slot"){const k=+b.dataset.k;if(S.chMode&&S.ch){if(k!==S.pick)S.ch.pick=k}else S.pick=k}
+  else if(a==="ch"){const k=+b.dataset.k;S.ch={who:k,pick:null};S.chMode=true}
+  else if(a==="chx"){S.ch=null;S.chMode=false}
+  else if(a==="reveal"){reveal()}
+  else if(a==="skip"){S.players[S.cur].tokens--;draw()}
+  else if(a==="buy"){const p=S.players[S.cur];p.tokens-=3;insert(p,S.card);
+    S.result={ok:true,bought:true,card:S.card,player:S.cur,winner:p.line.length>=S.target?S.cur:null};S.phase="reveal";stopAudio()}
+  else if(a==="next"){next()}
+  else if(a==="again"){S.names=S.players.map(p=>p.name);start()}
+  else if(a==="quit"){stopAudio();const keep=S.players.length?S.players.map(p=>p.name):S.names;const t=S.target,d=S.decades,de=S.deOnly;S=fresh();S.names=keep;S.target=t;S.decades=d;S.deOnly=de}
+  save();render();
+});
+app.addEventListener("input",e=>{if(e.target.dataset.name!=null){S.names[+e.target.dataset.name]=e.target.value;save()}});
+app.addEventListener("change",e=>{
+  if(e.target.id==="deonly"){S.deOnly=e.target.checked;save();render()}
+  if(e.target.id==="guess"){S.guessed=e.target.checked;save()}
+});
+
+function boot(data){S=(data&&data.S)||load()||fresh();if(S.phase==="turn"&&S.card!=null)findPreview(SONGS[S.card]).catch(()=>{});render()}
+if("serviceWorker" in navigator&&location.protocol==="https:"&&!location.hostname.endsWith("claude.ai"))navigator.serviceWorker.register("sw.js").catch(()=>{});
+window.claude?.hot?.snapshot?.(()=>({S}));
+window.claude?.hot?.ready?window.claude.hot.ready(boot):boot(window.claude?.hot?.data??{});
+</script>
+</body>
+</html>

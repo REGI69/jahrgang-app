@@ -183,13 +183,13 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const MAXTOK=5;
 // Spendenlink (SumUp-Zahlungslink). Leer = Knopf ausgeblendet.
-const SUPPORT_URL="https://pay.sumup.com/p/s/XDXDNU93VV";
+const SUPPORT_URL="https://pay.sumup.com/b2c/QYY7QR8X";
 function supportHTML(){
   if(!SUPPORT_URL)return "";
   return `<section class="panel support" aria-labelledby="h-sup">
     <h2 id="h-sup">Gefällt dir Jahrgang?</h2>
-    <p>Das Spiel ist gratis und ohne Werbung. Wenn du magst, kannst du mit einem frei wählbaren Betrag danke sagen.</p>
-    <div class="row"><a class="btn primary" href="${esc(SUPPORT_URL)}" target="_blank" rel="noopener">♥ Unterstützen</a>
+    <p>Das Spiel ist gratis und ohne Werbung. Wenn du magst, kannst du mit 1 Franken danke sagen. Gerne auch mehrmals.</p>
+    <div class="row"><a class="btn primary" href="${esc(SUPPORT_URL)}" target="_blank" rel="noopener">♥ 1 Franken spenden</a>
     <div class="pay"><span>Sichere Zahlung über SumUp</span></div></div>
   </section>`;
 }

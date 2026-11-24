@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tagesrätsel – jeden Tag vier neue Rätsel | RG Ing. Consulting</title>
+<meta name="description" content="Vier Gratis-Rätsel, jeden Tag neu: Tageswort, Dazwischen, Rasterweg und Leitungen. Ohne Anmeldung, ohne Werbung, direkt im Browser.">
+<link rel="canonical" href="https://regi69.github.io/jahrgang-app/raetsel/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_CH">
+<meta property="og:site_name" content="RG Ing. Consulting">
+<meta property="og:title" content="Tagesrätsel – jeden Tag vier neue Rätsel">
+<meta property="og:description" content="Tageswort, Dazwischen, Rasterweg und Leitungen. Gratis, ohne Anmeldung, ohne Werbung.">
+<meta property="og:url" content="https://regi69.github.io/jahrgang-app/raetsel/">
+<meta property="og:image" content="https://regi69.github.io/jahrgang-app/raetsel/og-spiele.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Tagesrätsel: vier Rätsel, jeden Tag neu">
+<meta name="theme-color" content="#0f1724">
+<link rel="stylesheet" href="kern.css">
+<style>
+.hub{width:100%;max-width:760px;padding:18px 16px 8px;display:grid;gap:18px}
+.hub-kopf{display:grid;gap:6px}
+.hub-zurueck{display:inline-flex;align-items:center;justify-self:start;min-height:40px;font-size:.9rem;color:var(--rg-leise)!important;text-decoration:none}
+.hub-kicker{margin:0;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rg-gold)}
+.hub h1{margin:0;font-size:clamp(1.9rem,7vw,2.8rem);line-height:1.08;text-wrap:balance}
+.hub-lead{margin:0;color:var(--rg-leise);max-width:52ch}
+.hub-datum{margin:0;font-variant-numeric:tabular-nums;font-weight:700}
+.hub-gitter{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:14px}   /* breit: 2 × 2 statt 3 + 1, die Statusmarke hat Platz neben dem Titel */
+.karte{position:relative;display:grid;grid-template-columns:64px 1fr;gap:4px 14px;align-items:center;padding:24px 16px 16px;border-radius:16px;background:var(--rg-flaeche);
+  border:1px solid var(--rg-linie);text-decoration:none;transition:transform .15s,border-color .15s}
+.karte:hover{transform:translateY(-2px);border-color:var(--rg-blau)}
+.karte svg{grid-row:span 2;width:64px;height:64px;border-radius:12px;background:var(--rg-bg)}
+.karte h2{margin:0;font-size:1.2rem}
+.karte p{margin:0;font-size:.88rem;color:var(--rg-leise);grid-column:2}
+.karte .status{position:absolute;top:10px;right:12px;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rg-leise)}
+.karte.erledigt{border-color:var(--rg-gruen)}
+.karte.erledigt .status{color:var(--rg-gruen)}
+.hub-fortschritt{margin:0;font-size:.9rem;color:var(--rg-leise)}
+.hub-fortschritt b{color:var(--rg-text)}
+.hub-extra{display:grid;gap:8px;padding:16px;border-radius:16px;border:1px dashed var(--rg-linie)}
+.hub-extra h2{margin:0;font-size:1.05rem}
+.hub-extra p{margin:0;font-size:.9rem;color:var(--rg-leise)}
+</style>
+</head>
+<body class="rg-hub">
+<main class="hub">
+  <div class="hub-kopf">
+    <a class="hub-zurueck" href="https://rg-ing-consulting.ch/">← RG Ing. Consulting</a>
+    <p class="hub-kicker">Jeden Tag neu · gratis · ohne Anmeldung</p>
+    <h1>Vier Rätsel für die Kaffeepause</h1>
+    <p class="hub-lead">Für alle dasselbe Rätsel, jeden Tag ein neues. Ergebnis teilen und morgen die Serie verteidigen.</p>
+    <p class="hub-datum" id="datum"></p>
+  </div>
+
+  <div class="hub-gitter" id="gitter"></div>
+  <p class="hub-fortschritt" id="fortschritt" aria-live="polite"></p>
+
+  <section class="hub-extra" aria-label="Für den Spieleabend">
+    <h2>Für den Spieleabend: Jahrgang</h2>
+    <p>Song hören, Jahr schätzen, in die Zeitleiste einsortieren. Das Musik-Partyspiel für mehrere Personen an einem Handy.</p>
+    <div class="rg-reihe" style="justify-content:flex-start"><a class="rg-knopf" href="https://regi69.github.io/jahrgang/" target="_blank" rel="noopener">Jahrgang spielen</a></div>
+  </section>
+</main>
+
+<footer class="rg-fuss" style="max-width:760px">
+  <div class="rg-spende"><p>Die Rätsel bleiben gratis und ohne Werbung. Wer mag, spendiert mir einen Kaffee (freiwilliger Beitrag).</p><span class="rg-zahlwege"><a class="rg-spenden" id="spenden" target="_blank" rel="noopener"><span aria-hidden="true">☕</span> Kaffee spendieren</a><span class="rg-zahlinfo">mit TWINT oder Apple Pay · <a id="karte" target="_blank" rel="noopener">oder CHF 1 mit Karte</a></span></span></div>
+  <p class="rg-werbung">Selbst programmiert von Remo Gilardoni. <a href="https://rg-ing-consulting.ch/software.html">Solche Apps baue ich auch für Ihren Betrieb.</a></p>
+  <p class="rg-klein"><a href="https://rg-ing-consulting.ch/">RG Ing. Consulting</a> · <a href="https://rg-ing-consulting.ch/impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
+</footer>
+
+<script src="kern.js"></script>
+<script>
+(function () {
+  var BILDER = {
+    tageswort: '<svg viewBox="0 0 64 64" aria-hidden="true"><g font-family="Arial,sans-serif" font-size="13" font-weight="800" text-anchor="middle"><rect x="7" y="24" width="15" height="16" rx="3" fill="#1a73e8"/><text x="14.5" y="37" fill="#fff">W</text><rect x="25.5" y="25" width="13" height="14" rx="3" fill="none" stroke="#f5a623" stroke-width="2"/><text x="32" y="37" fill="#f5a623">O</text><rect x="42" y="24" width="15" height="16" rx="3" fill="#22304a"/><text x="49.5" y="37" fill="#93a3b8">R</text></g></svg>',
+    dazwischen: '<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-width="4"><path d="M12 18h40" stroke="#93a3b8"/><path d="M20 32h24" stroke="#f5a623"/><path d="M12 46h40" stroke="#93a3b8"/></g><path d="M32 22l4 5h-8zM32 42l4-5h-8z" fill="#1a73e8"/></svg>',
+    rasterweg: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 14h36v12H14v12h36v12H14" fill="none" stroke="#1a73e8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="14" r="6" fill="#f5a623"/><circle cx="14" cy="50" r="6" fill="#00c9a7"/></svg>',
+    leitungen: '<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke-width="3" stroke-linejoin="round"><path d="M12 14h24v18" stroke="#e3a83b"/><path d="M12 50V30h12v20h28" stroke="#46b08a"/><path d="M52 14v20" stroke="#5a9fe0"/><path d="M22 22a2 2 0 1 0 4 0a2 2 0 1 0-4 0M42 25a2 2 0 1 0 4 0a2 2 0 1 0-4 0" stroke="#7389ad" stroke-width="1.6"/></g><g stroke="#0f1724" stroke-width="1.2"><rect x="5.5" y="7.5" width="13" height="13" rx="2.5" fill="#e3a83b"/><rect x="29.5" y="25.5" width="13" height="13" rx="2.5" fill="#e3a83b"/><rect x="5.5" y="43.5" width="13" height="13" rx="2.5" fill="#46b08a"/><rect x="45.5" y="43.5" width="13" height="13" rx="2.5" fill="#46b08a"/><rect x="45.5" y="7.5" width="13" height="13" rx="2.5" fill="#5a9fe0"/><rect x="45.5" y="27.5" width="13" height="13" rx="2.5" fill="#5a9fe0"/></g><path d="M8 12.5h8v5.5h-8zM32 30.5h8v5.5h-8zM8 48.5h8v5.5h-8zM48 48.5h8v5.5h-8zM48 12.5h8v5.5h-8zM48 32.5h8v5.5h-8z" fill="#f4f1e6"/><path d="M10 10h4M34 28h4M10 46h4M50 46h4M50 10h4M50 30h4" fill="none" stroke="#0f1724" stroke-opacity=".6" stroke-width="1.2" stroke-linecap="round"/></svg>'
+  };
+  var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+  document.getElementById('spenden').href = RG.SPENDEN_URL;
+  document.getElementById('karte').href = RG.KARTEN_URL;
+  var gitter = document.getElementById('gitter'), karten = {}, bild = '';
+  RG.SPIELE.forEach(function (s) {
+    var a = RG.el('a', { class: 'karte' });
+    a.innerHTML = (BILDER[s.id] || '') + '<h2></h2><p></p><span class="status"></span>';
+    a.querySelector('h2').textContent = s.titel;
+    a.querySelector('p').textContent = s.kurz;
+    gitter.appendChild(a); karten[s.id] = a;
+  });
+  /* Datum und Status zeigen. Läuft auch, wenn jemand zur Seite zurückkehrt: «Zurück» im Browser holt die Übersicht
+     unverändert aus dem Zwischenspeicher, und ein Tab vom Vortag soll das heutige Datum zeigen. Die Karten bleiben
+     dieselben Elemente, damit der Tastaturfokus nicht verloren geht. */
+  function zeige() {
+    var h = RG.heute(), q = h.test ? '?tag=' + h.datum : '', geloest = 0, neu = h.datum;
+    RG.SPIELE.forEach(function (s) {
+      var d = RG.lies('rg-spiele-v1:' + s.id + (h.test ? ':test' : ''));
+      var heute = d && d.stand && typeof d.stand === 'object' && d.stand.datum === h.datum ? d.stand : null;
+      var fertig = heute && heute.fertig && typeof heute.fertig === 'object' ? heute.fertig : null, begonnen = !!(heute && heute.daten && typeof heute.daten === 'object' && !fertig);
+      if (fertig) geloest++;
+      var a = karten[s.id], status = fertig ? (fertig.gewonnen ? '✓ gelöst' : 'gespielt') : (begonnen ? 'angefangen' : 'offen');
+      a.className = 'karte' + (fertig ? (fertig.gewonnen ? ' erledigt' : ' gespielt') : '');   // Grün nur für gelöste Rätsel
+      a.setAttribute('href', s.datei + q);
+      a.querySelector('.status').textContent = status;
+      neu += '|' + status;
+    });
+    if (neu === bild) return;                 // nichts geändert: die Fortschrittszeile nicht erneut vorlesen lassen
+    bild = neu;
+    document.getElementById('datum').textContent = tage[h.wochentag] + ', ' + h.anzeige + ' · Rätsel Nr. ' + h.nr;
+    document.getElementById('fortschritt').innerHTML = geloest === RG.SPIELE.length
+      ? '<b>Alle vier gespielt.</b> Morgen gibt es neue Rätsel.'
+      : '<b>' + geloest + ' von ' + RG.SPIELE.length + '</b> heute gespielt.';
+  }
+  zeige();
+  window.addEventListener('pageshow', function (ev) { if (ev.persisted) zeige(); });
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') zeige(); });
+  window.addEventListener('focus', zeige);
+  window.addEventListener('storage', zeige);   // in einem anderen Tab weitergespielt
+})();
+</script>
+</body>
+</html>

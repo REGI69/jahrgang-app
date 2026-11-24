@@ -1,5 +1,5 @@
 // Offline-Cache für die App-Hülle. Bei Änderungen an der App VERSION erhöhen.
-const VERSION = "jahrgang-v6";
+const VERSION = "jahrgang-v7";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png"];
 
 self.addEventListener("install", e => {
@@ -12,6 +12,8 @@ self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
+  // Die Tagesrätsel unter /raetsel/ sind eigenständig und laufen ohne diesen Cache.
+  if (url.pathname.includes("/raetsel/")) return;
   // Eigene Dateien: Netz zuerst (immer aktuell), offline aus dem Cache.
   if (url.origin === location.origin) {
     e.respondWith(fetch(req).then(res => {

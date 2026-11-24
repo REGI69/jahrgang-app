@@ -1,5 +1,5 @@
 // Offline-Cache für die App-Hülle. Bei Änderungen an der App VERSION erhöhen.
-const VERSION = "jahrgang-v5";
+const VERSION = "jahrgang-v6";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png"];
 
 self.addEventListener("install", e => {

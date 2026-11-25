@@ -16,22 +16,32 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Tageswort: das Wort des Tages in sechs Versuchen">
-<meta name="theme-color" content="#0f1724">
+<meta name="theme-color" content="#f3f6fb">
 <link rel="stylesheet" href="kern.css">
 <style>
-/* Tageswort – eigene Gestaltung in den Firmenfarben.
-   Drei Zustände, immer Farbe UND Zeichen: Treffer ● (Blau gefüllt), Dabei ◐ (Gold-Rahmen), Fehlt ○ (dunkle Fläche). */
+/* Tageswort – eigene Gestaltung in den Firmenfarben, helles Erscheinungsbild.
+   Drei Zustände, immer Farbe UND Zeichen: Treffer ● (Blau gefüllt, weisser Buchstabe), Dabei ◐ (helles Gold mit Gold-Rahmen),
+   Fehlt ○ (helle, zurückgenommene Fläche mit gedämpftem Buchstaben).
+   Nachgerechnete Kontraste (WCAG): Weiss auf --rg-blau 5.4:1 · --rg-text auf --rg-gold-hell 14.9:1 · Zeichen ◐ (--rg-gold-text) auf --rg-gold-hell 5.8:1 ·
+   --rg-leise auf --rg-flaeche2 5.2:1 · --tw-rand auf Weiss 3.5:1 · --rg-blau-dunkel auf --rg-blau-hell 6.2:1 · --rg-blau auf --rg-flaeche2 4.6:1.
+   Der Gold-Rahmen (--rg-gold) ist Firmenfarbe und Schmuck (zu Weiss nur 2:1); den Zustand «Dabei» tragen Zeichen und Buchstabe. */
 :root{
-  --tw-g:5px;                                   /* Abstand zwischen den Feldern */
+  --tw-g:6px;                                   /* Abstand zwischen den Feldern */
+  --tw-p:12px;                                  /* Innenabstand der Brettkarte */
   --tw-kh:clamp(44px,6.4vh,56px);               /* Höhe einer Taste */
-  --tw-f:clamp(36px,min(calc((100vw - 48px)/5),calc((100vh - 176px - 3*var(--tw-kh))/6)),62px);   /* Kantenlänge eines Feldes */
-  --tw-dunkel:#0a0f18; --tw-dunkel-rand:#1b2536; --tw-rand-voll:#5d7396;
+  --tw-f:clamp(36px,min(calc((100vw - 30px - 2*var(--tw-p) - 4*var(--tw-g))/5),calc((100vh - 202px - 3*var(--tw-kh))/6)),62px);   /* Kantenlänge eines Feldes */
+  --tw-rand:#7689b0;                            /* Rahmen leerer Felder: 3.5:1 auf Weiss */
+  --tw-fehlt-rand:#c3cee0;                      /* feine Kante der Fehlt-Flächen */
+  --tw-kante:#c3cee0;                           /* Unterkante der Tasten */
+  --tw-druck:#cfe0fa;                           /* gedrückte Taste */
+  --tw-ring:rgba(26,102,214,.2);                /* Lichthof um das Feld, das als Nächstes gefüllt wird */
 }
 @supports (height:100dvh){
   :root{--tw-kh:clamp(44px,6.4dvh,56px);
-    --tw-f:clamp(36px,min(calc((100vw - 48px)/5),calc((100dvh - 176px - 3*var(--tw-kh))/6)),62px)}
+    --tw-f:clamp(36px,min(calc((100vw - 30px - 2*var(--tw-p) - 4*var(--tw-g))/5),calc((100dvh - 202px - 3*var(--tw-kh))/6)),62px)}
 }
-#spiel{gap:10px;padding-top:10px}
+@media(max-width:350px){:root{--tw-g:5px;--tw-p:10px}}
+#spiel{gap:12px;padding-top:6px}
 .rg-toast{top:12px}                             /* Meldung über dem Kopf statt über der ersten Zeile */
 
 /* Zustandszeichen ● ◐ ○: Das Zeichen steht als Text im Feld, gezeichnet wird es als Form,
@@ -39,30 +49,32 @@
 .tw-pkt{display:block;width:var(--p,10px);height:var(--p,10px);border-radius:50%;border:1.5px solid currentColor;font-size:0;line-height:0;overflow:hidden}
 :not([data-z])>.tw-pkt{display:none}
 [data-z="treffer"]>.tw-pkt{background:currentColor}
-[data-z="dabei"]>.tw-pkt{color:var(--rg-gold);background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
+[data-z="dabei"]>.tw-pkt{color:var(--rg-gold-text);background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
 .tw-tastatur[hidden],.tw-ende[hidden]{display:none}
 .tw-nur-sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-/* ---------- Brett ---------- */
-.tw-brett{display:grid;gap:var(--tw-g);user-select:none;-webkit-user-select:none}
+/* ---------- Brett: weisse Karte, die Felder sind der Blickfang ---------- */
+.tw-brett{display:grid;gap:var(--tw-g);padding:var(--tw-p);border-radius:18px;background:var(--rg-flaeche);border:1px solid var(--rg-linie);
+  box-shadow:var(--rg-schatten);user-select:none;-webkit-user-select:none}
 .tw-zeile{display:grid;grid-template-columns:repeat(5,var(--tw-f));gap:var(--tw-g)}
-.tw-feld{position:relative;width:var(--tw-f);height:var(--tw-f);display:grid;place-items:center;border-radius:10px;
-  border:2px solid var(--rg-linie);background:rgba(255,255,255,.015);color:var(--rg-text);
+.tw-feld{position:relative;width:var(--tw-f);height:var(--tw-f);display:grid;place-items:center;border-radius:clamp(9px,calc(var(--tw-f)*.2),12px);
+  border:1.5px solid var(--tw-rand);background:var(--rg-flaeche);color:var(--rg-text);
   font-size:calc(var(--tw-f)*.5);font-weight:800;line-height:1;text-transform:uppercase}
-.tw-feld.voll{border-color:var(--tw-rand-voll);background:var(--rg-flaeche)}
-.tw-feld.dran{border-color:var(--rg-leise);box-shadow:inset 0 -3px 0 var(--rg-blau)}
+.tw-feld.voll{border:2px solid var(--rg-text);box-shadow:var(--rg-schatten-klein)}
+.tw-feld.dran{border:2px solid var(--rg-blau);box-shadow:0 0 0 3px var(--tw-ring)}
 .tw-feld.neu{animation:tw-tipp .11s ease-out}
 .tw-z{position:absolute;top:calc(var(--tw-f)*.09);right:calc(var(--tw-f)*.09);--p:calc(var(--tw-f)*.19)}
-.tw-feld[data-z="treffer"]{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff}
-.tw-feld[data-z="dabei"]{background:rgba(245,166,35,.13);border-color:var(--rg-gold);box-shadow:inset 0 0 0 1.5px var(--rg-gold)}
-.tw-feld[data-z="fehlt"]{background:var(--tw-dunkel);border-color:var(--tw-dunkel-rand);color:var(--rg-leise)}
+.tw-feld[data-z]{border-width:2px}
+.tw-feld[data-z="treffer"]{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff;box-shadow:0 3px 8px rgba(26,102,214,.3)}
+.tw-feld[data-z="dabei"]{background:var(--rg-gold-hell);border-color:var(--rg-gold);box-shadow:inset 0 0 0 1.5px var(--rg-gold),0 3px 8px rgba(245,166,35,.2)}
+.tw-feld[data-z="fehlt"]{background:var(--rg-flaeche2);border-color:var(--tw-fehlt-rand);color:var(--rg-leise)}
 
 /* Aufdecken: Feld kippt, die neue Fläche erscheint in der Mitte der Drehung */
 .tw-feld.dreh{animation:tw-dreh .44s ease-in-out both;animation-delay:calc(var(--i)*.13s)}
 .tw-feld.dreh .tw-z{animation:tw-zeichen .44s linear both;animation-delay:calc(var(--i)*.13s)}
 @keyframes tw-dreh{
-  0%{transform:rotateX(0);background:var(--rg-flaeche);border-color:var(--tw-rand-voll);box-shadow:none;color:var(--rg-text)}
-  46%{transform:rotateX(90deg);background:var(--rg-flaeche);border-color:var(--tw-rand-voll);box-shadow:none;color:var(--rg-text)}
+  0%{transform:rotateX(0);background:var(--rg-flaeche);border-color:var(--rg-text);box-shadow:none;color:var(--rg-text)}
+  46%{transform:rotateX(90deg);background:var(--rg-flaeche);border-color:var(--rg-text);box-shadow:none;color:var(--rg-text)}
   54%{transform:rotateX(90deg)}
   100%{transform:rotateX(0)}
 }
@@ -74,56 +86,62 @@
 @keyframes tw-jubel{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}70%{transform:translateY(2px)}}
 
 /* ---------- Legende ---------- */
-.tw-legende{list-style:none;margin:0;padding:0;display:flex;justify-content:center;gap:6px 14px;flex-wrap:wrap;width:100%}
-.tw-legende li{display:flex;align-items:center;gap:6px;text-align:left}
-.tw-legende b{display:block;font-size:.74rem;line-height:1.15}
+.tw-legende{list-style:none;margin:0;padding:0;display:flex;justify-content:center;gap:6px 16px;flex-wrap:wrap;width:100%}
+.tw-legende li{display:flex;align-items:center;gap:7px;text-align:left}
+.tw-legende b{display:block;font-size:.76rem;line-height:1.15}
 .tw-legende small{display:block;font-size:.68rem;line-height:1.15;color:var(--rg-leise)}
-.tw-mini{flex:none;width:22px;height:22px;display:grid;place-items:center;border-radius:6px;border:2px solid var(--rg-linie);--p:10px}
+.tw-mini{flex:none;width:24px;height:24px;display:grid;place-items:center;border-radius:7px;border:2px solid var(--tw-rand);background:var(--rg-flaeche);--p:10px}
 .tw-mini[data-z="treffer"]{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff}
-.tw-mini[data-z="dabei"]{background:rgba(245,166,35,.13);border-color:var(--rg-gold)}
-.tw-mini[data-z="fehlt"]{background:var(--tw-dunkel);border-color:var(--tw-dunkel-rand);color:var(--rg-leise)}
-@media(max-width:350px){.tw-legende{gap:6px 9px}.tw-legende li{gap:4px}.tw-legende small{font-size:.64rem}}
+.tw-mini[data-z="dabei"]{background:var(--rg-gold-hell);border-color:var(--rg-gold)}
+.tw-mini[data-z="fehlt"]{background:var(--rg-flaeche2);border-color:var(--tw-fehlt-rand);color:var(--rg-leise)}
+@media(max-width:350px){.tw-legende{gap:6px 9px}.tw-legende li{gap:4px}.tw-legende b{font-size:.74rem}.tw-legende small{font-size:.64rem}.tw-mini{width:22px;height:22px;border-radius:6px}}
 
-/* ---------- Bildschirmtastatur ---------- */
+/* ---------- Bildschirmtastatur: weisse Tasten mit feinem Schatten ---------- */
 .tw-tastatur{display:grid;gap:6px;width:min(100vw - 8px,500px);touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .tw-tz{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:clamp(3px,1vw,6px)}
-.tw-taste{position:relative;appearance:none;height:var(--tw-kh);min-width:0;margin:0;padding:0;border-radius:8px;border:1px solid var(--rg-linie);
-  background:var(--rg-flaeche2);color:var(--rg-text);font-size:clamp(.95rem,4.4vw,1.15rem);font-weight:700;line-height:1;cursor:pointer;
+.tw-taste{position:relative;appearance:none;height:var(--tw-kh);min-width:0;margin:0;padding:0;border-radius:10px;border:1px solid var(--rg-linie);
+  background:var(--rg-flaeche);color:var(--rg-text);font-size:clamp(.95rem,4.4vw,1.15rem);font-weight:700;line-height:1;cursor:pointer;
+  box-shadow:0 1.5px 0 var(--tw-kante),var(--rg-schatten-klein);
   -webkit-tap-highlight-color:transparent;transition:background .12s,transform .06s}
-.tw-taste:not([data-z]):active,.tw-taste.gedrueckt:not([data-z]){background:#34466a}
+.tw-taste:not([data-z]):active,.tw-taste.gedrueckt:not([data-z]){background:var(--tw-druck)}
 .tw-taste:active,.tw-taste.gedrueckt{transform:scale(.93)}
-@media(hover:hover){.tw-taste:not([data-z]):hover{background:#2b3b59}}
+@media(hover:hover){.tw-taste:not([data-z]):hover{background:var(--rg-blau-hell)}}
 .tw-taste.breit{grid-column:span 2;font-size:clamp(.66rem,2.9vw,.82rem);letter-spacing:.01em}
-.tw-taste.eingabe{border-color:var(--rg-leise)}
+.tw-taste.eingabe{background:var(--rg-blau-hell);border-color:var(--rg-blau);color:var(--rg-blau-dunkel);box-shadow:0 1.5px 0 var(--rg-blau),var(--rg-schatten-klein)}
 .tw-tzn{position:absolute;top:4px;right:4px;--p:8px;pointer-events:none}
-.tw-taste[data-z="treffer"]{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff}
-.tw-taste[data-z="dabei"]{background:rgba(245,166,35,.14);border:2px solid var(--rg-gold)}
+.tw-taste[data-z="treffer"]{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff;box-shadow:0 1.5px 0 var(--rg-blau-dunkel),var(--rg-schatten-klein)}
+.tw-taste[data-z="dabei"]{background:var(--rg-gold-hell);border:2px solid var(--rg-gold);box-shadow:var(--rg-schatten-klein)}
 .tw-taste[data-z="dabei"] .tw-tzn{top:3px;right:3px}
-.tw-taste[data-z="fehlt"]{background:var(--tw-dunkel);border-color:var(--tw-dunkel-rand);color:var(--rg-leise)}
+.tw-taste[data-z="fehlt"]{background:var(--rg-flaeche2);border-color:var(--tw-fehlt-rand);color:var(--rg-leise);box-shadow:none}
 
 /* ---------- Abschluss (ersetzt die Tastatur) ---------- */
-.tw-ende{width:100%;display:grid;justify-items:center;gap:10px;padding:14px;border-radius:var(--rg-radius);background:var(--rg-flaeche);border:1px solid var(--rg-linie);text-align:center}
-.tw-ende h2{margin:0;font-size:1.15rem}
+.tw-ende{width:100%;display:grid;justify-items:center;gap:12px;padding:20px 16px;border-radius:18px;background:var(--rg-flaeche);border:1px solid var(--rg-linie);
+  box-shadow:var(--rg-schatten);text-align:center}
+.tw-ende h2{margin:0;font-size:1.2rem;font-weight:800;letter-spacing:-.01em}
 .tw-ende p{margin:0;font-size:.88rem;color:var(--rg-leise)}
-.tw-wort{display:flex;gap:4px;justify-content:center}
-.tw-wort span{width:34px;height:34px;display:grid;place-items:center;border-radius:7px;background:var(--rg-blau);color:#fff;font-weight:800;font-size:1.05rem;line-height:1}
+.tw-wort{display:flex;gap:5px;justify-content:center}
+.tw-wort span{width:36px;height:36px;display:grid;place-items:center;border-radius:9px;background:var(--rg-blau);color:#fff;font-weight:800;font-size:1.05rem;line-height:1;
+  box-shadow:0 2px 5px rgba(26,102,214,.28)}
 
 /* ---------- Ergebnisfenster: Lösung und Verteilung ---------- */
-.tw-det{display:grid;gap:8px;justify-items:center}
+.tw-det{display:grid;gap:10px;justify-items:center}
 .tw-det-l{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rg-leise);font-weight:800}
-.tw-vert{width:100%;display:grid;gap:4px;text-align:left}
+.tw-vert{width:100%;display:grid;gap:5px;text-align:left}
 .tw-vz{display:grid;grid-template-columns:1.1em 1fr;align-items:center;gap:8px;font-size:.82rem;font-variant-numeric:tabular-nums}
-.tw-vn{font-weight:800;color:var(--rg-leise);text-align:center}
-.tw-vb{display:flex;justify-content:flex-end;align-items:center;min-width:1.9em;height:20px;padding:0 6px;border-radius:5px;background:var(--rg-flaeche2);font-weight:700;white-space:nowrap}
-.tw-vz.heute .tw-vb{background:var(--rg-blau);color:#fff}
+.tw-vz::after{content:"";grid-column:2;grid-row:1;height:22px;border-radius:7px;background:var(--rg-bg)}   /* helle Schiene hinter dem Balken */
+.tw-vn{grid-column:1;grid-row:1;font-weight:800;color:var(--rg-leise);text-align:center}
+.tw-vb{grid-column:2;grid-row:1;position:relative;z-index:1;display:flex;justify-content:flex-end;align-items:center;min-width:2.1em;height:22px;padding:0 7px;border-radius:7px;
+  background:var(--rg-blau-hell);border:1.5px solid var(--rg-blau);color:var(--rg-blau-dunkel);font-weight:800;white-space:nowrap}
+.tw-vb[style*="width:0%"]{background:transparent;border-color:transparent;color:var(--rg-leise)}   /* noch nie: nur die Zahl auf der Schiene */
+.tw-vz.heute .tw-vb{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff}
 .tw-vz.heute .tw-vn{color:var(--rg-text)}
 .rg-zahlen b{white-space:nowrap;font-size:clamp(1.05rem,5.6vw,1.4rem)}   /* «100 %» bleibt auch bei 320 px auf einer Zeile */
 
 /* ---------- Regeln ---------- */
-.tw-bsp{display:flex;gap:4px;justify-content:center}
+.tw-bsp{display:flex;gap:5px;justify-content:center}
 .tw-bsp .tw-feld{--tw-f:42px}
 .tw-regeln-leg{list-style:none!important;padding:0!important}
-.tw-regeln-leg li{display:flex;align-items:center;gap:8px}
+.tw-regeln-leg li{display:flex;align-items:center;gap:10px}
 </style>
 </head>
 <body>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tageswort – das Wort des Tages in sechs Versuchen | RG Ing. Consulting</title>
+<meta name="description" content="Tageswort: Jeden Tag ein neues deutsches Wort mit fünf Buchstaben. Sechs Versuche, klare Hinweise, gratis und ohne Anmeldung direkt im Browser.">
+<link rel="canonical" href="https://rg-ing-consulting.ch/spiele/tageswort.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_CH">
+<meta property="og:site_name" content="RG Ing. Consulting">
+<meta property="og:title" content="Tageswort – das Wort des Tages in sechs Versuchen">
+<meta property="og:description" content="Jeden Tag ein neues Wort mit fünf Buchstaben. Sechs Versuche, gratis, ohne Anmeldung, ohne Werbung.">
+<meta property="og:url" content="https://rg-ing-consulting.ch/spiele/tageswort.html">
+<meta property="og:image" content="https://rg-ing-consulting.ch/spiele/og-tageswort.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Tageswort: das Wort des Tages in sechs Versuchen">
+<meta name="theme-color" content="#f3f6fb">
+<link rel="stylesheet" href="kern.css">
+<style>
+/* Tageswort – eigene Gestaltung in den Firmenfarben, helles Erscheinungsbild.
+   Drei Zustände, immer Farbe UND Zeichen: Treffer ● (Blau gefüllt, weisser Buchstabe), Dabei ◐ (helles Gold mit Gold-Rahmen),
+   Fehlt ○ (helle, zurückgenommene Fläche mit gedämpftem Buchstaben).
+   Nachgerechnete Kontraste (WCAG): Weiss auf --rg-blau 5.4:1 · --rg-text auf --rg-gold-hell 14.9:1 · Zeichen ◐ (--rg-gold-text) auf --rg-gold-hell 5.8:1 ·
+   --rg-leise auf --rg-flaeche2 5.2:1 · --tw-rand auf Weiss 3.5:1 · --rg-blau-dunkel auf --rg-blau-hell 6.2:1 · --rg-blau-dunkel auf --tw-druck 5.5:1 ·
+   --rg-text auf --tw-druck 12.2:1 · --rg-text auf --rg-blau-hell 13.8:1 · --rg-leise auf --rg-bg (Zahl auf der Schiene) 5.6:1 · --rg-blau auf --rg-bg (Rahmen) 4.9:1.
+   Der Gold-Rahmen (--rg-gold) ist Firmenfarbe und Schmuck (zu Weiss nur 2:1); den Zustand «Dabei» tragen Zeichen und Buchstabe. */
+:root{
+  --tw-g:6px;                                   /* Abstand zwischen den Feldern */
+  --tw-p:12px;                                  /* Innenabstand der Brettkarte */
+  --tw-kh:clamp(44px,6.4vh,56px);               /* Höhe einer Taste */
+  --tw-f:clamp(36px,min(calc((100vw - 30px - 2*var(--tw-p) - 4*var(--tw-g))/5),calc((100vh - 202px - 3*var(--tw-kh))/6)),62px);   /* Kantenlänge eines Feldes */
+  --tw-rand:#7689b0;                            /* Rahmen leerer Felder: 3.5:1 auf Weiss */
+  --tw-fehlt-rand:#c3cee0;                      /* feine Kante der Fehlt-Flächen */
+  --tw-kante:#c3cee0;                           /* Unterkante der Tasten */
+  --tw-druck:#cfe0fa;                           /* gedrückte Taste */
+  --tw-ring:rgba(26,102,214,.2);                /* Lichthof um das Feld, das als Nächstes gefüllt wird */
+}
+@supports (height:100dvh){
+  :root{--tw-kh:clamp(44px,6.4dvh,56px);
+    --tw-f:clamp(36px,min(calc((100vw - 30px - 2*var(--tw-p) - 4*var(--tw-g))/5),calc((100dvh - 202px - 3*var(--tw-kh))/6)),62px)}
+}
+@media(max-width:350px){:root{--tw-g:5px;--tw-p:10px}}
+#spiel{gap:12px;padding-top:6px}
+.rg-toast{top:12px}                             /* Meldung über dem Kopf statt über der ersten Zeile */
+
+/* Zustandszeichen ● ◐ ○: Das Zeichen steht als Text im Feld, gezeichnet wird es als Form,
+   damit es auf jedem Gerät gleich gross und klar erscheint (Systemschriften zeichnen ◐ sehr verschieden). */
+.tw-pkt{display:block;width:var(--p,10px);height:var(--p,10px);border-radius:50%;border:1.5px solid currentColor;font-size:0;line-height:0;overflow:hidden}
+:not([data-z])>.tw-pkt{display:none}
+[data-z="treffer"]>.tw-pkt{background:currentColor}
+[data-z="dabei"]>.tw-pkt{color:var(--rg-gold-text);background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
+.tw-tastatur[hidden],.tw-ende[hidden]{display:none}
+.tw-nur-sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Brett: weisse Karte, die Felder sind der Blickfang ---------- */
+.tw-brett{display:grid;gap:var(--tw-g);padding:var(--tw-p);border-radius:18px;background:var(--rg-flaeche);border:1px solid var(--rg-linie);
+  box-shadow:var(--rg-schatten);user-select:none;-webkit-user-select:none}
+.tw-zeile{display:grid;grid-template-columns:repeat(5,var(--tw-f));gap:var(--tw-g)}
+.tw-feld{position:relative;width:var(--tw-f);height:var(--tw-f);display:grid;place-items:center;border-radius:clamp(9px,calc(var(--tw-f)*.2),12px);
+  border:1.5px solid var(--tw-rand);background:var(--rg-flaeche);color:var(--rg-text);
+  font-size:calc(var(--tw-f)*.5);font-weight:800;line-height:1;text-transform:uppercase}
+.tw-feld.voll{border:2px solid var(--rg-text);box-shadow:var(--rg-schatten-klein)}
+.tw-feld.dran{border:2px solid var(--rg-blau);box-shadow:0 0 0 3px var(--tw-ring)}
+.tw-feld.neu{animation:tw-tipp .11s ease-out}
+.tw-z{position:absolute;top:calc(var(--tw-f)*.09);right:calc(var(--tw-f)*.09);--p:calc(var(--tw-f)*.19)}
+.tw-feld[data-z]{border-width:2px}
+.tw-feld[data-z="treffer"]{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff;box-shadow:0 3px 8px rgba(26,102,214,.3)}
+.tw-feld[data-z="dabei"]{background:var(--rg-gold-hell);border-color:var(--rg-gold);box-shadow:inset 0 0 0 1.5px var(--rg-gold),0 3px 8px rgba(245,166,35,.2)}
+.tw-feld[data-z="fehlt"]{background:var(--rg-flaeche2);border-color:var(--tw-fehlt-rand);color:var(--rg-leise)}
+
+/* Aufdecken: Feld kippt, die neue Fläche erscheint in der Mitte der Drehung.
+   Bis 50 % bleibt das getippte Feld stehen, dann springen Fläche, Rahmen und Schrift auf den Zustand (step-start):
+   kein Überblenden, sonst stünde beim Treffer kurz ein grauer Buchstabe auf blassem Blau. */
+.tw-feld.dreh{animation:tw-dreh .44s ease-in-out both;animation-delay:calc(var(--i)*.13s)}
+.tw-feld.dreh .tw-z{animation:tw-zeichen .44s linear both;animation-delay:calc(var(--i)*.13s)}
+@keyframes tw-dreh{
+  0%{transform:rotateX(0);background:var(--rg-flaeche);border-color:var(--rg-text);box-shadow:none;color:var(--rg-text)}
+  46%{transform:rotateX(90deg)}
+  50%{transform:rotateX(90deg);background:var(--rg-flaeche);border-color:var(--rg-text);box-shadow:none;color:var(--rg-text);animation-timing-function:step-start}
+  54%{transform:rotateX(90deg)}
+  100%{transform:rotateX(0)}
+}
+@keyframes tw-zeichen{0%,50%{opacity:0}51%,100%{opacity:1}}
+@keyframes tw-tipp{0%{transform:scale(.86)}70%{transform:scale(1.06)}100%{transform:scale(1)}}
+.tw-zeile.schuettel{animation:tw-schuettel .42s ease-in-out}
+@keyframes tw-schuettel{0%,100%{transform:translateX(0)}15%{transform:translateX(-7px)}30%{transform:translateX(7px)}45%{transform:translateX(-6px)}60%{transform:translateX(6px)}75%{transform:translateX(-3px)}90%{transform:translateX(3px)}}
+.tw-zeile.jubel .tw-feld{animation:tw-jubel .5s ease-in-out both;animation-delay:calc(var(--i)*.08s)}
+@keyframes tw-jubel{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}70%{transform:translateY(2px)}}
+
+/* ---------- Legende ---------- */
+.tw-legende{list-style:none;margin:0;padding:0;display:flex;justify-content:center;gap:6px 16px;flex-wrap:wrap;width:100%}
+.tw-legende li{display:flex;align-items:center;gap:7px;text-align:left}
+.tw-legende b{display:block;font-size:.76rem;line-height:1.15}
+.tw-legende small{display:block;font-size:.68rem;line-height:1.15;color:var(--rg-leise)}
+.tw-mini{flex:none;width:24px;height:24px;display:grid;place-items:center;border-radius:7px;border:2px solid var(--tw-rand);background:var(--rg-flaeche);--p:10px}
+.tw-mini[data-z="treffer"]{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff}
+.tw-mini[data-z="dabei"]{background:var(--rg-gold-hell);border-color:var(--rg-gold)}
+.tw-mini[data-z="fehlt"]{background:var(--rg-flaeche2);border-color:var(--tw-fehlt-rand);color:var(--rg-leise)}
+@media(max-width:350px){.tw-legende{gap:6px 9px}.tw-legende li{gap:4px}.tw-legende b{font-size:.74rem}.tw-legende small{font-size:.64rem}.tw-mini{width:22px;height:22px;border-radius:6px}}
+
+/* ---------- Bildschirmtastatur: weisse Tasten mit feinem Schatten ---------- */
+.tw-tastatur{display:grid;gap:6px;width:min(100vw - 8px,500px);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.tw-tz{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:clamp(3px,1vw,6px)}
+.tw-taste{position:relative;appearance:none;height:var(--tw-kh);min-width:0;margin:0;padding:0;border-radius:10px;border:1px solid var(--rg-linie);
+  background:var(--rg-flaeche);color:var(--rg-text);font-size:clamp(.95rem,4.4vw,1.15rem);font-weight:700;line-height:1;cursor:pointer;
+  box-shadow:0 1.5px 0 var(--tw-kante),var(--rg-schatten-klein);
+  -webkit-tap-highlight-color:transparent;transition:background .12s,transform .06s}
+.tw-taste:not([data-z]):active,.tw-taste.gedrueckt:not([data-z]){background:var(--tw-druck)}
+.tw-taste:active,.tw-taste.gedrueckt{transform:scale(.93)}
+@media(hover:hover){.tw-taste:not([data-z]):hover{background:var(--rg-blau-hell)}.tw-taste.eingabe:hover{background:var(--tw-druck)}}
+.tw-taste.breit{grid-column:span 2;font-size:clamp(.66rem,2.9vw,.82rem);letter-spacing:.01em}
+.tw-taste.eingabe{background:var(--rg-blau-hell);border-color:var(--rg-blau);color:var(--rg-blau-dunkel);box-shadow:0 1.5px 0 var(--rg-blau),var(--rg-schatten-klein)}
+.tw-tzn{position:absolute;top:4px;right:4px;--p:8px;pointer-events:none}
+.tw-taste[data-z="treffer"]{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff;box-shadow:0 1.5px 0 var(--rg-blau-dunkel),var(--rg-schatten-klein)}
+.tw-taste[data-z="dabei"]{background:var(--rg-gold-hell);border:2px solid var(--rg-gold);box-shadow:var(--rg-schatten-klein)}
+.tw-taste[data-z="dabei"] .tw-tzn{top:3px;right:3px}
+.tw-taste[data-z="fehlt"]{background:var(--rg-flaeche2);border-color:var(--tw-fehlt-rand);color:var(--rg-leise);box-shadow:none}
+
+/* ---------- Abschluss (ersetzt die Tastatur) ---------- */
+.tw-ende{width:100%;display:grid;justify-items:center;gap:12px;padding:20px 16px;border-radius:var(--rg-radius);background:var(--rg-flaeche);border:1px solid var(--rg-linie);
+  box-shadow:var(--rg-schatten);text-align:center}
+.tw-ende h2{margin:0;font-size:1.2rem;font-weight:800;letter-spacing:-.01em}
+.tw-ende p{margin:0;font-size:.88rem;color:var(--rg-leise)}
+.tw-wort{display:flex;gap:5px;justify-content:center}
+.tw-wort span{width:36px;height:36px;display:grid;place-items:center;border-radius:9px;background:var(--rg-blau);color:#fff;font-weight:800;font-size:1.05rem;line-height:1;
+  box-shadow:0 2px 5px rgba(26,102,214,.28)}
+
+/* ---------- Ergebnisfenster: Lösung und Verteilung ---------- */
+.tw-det{display:grid;gap:10px;justify-items:center}
+.tw-det-l{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rg-leise);font-weight:800}
+.tw-vert{width:100%;display:grid;gap:5px;text-align:left}
+.tw-vz{display:grid;grid-template-columns:1.1em 1fr;align-items:center;gap:8px;font-size:.82rem;font-variant-numeric:tabular-nums}
+.tw-vz::after{content:"";grid-column:2;grid-row:1;height:22px;border-radius:7px;background:var(--rg-bg)}   /* helle Schiene hinter dem Balken */
+.tw-vn{grid-column:1;grid-row:1;font-weight:800;color:var(--rg-leise);text-align:center}
+/* Ein Balken ist nie schmaler als seine Beschriftung (max-content): Sonst ragt «1 · heute» bei einem kurzen Balken links hinaus,
+   weisse Schrift stünde auf weissem Grund und über der Zeilennummer. */
+.tw-vb{grid-column:2;grid-row:1;position:relative;z-index:1;display:flex;justify-content:flex-end;align-items:center;min-width:2.1em;min-width:max-content;height:22px;padding:0 8px;border-radius:7px;
+  background:var(--rg-blau-hell);border:1.5px solid var(--rg-blau);color:var(--rg-blau-dunkel);font-weight:800;white-space:nowrap}
+.tw-vb[style*="width:0%"]{background:transparent;border-color:transparent;color:var(--rg-leise)}   /* noch nie: nur die Zahl auf der Schiene */
+.tw-vz.heute .tw-vb{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff}
+.tw-vz.heute .tw-vn{color:var(--rg-text)}
+.rg-zahlen b{white-space:nowrap;font-size:clamp(1.05rem,5.6vw,1.4rem)}   /* «100 %» bleibt auch bei 320 px auf einer Zeile */
+
+/* ---------- Regeln ---------- */
+.tw-bsp{display:flex;gap:5px;justify-content:center}
+.tw-bsp .tw-feld{--tw-f:42px}
+.tw-regeln-leg{list-style:none!important;padding:0!important}
+.tw-regeln-leg li{display:flex;align-items:center;gap:10px}
+</style>
+</head>
+<body>
+<main id="spiel"></main>
+<noscript><p style="padding:20px;text-align:center">Für das Tageswort braucht es JavaScript.</p></noscript>
+<script src="kern.js"></script>
+<script src="woerter.js"></script>
+<script>
+/* Tageswort – Eigenentwicklung RG Ing. Consulting. Ein Wort, fünf Buchstaben, sechs Versuche. */
+(function () {
+  'use strict';
+
+  var LAENGE = 5, MAX = 6;
+  var ZEICHEN = { treffer: '●', dabei: '◐', fehlt: '○' };
+  var NAME = { treffer: 'Treffer', dabei: 'Dabei', fehlt: 'Fehlt' };
+  var RANG = { fehlt: 1, dabei: 2, treffer: 3 };
+  var REIHEN = [
+    ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P', 'Ü'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ö', 'Ä'],
+    ['EINGABE', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', 'LOESCHEN']
+  ];
+  var DREH_ABSTAND = 130, DREH_DAUER = 440;      // muss zu den CSS-Angaben passen
+  var AUFDECKZEIT = (LAENGE - 1) * DREH_ABSTAND + DREH_DAUER + 40;
+
+  /* Reine Wertung: zuerst die exakten Treffer, dann nur so viele «Dabei», wie vom Buchstaben noch übrig sind. */
+  function werte(versuch, loesung) {
+    var v = Array.from(String(versuch)), l = Array.from(String(loesung));
+    var erg = [], rest = {}, i;
+    for (i = 0; i < v.length; i++) {
+      if (v[i] === l[i]) erg[i] = 'treffer';
+      else { erg[i] = 'fehlt'; if (l[i] != null) rest[l[i]] = (rest[l[i]] || 0) + 1; }
+    }
+    for (i = v.length; i < l.length; i++) rest[l[i]] = (rest[l[i]] || 0) + 1;
+    for (i = 0; i < v.length; i++) {
+      if (erg[i] !== 'treffer' && rest[v[i]] > 0) { erg[i] = 'dabei'; rest[v[i]]--; }
+    }
+    return erg;
+  }
+
+  function feldHtml(buchstabe, zustand) {
+    return '<span class="tw-feld" data-z="' + zustand + '"><span class="tw-b">' + buchstabe + '</span><span class="tw-z tw-pkt" aria-hidden="true">' + ZEICHEN[zustand] + '</span></span>';
+  }
+  function miniHtml(zustand) { return '<span class="tw-mini" data-z="' + zustand + '" aria-hidden="true"><span class="tw-pkt">' + ZEICHEN[zustand] + '</span></span>'; }
+
+  var regelnHtml =
+    '<p>Finde das Wort des Tages. Es hat <b>fünf Buchstaben</b>, du hast <b>sechs Versuche</b>.</p>' +
+    '<ul><li>Tippe ein Wort und bestätige mit «Eingabe». Es zählen nur Wörter aus der Liste.</li>' +
+    '<li>Danach zeigt jedes Feld, wie gut der Buchstabe passt.</li></ul>' +
+    '<div class="tw-bsp" role="img" aria-label="Beispiel: H Treffer, A Dabei, F Fehlt, E Fehlt, N Fehlt">' +
+      feldHtml('H', 'treffer') + feldHtml('A', 'dabei') + feldHtml('F', 'fehlt') + feldHtml('E', 'fehlt') + feldHtml('N', 'fehlt') + '</div>' +
+    '<ul class="tw-regeln-leg">' +
+      '<li>' + miniHtml('treffer') + '<span><b>Treffer:</b> Der Buchstabe steht an der richtigen Stelle.</span></li>' +
+      '<li>' + miniHtml('dabei') + '<span><b>Dabei:</b> Er kommt im Wort vor, aber an einer anderen Stelle.</span></li>' +
+      '<li>' + miniHtml('fehlt') + '<span><b>Fehlt:</b> Er kommt im Wort nicht (mehr) vor.</span></li>' +
+    '</ul>' +
+    '<p>Ä, Ö und Ü sind eigene Buchstaben (nicht AE, OE, UE). Kommt ein Buchstabe im Tageswort nur einmal vor, wird er auch nur einmal markiert.</p>';
+
+  /* Unbrauchbarer Speicherinhalt (kein Objekt) würde den Rahmen beim Start abbrechen lassen: vorher entfernen. */
+  try {
+    var sk = 'rg-spiele-v1:tageswort' + (RG.heute().test ? ':test' : ''), roh = RG.lies(sk);
+    if (roh && (typeof roh !== 'object' || Array.isArray(roh))) localStorage.removeItem(sk);
+  } catch (e) {}
+
+  var S = RG.rahmen({ id: 'tageswort', regelnHtml: regelnHtml });
+  var main = document.getElementById('spiel');
+  var W = window.RG_WOERTER || { loesungen: [], erlaubt: [] };
+
+  /* ---------- Wort des Tages: feste Reihenfolge, keine Wiederholung innerhalb der Listenlänge ---------- */
+  var folge = RG.zufall('tageswort-folge').misch((W.loesungen || []).slice().sort());
+  var n = folge.length;
+  if (!n) { main.appendChild(RG.el('p', { class: 'rg-hinweis' }, 'Die Wortliste konnte nicht geladen werden. Bitte lade die Seite neu.')); return; }
+  var loesung = folge[(((S.heute.nr - 1) % n) + n) % n];
+  var erlaubt = Object.create(null);
+  (W.erlaubt || []).concat(W.loesungen).forEach(function (w) { erlaubt[w] = true; });
+
+  /* ---------- Zustand ---------- */
+  var versuche = [], eingabe = '', fertig = false;
+  var stand = S.ladeStand(), WORT = /^[A-ZÄÖÜ]{5}$/;
+  if (stand && stand.loesung && stand.loesung !== loesung) {
+    // Die Wortliste wurde seit dem Speichern getauscht: fertige Partie so zeigen, wie sie war, offene neu beginnen.
+    if (S.ergebnis() && typeof stand.loesung === 'string' && WORT.test(stand.loesung)) loesung = stand.loesung; else stand = null;
+  }
+  if (stand && Array.isArray(stand.versuche)) {
+    // Nur saubere Wörter übernehmen (Speicher kann von Hand verändert sein).
+    versuche = stand.versuche.filter(function (w) { return typeof w === 'string' && WORT.test(w); }).slice(0, MAX);
+    if (typeof stand.eingabe === 'string' && /^[A-ZÄÖÜ]{0,5}$/.test(stand.eingabe)) eingabe = stand.eingabe;
+  }
+  function geloest() { return versuche.indexOf(loesung) !== -1; }
+  /* Ohne Versuch und ohne Eingabe gilt das Rätsel als unberührt (null): Die Übersicht zeigt dann «offen» statt «angefangen». */
+  function sichere() { S.sichereStand(versuche.length || eingabe ? { loesung: loesung, versuche: versuche, eingabe: eingabe } : null); }
+
+  window.RG_TEST = { loesung: loesung, werte: werte };
+
+  /* ---------- Aufbau ---------- */
+  var ansage = RG.el('p', { class: 'tw-nur-sr', 'aria-live': 'polite' });
+  var brett = RG.el('div', { class: 'tw-brett', role: 'group', 'aria-label': 'Spielbrett: sechs Versuche mit je fünf Buchstaben' });
+  var zeilen = [], felder = [];
+  for (var z = 0; z < MAX; z++) {
+    var zeile = RG.el('div', { class: 'tw-zeile', role: 'group', 'aria-label': 'Versuch ' + (z + 1) });
+    felder[z] = [];
+    for (var s = 0; s < LAENGE; s++) {
+      var f = RG.el('div', { class: 'tw-feld', role: 'img', style: '--i:' + s });
+      f.innerHTML = '<span class="tw-b"></span><span class="tw-z tw-pkt" aria-hidden="true"></span>';
+      zeile.appendChild(f); felder[z][s] = f;
+    }
+    brett.appendChild(zeile); zeilen[z] = zeile;
+  }
+  var legende = RG.el('ul', { class: 'tw-legende', 'aria-label': 'Legende' });
+  legende.innerHTML =
+    '<li>' + miniHtml('treffer') + '<span><b>Treffer</b><small>richtige Stelle</small></span></li>' +
+    '<li>' + miniHtml('dabei') + '<span><b>Dabei</b><small>andere Stelle</small></span></li>' +
+    '<li>' + miniHtml('fehlt') + '<span><b>Fehlt</b><small>nicht im Wort</small></span></li>';
+
+  var tastatur = RG.el('div', { class: 'tw-tastatur', role: 'group', 'aria-label': 'Tastatur' });
+  var tasten = {};
+  REIHEN.forEach(function (reihe) {
+    var tz = RG.el('div', { class: 'tw-tz' });
+    reihe.forEach(function (t) {
+      var b;
+      if (t === 'EINGABE') b = RG.el('button', { type: 'button', class: 'tw-taste breit eingabe', 'data-t': t, 'aria-label': 'Eingabe: Wort bestätigen' }, 'Eingabe');
+      else if (t === 'LOESCHEN') b = RG.el('button', { type: 'button', class: 'tw-taste breit', 'data-t': t, 'aria-label': 'Löschen: letzten Buchstaben entfernen' }, 'Löschen');
+      else {
+        b = RG.el('button', { type: 'button', class: 'tw-taste', 'data-t': t, 'aria-label': t });
+        b.innerHTML = '<span class="tw-tb">' + t + '</span><span class="tw-tzn tw-pkt" aria-hidden="true"></span>';
+        tasten[t] = b;
+      }
+      tz.appendChild(b);
+    });
+    tastatur.appendChild(tz);
+  });
+  var ende = RG.el('section', { class: 'tw-ende', hidden: '', 'aria-label': 'Ergebnis von heute' });
+
+  main.appendChild(ansage);
+  main.appendChild(brett);
+  main.appendChild(legende);
+  main.appendChild(tastatur);
+  main.appendChild(ende);
+
+  /* ---------- Darstellung ---------- */
+  function maleZeile(nr, aufdecken) {
+    var gewertet = nr < versuche.length;
+    var wort = gewertet ? versuche[nr] : (nr === versuche.length && !fertig ? eingabe : '');
+    var bs = Array.from(wort), zustand = gewertet ? werte(wort, loesung) : null;
+    for (var i = 0; i < LAENGE; i++) {
+      var f = felder[nr][i], b = bs[i] || '';
+      f.firstChild.textContent = b;
+      f.classList.toggle('voll', !!b && !gewertet);
+      f.classList.toggle('dran', !gewertet && !fertig && nr === versuche.length && i === bs.length);
+      f.classList.toggle('dreh', !!(gewertet && aufdecken));
+      if (gewertet) {
+        f.setAttribute('data-z', zustand[i]);
+        f.lastChild.textContent = ZEICHEN[zustand[i]];
+        f.setAttribute('aria-label', b + ': ' + NAME[zustand[i]]);
+      } else {
+        f.removeAttribute('data-z');
+        f.lastChild.textContent = '';
+        f.setAttribute('aria-label', b || 'leer');
+      }
+    }
+  }
+  function maleTasten() {
+    var bester = {};
+    versuche.forEach(function (w) {
+      var zs = werte(w, loesung);
+      Array.from(w).forEach(function (b, i) { if (!bester[b] || RANG[zs[i]] > RANG[bester[b]]) bester[b] = zs[i]; });
+    });
+    Object.keys(tasten).forEach(function (t) {
+      var b = tasten[t], zst = bester[t];
+      if (zst) { b.setAttribute('data-z', zst); b.lastChild.textContent = ZEICHEN[zst]; b.setAttribute('aria-label', t + ': ' + NAME[zst]); }
+      else { b.removeAttribute('data-z'); b.lastChild.textContent = ''; b.setAttribute('aria-label', t); }
+    });
+  }
+  function zeigeEnde() {
+    var gewonnen = geloest(), html;
+    if (gewonnen) {
+      html = '<h2>' + (versuche.length === 1 ? 'Gelöst im ersten Versuch!' : 'Gelöst in ' + versuche.length + ' Versuchen') + '</h2>';
+    } else {
+      html = '<h2>Heute nicht geknackt</h2><p>Die Lösung war</p>' +
+        '<div class="tw-wort" role="img" aria-label="' + loesung + '">' + Array.from(loesung).map(function (b) { return '<span>' + b + '</span>'; }).join('') + '</div>';
+    }
+    html += '<button type="button" class="rg-knopf haupt" data-tw="ergebnis">Ergebnis und Statistik</button><p>Morgen wartet ein neues Tageswort.</p>';
+    ende.innerHTML = html;
+    ende.querySelector('[data-tw="ergebnis"]').addEventListener('click', function () { S.zeigeErgebnis(); });
+    tastatur.hidden = true;
+    ende.hidden = false;
+  }
+
+  /* ---------- Abschluss ---------- */
+  function muster() {
+    return versuche.map(function (w) { return werte(w, loesung).map(function (zst) { return ZEICHEN[zst]; }).join(''); }).join('\n');
+  }
+  function detailHtml(gewonnen) {
+    var alt = S.statistik().verteilung || {}, v = {}, max = 1, i;
+    for (i = 1; i <= MAX; i++) { v[i] = (alt[i] || 0) + (gewonnen && i === versuche.length ? 1 : 0); max = Math.max(max, v[i]); }
+    var html = '<div class="tw-det"><p class="tw-det-l">Lösung</p>' +
+      '<div class="tw-wort" role="img" aria-label="' + loesung + '">' + Array.from(loesung).map(function (b) { return '<span>' + b + '</span>'; }).join('') + '</div>' +
+      '<p>' + (gewonnen ? (versuche.length === 1 ? 'Gelöst im <b>ersten</b> von 6 Versuchen.' : 'Gelöst in <b>' + versuche.length + '</b> von 6 Versuchen.') : 'Nach <b>6</b> Versuchen nicht gelöst.') + '</p>' +
+      '<p class="tw-det-l">Deine Verteilung</p><div class="tw-vert">';
+    for (i = 1; i <= MAX; i++) {
+      var heute = gewonnen && i === versuche.length;
+      html += '<div class="tw-vz' + (heute ? ' heute' : '') + '"><span class="tw-vn">' + i + '</span>' +
+        '<span class="tw-vb" style="width:' + Math.round(100 * v[i] / max) + '%" aria-label="' + i + (i === 1 ? ' Versuch' : ' Versuche') + ': ' + v[i] + ' Mal' + (heute ? ' (heute)' : '') + '">' +
+        v[i] + (heute ? ' · heute' : '') + '</span></div>';
+    }
+    return html + '</div></div>';
+  }
+  function beende(sofort) {
+    fertig = true;
+    var gewonnen = geloest();
+    S.fertig({
+      gewonnen: gewonnen,
+      wert: versuche.length,
+      teilenText: S.info.titel + ' Nr. ' + S.heute.nr + ' ' + (gewonnen ? versuche.length : 'X') + '/' + MAX + '\n' + muster(),
+      detailHtml: detailHtml(gewonnen),
+      verzoegerung: sofort ? 400 : AUFDECKZEIT + (gewonnen ? 1400 : 500)   // das Lob ist verschwunden, bevor das Fenster kommt
+    });
+    if (sofort) { zeigeEnde(); return; }
+    var letzte = zeilen[versuche.length - 1];
+    setTimeout(function () {
+      if (gewonnen) {
+        felder[versuche.length - 1].forEach(function (f) { f.classList.remove('dreh'); });
+        letzte.classList.add('jubel');
+        RG.toast(['Volltreffer!', 'Stark!', 'Sauber gelöst!', 'Gut kombiniert!', 'Geschafft!', 'Knapp, aber gelöst!'][versuche.length - 1], 1100);
+      }
+      zeigeEnde();
+    }, AUFDECKZEIT);
+  }
+
+  /* ---------- Eingabe ---------- */
+  function schuettle() {
+    var zl = zeilen[versuche.length];
+    zl.classList.remove('schuettel'); void zl.offsetWidth; zl.classList.add('schuettel');
+    setTimeout(function () { zl.classList.remove('schuettel'); }, 460);
+  }
+  function tippe(b) {
+    if (fertig || Array.from(eingabe).length >= LAENGE) return;
+    eingabe += b; sichere(); maleZeile(versuche.length);
+    var f = felder[versuche.length][Array.from(eingabe).length - 1];
+    f.classList.remove('neu'); void f.offsetWidth; f.classList.add('neu');
+  }
+  function loesche() {
+    if (fertig || !eingabe) return;
+    eingabe = Array.from(eingabe).slice(0, -1).join(''); sichere(); maleZeile(versuche.length);
+  }
+  var letzteWertung = 0;
+  function bestaetige() {
+    if (fertig) return;
+    if (!eingabe && Date.now() - letzteWertung < 700) return;   // doppeltes «Eingabe» direkt nach einem Versuch nicht als Fehler melden
+    if (Array.from(eingabe).length < LAENGE) { RG.toast('Das Wort braucht 5 Buchstaben'); schuettle(); return; }
+    if (!erlaubt[eingabe]) { RG.toast('Kein Wort aus der Liste'); schuettle(); return; }
+    var wort = eingabe, nr = versuche.length, zs = werte(wort, loesung);
+    versuche.push(wort); eingabe = ''; letzteWertung = Date.now();
+    sichere();
+    felder[nr].forEach(function (f) { f.classList.remove('neu'); });
+    maleZeile(nr, true);
+    ansage.textContent = 'Versuch ' + (nr + 1) + ' von ' + MAX + ': ' + Array.from(wort).map(function (b, i) { return b + ' ' + NAME[zs[i]]; }).join(', ') + '.';
+    setTimeout(maleTasten, AUFDECKZEIT);
+    if (wort === loesung || versuche.length >= MAX) beende(false);
+    else maleZeile(versuche.length);
+  }
+
+  tastatur.addEventListener('mousedown', function (ev) { ev.preventDefault(); });   // Fokus bleibt frei für die echte Tastatur
+  tastatur.addEventListener('click', function (ev) {
+    var b = ev.target.closest ? ev.target.closest('.tw-taste') : null;
+    if (!b) return;
+    var t = b.getAttribute('data-t');
+    if (t === 'EINGABE') bestaetige(); else if (t === 'LOESCHEN') loesche(); else tippe(t);
+  });
+  function blinke(t) {            // zeigt auf der Bildschirmtastatur, welche Taste gerade gedrückt wurde
+    var b = tastatur.querySelector('.tw-taste[data-t="' + t + '"]');
+    if (!b) return;
+    b.classList.add('gedrueckt'); setTimeout(function () { b.classList.remove('gedrueckt'); }, 110);
+  }
+  document.addEventListener('keydown', function (ev) {
+    if (fertig || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    if (document.querySelector('dialog[open]')) return;
+    var name = ev.target && ev.target.tagName, k = ev.key;
+    if (name === 'INPUT' || name === 'TEXTAREA' || name === 'SELECT') return;
+    if (k === 'Enter') {
+      if (name === 'BUTTON' || name === 'A') return;         // fokussierter Knopf oder Link behält seine Funktion
+      ev.preventDefault(); if (!ev.repeat) { blinke('EINGABE'); bestaetige(); } return;
+    }
+    if (k === 'Backspace') { ev.preventDefault(); blinke('LOESCHEN'); loesche(); return; }
+    if (k && k.length === 1) {
+      var b = k.toLocaleUpperCase('de-CH');
+      if (/^[A-ZÄÖÜ]$/.test(b)) { blinke(b); tippe(b); }
+    }
+  });
+  /* Nach dem Schliessen eines Fensters den Fokus vom Kopf-Knopf lösen, damit «Enter» wieder das Wort bestätigt. */
+  document.addEventListener('close', function () {
+    var a = document.activeElement;
+    if (a && a.closest && a.closest('.rg-kopf')) a.blur();
+  }, true);
+
+  /* Meldungen über einem offenen Fenster zeigen: Der Rahmen hängt die Meldung an <body>, ein offenes Fenster liegt
+     darüber und verdeckt sie (z. B. «Ergebnis kopiert» nach dem Teilen). Darum zieht die Meldung ins offene Fenster um. */
+  (function () {
+    if (!window.MutationObserver) return;
+    var meldung = null;
+    function platziere() {
+      if (!meldung || !meldung.classList.contains('an')) return;
+      var ziel = document.querySelector('dialog[open]') || document.body;
+      if (meldung.parentNode !== ziel) ziel.appendChild(meldung);
+    }
+    var beobachter = new MutationObserver(platziere);
+    function suche() {
+      var m = document.querySelector('.rg-toast');
+      if (!m || m === meldung) return;
+      meldung = m; beobachter.observe(m, { attributes: true, attributeFilter: ['class'] }); platziere();
+    }
+    new MutationObserver(suche).observe(document.body, { childList: true });
+    suche();
+  })();
+
+  /* Bleibt die Seite über Mitternacht offen (auf dem Handy oft der Tab vom Vortag), beim Zurückkehren das neue
+     Tageswort laden. Eine angefangene Partie darf zuerst zu Ende gespielt werden. */
+  function neuerTag() {
+    if (document.hidden || S.heute.test || RG.heute().datum === S.heute.datum) return;
+    if (fertig || (!versuche.length && !eingabe)) RG.neuLaden();   // lädt nur einmal, auch wenn «sichtbar» und «pageshow» zusammen kommen
+  }
+  document.addEventListener('visibilitychange', neuerTag);
+  window.addEventListener('pageshow', function (ev) { if (ev.persisted) neuerTag(); });
+
+  /* ---------- Start ---------- */
+  if (S.ergebnis()) { fertig = true; eingabe = ''; }
+  for (var r = 0; r < MAX; r++) maleZeile(r);
+  maleTasten();
+  if (fertig) zeigeEnde();
+  else if (geloest() || versuche.length >= MAX) beende(true);   // Stand war schon am Ende, Abschluss nachholen
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+/* RG Ing. Consulting – Tagesrätsel: gemeinsame Gestaltung (Firmenfarben, nur Systemschriften).
+   Helles Erscheinungsbild: heller Grund, weisse Karten mit weichem Schatten, kräftige Akzente.
+   Für Text auf hellem Grund die Textfarben nehmen (--rg-gold-text statt --rg-gold); alle Paare unten haben mindestens 4.5:1. */
+:root{
+  --rg-bg:#f3f6fb; --rg-flaeche:#ffffff; --rg-flaeche2:#e9eef7; --rg-linie:#d3dbe8;
+  --rg-text:#152033; --rg-leise:#566377; --rg-weiss:#fff;
+  --rg-blau:#1a66d6; --rg-blau-dunkel:#1352b0; --rg-blau-hell:#e3edfc;
+  --rg-gold:#f5a623; --rg-gold-text:#8a5200; --rg-gold-hell:#fff3dc;
+  --rg-gruen:#087a66; --rg-gruen-hell:#dff5ef; --rg-rot:#c2352b; --rg-rot-hell:#fde8e5;
+  --rg-nacht:#152033;                       /* dunkle Fläche für Kontrastelemente (Meldung, Symbolkacheln) */
+  --rg-radius:16px;
+  --rg-schatten:0 1px 2px rgba(21,32,51,.06),0 8px 24px rgba(21,32,51,.08);
+  --rg-schatten-klein:0 1px 2px rgba(21,32,51,.08),0 2px 6px rgba(21,32,51,.06);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body.rg-seite,body.rg-hub{margin:0;min-height:100dvh;background:var(--rg-bg) linear-gradient(180deg,#e8effa 0,#f3f6fb 260px) no-repeat;color:var(--rg-text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.45;
+  display:flex;flex-direction:column;align-items:center}
+body.rg-seite a,body.rg-hub a{color:inherit}
+#spiel{width:100%;max-width:520px;padding:12px 14px 20px;flex:1 0 auto;display:flex;flex-direction:column;align-items:center;gap:14px}
+button{font-family:inherit}
+
+.rg-kopf{width:100%;max-width:520px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:12px 14px 10px}
+.rg-zurueck{display:flex;align-items:center;min-height:40px;text-decoration:none;color:var(--rg-leise)!important;font-size:.9rem;white-space:nowrap}
+.rg-titel{text-align:center}
+.rg-titel h1{margin:0;font-size:1.4rem;font-weight:800;letter-spacing:-.01em;line-height:1.1}
+.rg-titel p{margin:2px 0 0;font-size:.75rem;color:var(--rg-leise);font-variant-numeric:tabular-nums}
+.rg-kopf-knoepfe{display:flex;gap:8px;justify-content:flex-end}
+.rg-rund{width:40px;height:40px;border-radius:50%;border:1px solid var(--rg-linie);background:var(--rg-flaeche);color:var(--rg-text);font-size:.8rem;font-weight:800;cursor:pointer;box-shadow:var(--rg-schatten-klein)}
+.rg-rund:hover{background:var(--rg-flaeche2)}
+@media(max-width:400px){.rg-zurueck span{display:none}}
+
+.rg-knopf{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:44px;padding:10px 18px;border-radius:999px;
+  border:1px solid var(--rg-linie);background:var(--rg-flaeche);color:var(--rg-text)!important;font-size:.95rem;font-weight:700;text-decoration:none;cursor:pointer;box-shadow:var(--rg-schatten-klein)}
+.rg-knopf:hover{background:var(--rg-flaeche2)}
+.rg-knopf.haupt{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff!important}
+.rg-knopf.haupt:hover{background:var(--rg-blau-dunkel)}
+.rg-knopf:disabled{opacity:.45;cursor:default}
+.rg-reihe{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.rg-chip{display:inline-flex;align-items:center;min-height:38px;padding:6px 14px;border-radius:999px;border:1px solid var(--rg-linie);background:var(--rg-flaeche);text-decoration:none;font-size:.88rem;font-weight:600}
+.rg-chip.erledigt{color:var(--rg-gruen)!important;border-color:var(--rg-gruen);background:var(--rg-gruen-hell)}
+.rg-chip.gespielt{color:var(--rg-leise)!important}
+:focus-visible{outline:3px solid var(--rg-blau);outline-offset:2px}
+
+.rg-fuss{width:100%;max-width:520px;padding:6px 14px 28px;display:grid;gap:12px;text-align:center}
+.rg-spende{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 14px;background:var(--rg-flaeche);border:1px solid var(--rg-linie);border-radius:var(--rg-radius);padding:14px 16px;box-shadow:var(--rg-schatten)}
+.rg-spende p{margin:0;font-size:.88rem;color:var(--rg-leise);flex:1 1 200px;text-align:left}
+.rg-spenden{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:.45em;min-height:44px;padding:10px 20px;border-radius:999px;text-decoration:none;font-weight:800;
+  color:#152033!important;background:linear-gradient(110deg,#f5a623,#ffcf70 55%,#f5a623);box-shadow:0 3px 0 #c07d0a,0 8px 18px rgba(245,166,35,.28)}
+.rg-spenden::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.7) 50%,transparent 65%);transform:translateX(-120%);animation:rg-glanz 3.2s ease-in-out infinite}
+.rg-spenden:hover{transform:translateY(-1px)}
+@keyframes rg-glanz{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.rg-zahlwege{display:flex;flex-direction:column;align-items:center;gap:6px}
+.rg-zahlinfo{font-size:.76rem;color:var(--rg-leise)}
+.rg-zahlinfo a{color:var(--rg-text)!important}
+.rg-zahlinfo a,.rg-klein a{padding:13px 3px}
+.rg-werbung a{padding:12px 0}   /* Tippfläche der kleinen Textlinks: 40 px hoch, die Zeile selbst bleibt gleich */
+.rg-werbung{margin:0;font-size:.85rem;color:var(--rg-leise)}
+.rg-werbung a{color:var(--rg-blau)!important;font-weight:700}
+.rg-klein{margin:0;font-size:.75rem;color:var(--rg-leise)}
+
+.rg-dialog{width:min(92vw,440px);max-height:88dvh;padding:0;border:0;border-radius:22px;background:var(--rg-flaeche);color:var(--rg-text);overflow:auto;box-shadow:0 24px 60px rgba(21,32,51,.28)}
+.rg-dialog::backdrop{background:rgba(21,32,51,.45)}
+.rg-dialog-kopf{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px 6px;margin:0}
+.rg-dialog-kopf h2{margin:0;font-size:1.15rem}
+.rg-x{width:40px;height:40px;border-radius:50%;border:0;background:transparent;color:var(--rg-leise);font-size:1.05rem;cursor:pointer}
+.rg-dialog-inhalt{padding:4px 16px 18px;display:grid;gap:12px;font-size:.95rem}
+.rg-dialog-inhalt p,.rg-dialog-inhalt ul,.rg-dialog-inhalt ol{margin:0}
+.rg-dialog-inhalt ul,.rg-dialog-inhalt ol{padding-left:1.2em;display:grid;gap:6px}
+.rg-urteil{font-size:1.35rem;font-weight:800;text-align:center}
+.rg-urteil.gut{color:var(--rg-gruen)} .rg-urteil.schade{color:var(--rg-gold-text)}
+.rg-detail{text-align:center}
+.rg-zahlen{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center}
+.rg-zahlen b{display:block;font-size:clamp(1.05rem,5.2vw,1.4rem);font-variant-numeric:tabular-nums;white-space:nowrap}
+.rg-zahlen span{font-size:.7rem;color:var(--rg-leise)}
+.rg-hinweis{font-size:.82rem;color:var(--rg-leise);text-align:center}
+.rg-zwischentitel{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rg-gold-text);font-weight:800;text-align:center}
+
+.rg-toast{position:fixed;left:50%;top:var(--rg-toast-oben,76px);transform:translate(-50%,-12px);background:var(--rg-nacht);color:#fff;font-weight:700;font-size:.9rem;padding:10px 16px;border-radius:10px;
+  box-shadow:0 10px 30px rgba(21,32,51,.3);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50;width:max-content;max-width:90vw;text-align:center}
+.rg-toast.an{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}

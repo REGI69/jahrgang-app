@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<title>Offerten-Demo zum Ausprobieren – RG Ing. Consulting</title>
+<meta name="description" content="Masse eingeben, Preis und Offerte kommen raus: Live-Demo eines Offerten-Tools, wie RG Ing. Consulting es für KMU programmiert. Läuft offline im Browser.">
+<link rel="canonical" href="https://rg-ing-consulting.ch/demo-offerte.html">
+<style>
+:root{--primary:#1a66d6;--dark:#f3f6fb;--dark-lighter:#ffffff;--text:#152033;--muted:#566377;--gold:#f5a623;--line:#d3dbe8;color-scheme:light}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--dark);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+a{color:inherit}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line)}
+.top a{text-decoration:none;font-weight:700}
+.top .back{color:var(--muted);font-weight:500;font-size:.9rem}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 16px 56px}
+.kicker{color:var(--gold);font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px}
+h1{font-size:clamp(1.7rem,5vw,2.5rem);line-height:1.12;margin:0 0 10px;text-wrap:balance}
+.lead{color:var(--muted);margin:0 0 24px;max-width:60ch}
+.grid{display:grid;gap:20px}
+@media(min-width:860px){.grid{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}}
+.panel{background:var(--dark-lighter);border:1px solid var(--line);border-radius:16px;padding:20px}
+.panel h2{font-size:1.05rem;margin:0 0 14px}
+.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fields .wide{grid-column:1/-1}
+.fields .half{grid-column:span 3}
+@media(min-width:480px){.fields .half{grid-column:auto}}
+label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:4px}
+input,select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:#0f1724;color:#fff;font-size:1rem;font-family:inherit;font-variant-numeric:tabular-nums}
+input:focus,select:focus{outline:2px solid var(--primary);outline-offset:1px}
+.hint{font-size:.8rem;color:var(--muted);margin:14px 0 0}
+.paper{background:#fff;color:#1a2538;border-radius:16px;padding:22px 20px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.paper header{display:flex;justify-content:space-between;gap:12px;border-bottom:3px solid var(--gold);padding-bottom:12px;margin-bottom:14px}
+.paper .firma{font-weight:800;font-size:1.05rem}
+.paper .meta{font-size:.8rem;color:#5b6b80;text-align:right}
+.paper h3{margin:0 0 4px;font-size:1.15rem}
+.paper .obj{font-size:.9rem;color:#5b6b80;margin:0 0 14px}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem;font-variant-numeric:tabular-nums}
+th{text-align:left;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:#5b6b80;padding:6px 6px 6px 0;border-bottom:1px solid #d8dfe8}
+td{padding:8px 6px 8px 0;border-bottom:1px solid #edf1f5;vertical-align:top}
+th.r,td.r{text-align:right;padding-right:0;white-space:nowrap}
+tfoot td{border:0;padding-top:6px}
+tfoot tr.total td{font-size:1.25rem;font-weight:800;border-top:2px solid #1a2538;padding-top:10px}
+.total .chf{color:#1557b0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+button,.btn{appearance:none;border:0;border-radius:999px;padding:12px 20px;font-size:.95rem;font-weight:700;font-family:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-print{background:#1a2538;color:#fff}
+.btn-cta{background:var(--gold);color:#1a2538}
+.note{font-size:.78rem;color:#5b6b80;margin:16px 0 0}
+.cta{margin-top:28px;display:grid;gap:14px;align-items:center}
+@media(min-width:700px){.cta{grid-template-columns:1fr auto}}
+.cta h2{margin:0 0 4px;font-size:1.25rem}
+.cta p{margin:0;color:var(--muted)}
+/* Helles Erscheinungsbild (wie Startseite und Tagesrätsel) */
+body{background:#f3f6fb linear-gradient(180deg,#e8effa 0,#f3f6fb 260px) no-repeat}
+.top{background:#fff;box-shadow:0 1px 12px rgba(21,32,51,.06)}
+.kicker{color:#8a5200}
+.panel{box-shadow:0 1px 2px rgba(21,32,51,.06),0 8px 24px rgba(21,32,51,.08)}
+input,select{background:#fff;color:#152033;border-color:#b7c3d6}
+.paper{border:1px solid #d3dbe8;box-shadow:0 1px 2px rgba(21,32,51,.06),0 12px 32px rgba(21,32,51,.10)}
+.btn-print{background:#152033}
+@media print{
+  body{background:#fff}
+  .top,.panel,.lead,.kicker,h1,.cta,.actions{display:none!important}
+  .wrap{padding:0;max-width:none}
+  .paper{box-shadow:none;border-radius:0;padding:0}
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <a href="index.html">RG Ing. Consulting</a>
+  <a class="back" href="index.html#ausprobieren">← Zurück zur Übersicht</a>
+</div>
+
+<main class="wrap">
+  <p class="kicker">Live-Demo · läuft offline in Ihrem Browser</p>
+  <h1>Masse rein, Offerte raus.</h1>
+  <p class="lead">So fühlt sich ein Offerten-Tool an, das genau einen Ablauf macht. Ändern Sie die Masse – die Offerte rechnet sofort neu. Das Beispiel ist ein Einbauschrank, bei Ihnen wäre es Ihr Produkt.</p>
+
+  <div class="grid">
+    <section class="panel" aria-label="Eingaben">
+      <h2>1. Masse und Ausführung</h2>
+      <div class="fields">
+        <div><label for="b">Breite (mm)</label><input id="b" type="number" inputmode="numeric" min="300" max="6000" step="10" value="1800"></div>
+        <div><label for="h">Höhe (mm)</label><input id="h" type="number" inputmode="numeric" min="300" max="3000" step="10" value="2400"></div>
+        <div><label for="t">Tiefe (mm)</label><input id="t" type="number" inputmode="numeric" min="200" max="900" step="10" value="600"></div>
+        <div class="wide"><label for="mat">Material</label>
+          <select id="mat">
+            <option value="48">Melamin weiss</option>
+            <option value="96">Eiche furniert</option>
+            <option value="135">MDF lackiert</option>
+          </select></div>
+        <div class="half"><label for="tueren">Türen</label><input id="tueren" type="number" inputmode="numeric" min="0" max="8" value="3"></div>
+        <div class="half"><label for="tablare">Tablare</label><input id="tablare" type="number" inputmode="numeric" min="0" max="20" value="6"></div>
+        <div class="half"><label for="satz">Stundensatz (CHF)</label><input id="satz" type="number" inputmode="numeric" min="50" max="200" value="95"></div>
+      </div>
+      <p class="hint">Keine Anmeldung, kein Server: Ihre Eingaben bleiben auf diesem Gerät.</p>
+    </section>
+
+    <section class="paper" aria-label="Offerte" aria-live="polite">
+      <header>
+        <div class="firma">Muster Schreinerei AG</div>
+        <div class="meta">Offerte <span id="nr"></span><br><span id="datum"></span></div>
+      </header>
+      <h3>Einbauschrank nach Mass</h3>
+      <p class="obj" id="obj"></p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Position</th><th class="r">Menge</th><th class="r">CHF</th></tr></thead>
+          <tbody id="pos"></tbody>
+          <tfoot>
+            <tr><td colspan="2">Zwischensumme</td><td class="r" id="netto"></td></tr>
+            <tr><td colspan="2">MwSt. 8.1 %</td><td class="r" id="mwst"></td></tr>
+            <tr class="total"><td colspan="2">Total inkl. MwSt.</td><td class="r"><span class="chf">CHF</span> <span id="total"></span></td></tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="actions">
+        <button class="btn-print" type="button" onclick="window.print()">Als PDF speichern</button>
+        <a class="btn btn-cta" href="software.html">So ein Tool für meinen Betrieb</a>
+      </div>
+      <p class="note">Beispielwerte zur Demonstration. In Ihrem Tool stehen Ihre Preise, Ihr Logo und Ihre Positionen.</p>
+    </section>
+  </div>
+
+  <section class="panel cta">
+    <div>
+      <h2>Ihr Ablauf als eigene App</h2>
+      <p>Prototyp in 5 Tagen ab CHF 1'500, fertige Web-App ab CHF 2'900 pauschal. Ohne Abo, der Quellcode gehört Ihnen.</p>
+    </div>
+    <a class="btn btn-cta" href="index.html#kontakt">Gratis-Erstgespräch (15 Min)</a>
+  </section>
+</main>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var chf=function(x){return x.toLocaleString('de-CH',{minimumFractionDigits:2,maximumFractionDigits:2})};
+  var m2=function(x){return x.toLocaleString('de-CH',{minimumFractionDigits:2,maximumFractionDigits:2})+' m²'};
+  var num=function(id,min,max){var v=parseFloat($(id).value);if(isNaN(v))v=min;return Math.min(max,Math.max(min,v))};
+  var d=new Date();
+  $('datum').textContent=d.toLocaleDateString('de-CH',{day:'2-digit',month:'2-digit',year:'numeric'});
+  $('nr').textContent='Nr. '+d.getFullYear()+'-0'+(100+d.getDate()*3);
+
+  function rechne(){
+    var b=num('b',300,6000),h=num('h',300,3000),t=num('t',200,900);
+    var preis=parseFloat($('mat').value),mat=$('mat').selectedOptions[0].textContent;
+    var tueren=Math.round(num('tueren',0,8)),tablare=Math.round(num('tablare',0,20)),satz=num('satz',50,200);
+    var korpus=(2*h*t+2*b*t+b*h)/1e6;
+    var front=tueren>0?b*h/1e6:0;
+    var tab=tablare*b*t/1e6;
+    var baender=tueren*(h>1600?4:h>900?3:2);
+    var std=Math.round((3+1.2*(korpus+front+tab))*2)/2;
+    var zeilen=[
+      ['Korpus '+mat, m2(korpus), korpus*preis],
+      ['Fronten '+mat+(tueren?' ('+tueren+' Türen)':''), m2(front), front*preis*1.25],
+      ['Tablare', tablare+' Stk.', tab*preis],
+      ['Topfbänder mit Dämpfung', baender+' Stk.', baender*6.5],
+      ['Griffe', tueren+' Stk.', tueren*12],
+      ['Zuschnitt, Bekantung, Montage', std.toLocaleString('de-CH')+' h', std*satz]
+    ].filter(function(z){return z[2]>0});
+    var netto=zeilen.reduce(function(s,z){return s+z[2]},0);
+    netto=Math.round(netto*20)/20;
+    var mwst=Math.round(netto*0.081*20)/20;
+    $('pos').innerHTML=zeilen.map(function(z){return '<tr><td>'+z[0]+'</td><td class="r">'+z[1]+'</td><td class="r">'+chf(z[2])+'</td></tr>'}).join('');
+    $('netto').textContent=chf(netto);
+    $('mwst').textContent=chf(mwst);
+    $('total').textContent=chf(netto+mwst);
+    $('obj').textContent=b+' × '+h+' × '+t+' mm · '+mat;
+  }
+  ['b','h','t','mat','tueren','tablare','satz'].forEach(function(id){$(id).addEventListener('input',rechne)});
+  rechne();
+})();
+</script>
+</body>
+</html>

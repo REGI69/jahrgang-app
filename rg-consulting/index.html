@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RG Ing. Consulting – Software programmieren, Elektro-, Wirtschafts- &amp; KI-Beratung | Schweiz</title>
+  <meta name="description" content="Software programmieren für KMU (Web-Apps, Konfiguratoren, Offerten-Tools) sowie unabhängige Elektro-, Wirtschafts- und KI-Beratung in der Schweiz. 30+ Jahre Erfahrung, 100% remote.">
+  <meta name="keywords" content="Software programmieren, Individualsoftware KMU, Web-App, Konfigurator, Offerten-Tool, Elektroberatung, KI-Beratung, Wirtschaftsberatung, Offertvergleich Elektro, Bauberatung Schweiz, künstliche Intelligenz, Prozessoptimierung, Digitalisierung, Bauherrenvertretung, Fislisbach, Aargau">
+  <meta name="author" content="Remo Gilardoni – RG Ing. Consulting">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1b130d">
+  <link rel="canonical" href="https://rg-ing-consulting.ch/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <meta property="og:title" content="RG Ing. Consulting – Elektro-, Wirtschafts- &amp; KI-Beratung">
+  <meta property="og:description" content="Offertvergleiche, technische Analysen, Wirtschaftsberatung und KI-Strategien – von einem erfahrenen Ingenieur. 30+ Jahre Erfahrung, 100% remote.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="de_CH">
+  <meta property="og:site_name" content="RG Ing. Consulting">
+  <meta property="og:url" content="https://rg-ing-consulting.ch/">
+  <meta property="og:image" content="https://rg-ing-consulting.ch/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RG Ing. Consulting – Elektro-, Wirtschafts- &amp; KI-Beratung">
+  <meta name="twitter:description" content="Offertvergleiche, technische Analysen, Wirtschaftsberatung und KI-Strategien – 30+ Jahre Erfahrung, 100% remote.">
+  <meta name="twitter:image" content="https://rg-ing-consulting.ch/og-image.jpg">
+
+  <!-- ===== Google Search Console Verifizierung =====
+       Wenn dir die Search Console bei der Methode "HTML-Tag" einen Code gibt,
+       fuege ihn direkt hier darunter ein, z. B.:
+       <meta name="google-site-verification" content="DEIN-CODE"> -->
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "RG Ing. Consulting",
+    "description": "Unabhängige Elektro-, Wirtschafts- und KI-Beratung – Offertvergleiche, technische Analysen, Prozessoptimierung, Bauherrenvertretung",
+    "url": "https://rg-ing-consulting.ch/",
+    "telephone": "+41792444409",
+    "email": "info@rg-ing-consulting.ch",
+    "image": "https://rg-ing-consulting.ch/og-image.jpg",
+    "founder": {
+      "@type": "Person",
+      "name": "Remo Gilardoni",
+      "jobTitle": "Wirtschaftsingenieur FH / Elektrokontrolleur FA"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Fislisbach",
+      "addressRegion": "Aargau",
+      "postalCode": "5442",
+      "addressCountry": "CH"
+    },
+    "priceRange": "CHF 150-2900",
+    "areaServed": "CH",
+    "serviceType": ["Softwareentwicklung", "Individualsoftware", "Elektroberatung", "Offertvergleich", "Bauherrenvertretung", "Technische Analyse", "Wirtschaftsberatung", "KI-Beratung", "Prozessoptimierung"]
+  }
+  </script>
+  <link rel="preload" href="fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="media/chalet-hero.jpg" as="image" fetchpriority="high">
+  <link rel="stylesheet" href="chalet.css">
+</head>
+<body class="ohne-js">
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <img src="logo-rg.svg" alt="" width="42" height="42">
+      <span>RG Ing. Consulting<small>Fislisbach · Schweiz</small></span>
+    </a>
+    <button class="hamburger" aria-label="Menü" aria-expanded="false" aria-controls="nav-links" onclick="this.setAttribute('aria-expanded', document.querySelector('.nav-links').classList.toggle('open'))">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="spiele/">Rätsel</a></li>
+      <li><a href="#ausprobieren">Ausprobieren</a></li>
+      <li><a href="software.html">Software</a></li>
+      <li><a href="#leistungen">Leistungen</a></li>
+      <li><a href="#ablauf">Ablauf</a></li>
+      <li><a href="#vorteile">Vorteile</a></li>
+      <li><a href="#ueber">Über mich</a></li>
+      <li><a href="#preise">Preise</a></li>
+      <li><a href="rgcad.html">RG CAD</a></li>
+      <li><a href="#kontakt" class="nav-cta">Kontakt</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- EINSTIEG -->
+<section class="hero" id="hero">
+  <div class="hero-bild"><img src="media/chalet-hero.jpg" width="2400" height="1357" alt="" fetchpriority="high"></div>
+  <div class="hero-content">
+    <div class="hero-badge auf">100 % Remote-Beratung · Schweiz</div>
+    <h1 class="auf" style="--d:.08s">Unabhängige <span>Elektro-</span>, Wirtschafts- &amp; <span>KI-Beratung</span></h1>
+    <p class="auf" style="--d:.16s">Software, die Ihrem Betrieb gehört: Web-Apps, Konfiguratoren und Offerten-Tools – programmiert in Wochen statt Monaten. Dazu Offertvergleiche, technische Analysen, Wirtschaftsberatung und KI-Strategien von einem erfahrenen Wirtschaftsingenieur.</p>
+    <div class="hero-buttons auf" style="--d:.24s">
+      <a href="software.html" class="btn-primary">Software programmieren lassen →</a>
+      <a href="#leistungen" class="btn-light">Alle Leistungen</a>
+      <a href="#ausprobieren" class="btn-light">Apps ausprobieren</a>
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">Weiterlesen</div>
+</section>
+
+<div class="stats">
+  <div class="stat"><div class="stat-number">30+</div><div class="stat-label">Jahre Erfahrung</div></div>
+  <div class="stat"><div class="stat-number">100 %</div><div class="stat-label">Remote &amp; Digital</div></div>
+  <div class="stat"><div class="stat-number">6</div><div class="stat-label">Qualifikationen</div></div>
+</div>
+
+<!-- AUSPROBIEREN -->
+<section id="ausprobieren">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Zum Ausprobieren</div>
+      <h2 class="section-title">Rätsel und Apps, die ich gebaut habe – direkt anklicken</h2>
+      <p class="section-subtitle">Keine Anmeldung, kein Download. Alles läuft im Browser, auch auf dem Handy.</p>
+    </div>
+    <div class="raetsel auf">
+      <div class="raetsel-inhalt">
+      <div class="raetsel-kopf">
+        <div><span class="try-tag">Jeden Tag neu · gratis · ohne Anmeldung</span><h3>Tagesrätsel für die Kaffeepause</h3></div>
+        <p>Für alle dasselbe Rätsel. Ergebnis teilen, morgen die Serie verteidigen.</p>
+      </div>
+      <div class="raetsel-gitter">
+        <a class="raetsel-karte" href="spiele/tageswort.html"><svg viewBox="0 0 64 64" aria-hidden="true"><g font-family="Arial,sans-serif" font-size="13" font-weight="800" text-anchor="middle"><rect x="7" y="24" width="15" height="16" rx="3" fill="#1a73e8"/><text x="14.5" y="37" fill="#fff">W</text><rect x="25.5" y="25" width="13" height="14" rx="3" fill="none" stroke="#f5a623" stroke-width="2"/><text x="32" y="37" fill="#f5a623">O</text><rect x="42" y="24" width="15" height="16" rx="3" fill="#22304a"/><text x="49.5" y="37" fill="#93a3b8">R</text></g></svg><b>Tageswort</b><span>Das Wort des Tages in sechs Versuchen.</span></a>
+        <a class="raetsel-karte" href="spiele/dazwischen.html"><svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-width="4"><path d="M12 18h40" stroke="#93a3b8"/><path d="M20 32h24" stroke="#f5a623"/><path d="M12 46h40" stroke="#93a3b8"/></g><path d="M32 22l4 5h-8zM32 42l4-5h-8z" fill="#1a73e8"/></svg><b>Dazwischen</b><span>Welches Wort liegt im Alphabet dazwischen?</span></a>
+        <a class="raetsel-karte" href="spiele/rasterweg.html"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 14h36v12H14v12h36v12H14" fill="none" stroke="#1a73e8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="14" r="6" fill="#f5a623"/><circle cx="14" cy="50" r="6" fill="#00c9a7"/></svg><b>Rasterweg</b><span>Ein Weg durch alle Felder, in der richtigen Reihenfolge.</span></a>
+        <a class="raetsel-karte" href="spiele/leitungen.html"><svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke-width="3" stroke-linejoin="round"><path d="M12 14h24v18" stroke="#d27c01"/><path d="M12 50V30h12v20h28" stroke="#27a16a"/><path d="M52 14v20" stroke="#1a66d6"/><path d="M22 22a2 2 0 1 0 4 0a2 2 0 1 0-4 0M42 25a2 2 0 1 0 4 0a2 2 0 1 0-4 0" stroke="#7389ad" stroke-width="1.6"/></g><g stroke="#0f1724" stroke-width="1.2"><rect x="5.5" y="7.5" width="13" height="13" rx="2.5" fill="#d27c01"/><rect x="29.5" y="25.5" width="13" height="13" rx="2.5" fill="#d27c01"/><rect x="5.5" y="43.5" width="13" height="13" rx="2.5" fill="#27a16a"/><rect x="45.5" y="43.5" width="13" height="13" rx="2.5" fill="#27a16a"/><rect x="45.5" y="7.5" width="13" height="13" rx="2.5" fill="#1a66d6"/><rect x="45.5" y="27.5" width="13" height="13" rx="2.5" fill="#1a66d6"/></g><path d="M8 12.5h8v5.5h-8zM32 30.5h8v5.5h-8zM8 48.5h8v5.5h-8zM48 48.5h8v5.5h-8zM48 12.5h8v5.5h-8zM48 32.5h8v5.5h-8z" fill="#f4f1e6"/><path d="M10 10h4M34 28h4M10 46h4M50 46h4M50 10h4M50 30h4" fill="none" stroke="#0f1724" stroke-opacity=".6" stroke-width="1.2" stroke-linecap="round"/></svg><b>Leitungen</b><span>Klemmen verbinden, nichts kreuzen.</span></a>
+      </div>
+      <div class="raetsel-fuss">
+        <a class="try-go" href="spiele/">Alle Rätsel von heute</a>
+        <a class="kaffee-btn" href="https://jahrgang.payrexx.com/pay?cid=57aa4706" target="_blank" rel="noopener"><span aria-hidden="true">☕</span> Kaffee spendieren</a>
+        <p>Selbst programmiert, ohne Werbung. Die Rätsel bleiben gratis, der Beitrag ist freiwillig: mit TWINT oder Apple Pay, <a href="https://pay.sumup.com/b2c/QYY7QR8X" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;padding:0;min-height:0;display:inline">oder CHF 1 mit Karte über SumUp</a>.</p>
+      </div>
+      </div>
+      <div class="phone raetsel-video"><video muted loop playsinline preload="none" poster="media/reel-tagesraetsel.jpg" data-src="media/reel-tagesraetsel.mp4" aria-label="Kurzvideo: Tageswort, Leitungen und Rasterweg im Spiel"></video></div>
+    </div>
+    <div class="try-grid">
+
+      <article class="try-card">
+        <div class="phone"><video muted loop playsinline preload="none" poster="media/reel-jahrgang.jpg" data-src="media/reel-jahrgang.mp4" aria-label="Kurzvideo: So wird Jahrgang gespielt"></video></div>
+        <span class="try-tag">Musik-Partyspiel · gratis</span>
+        <h3>Jahrgang</h3>
+        <p>Song hören, Jahr schätzen und in die eigene Zeitleiste einsortieren. 164 Hits von den 70ern bis heute – für den Spieleabend, ohne Werbung, auf dem iPhone als App installierbar.</p>
+        <div class="try-actions">
+          <a class="try-go" href="https://regi69.github.io/jahrgang/" target="_blank" rel="noopener">Jetzt gratis spielen</a>
+        </div>
+      </article>
+
+      <article class="try-card">
+        <div class="phone"><video muted loop playsinline preload="none" poster="media/reel-offerten-tool.jpg" data-src="media/reel-offerten-tool.mp4" aria-label="Kurzvideo: Offerten-Tool, Masse eingeben und Preis erhalten"></video></div>
+        <span class="try-tag">Live-Demo · Software für KMU</span>
+        <h3>Masse rein, Offerte raus</h3>
+        <p>So fühlt sich ein Offerten-Tool an, das genau einen Ablauf macht: Masse eintippen, Preis mit MwSt. und PDF kommen raus. Probieren Sie es mit eigenen Zahlen.</p>
+        <div class="try-actions">
+          <a class="try-go" href="demo-offerte.html">Demo öffnen</a>
+          <a class="try-more" href="software.html">So ein Tool für meinen Betrieb</a>
+        </div>
+      </article>
+
+      <article class="try-card">
+        <div class="phone"><video muted loop playsinline preload="none" poster="media/reel-offertvergleich.jpg" data-src="media/reel-offertvergleich.mp4" aria-label="Kurzvideo: Drei Stellen, die in jeder Elektro-Offerte geprüft werden"></video></div>
+        <span class="try-tag">Bauen · Umbauen · Sanieren</span>
+        <h3>3 Stellen in jeder Elektro-Offerte</h3>
+        <p>Positionsliste, Kleinmaterial und Reserve im Verteiler: Hier laufen Offerten am häufigsten auseinander. Ich prüfe Ihre Offerten unabhängig, bevor Sie unterschreiben.</p>
+        <div class="try-actions">
+          <a class="try-go" href="#preise">Offertvergleich ab CHF 450</a>
+          <a class="try-more" href="#kontakt">Frage stellen</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- LEISTUNGEN -->
+<section id="leistungen">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Dienstleistungen</div>
+      <h2 class="section-title">Was ich für Sie leiste</h2>
+      <p class="section-subtitle">Profitieren Sie von Jahrzehnten Praxiserfahrung – digital, bequem und unabhängig.</p>
+    </div>
+    <div class="services-grid">
+      <article class="service-card gross auf">
+        <div class="service-foto"><img src="media/karte-software.jpg" width="1400" height="930" loading="lazy" alt="Laptop mit Auswertung auf einem Eichentisch"><span class="service-badge">Neu</span></div>
+        <div class="service-text"><h3>Software programmieren</h3><p>Web-Apps, Konfiguratoren, Offerten- und Kalkulationstools für KMU – offline im Browser, ohne Abo, in Wochen statt Monaten. Quellcode und Daten gehören Ihnen. So wie RG CAD, das ich selbst gebaut habe.</p><a href="software.html" class="btn-outline">Pakete &amp; Preise →</a></div>
+      </article>
+      <article class="service-card auf">
+        <div class="service-foto"><img src="media/karte-offerte.jpg" width="1400" height="930" loading="lazy" alt="Drei Offerten nebeneinander auf einem Holztisch"></div>
+        <div class="service-text"><h3>Offertvergleiche</h3><p>Unabhängige Analyse Ihrer Elektro-Offerten. Ich vergleiche Positionen, Preise und Leistungen – damit Sie den besten Anbieter wählen.</p></div>
+      </article>
+      <article class="service-card auf">
+        <div class="service-foto"><img src="media/karte-analyse.jpg" width="1400" height="930" loading="lazy" alt="Elektroplan mit Lupe und Rotstift"></div>
+        <div class="service-text"><h3>Technische Analysen</h3><p>Bewertung von Elektroplänen, Installationskonzepten und technischen Unterlagen auf Vollständigkeit und Normenkonformität.</p></div>
+      </article>
+      <article class="service-card auf">
+        <div class="service-foto"><img src="media/karte-planung.jpg" width="1400" height="930" loading="lazy" alt="Baupläne mit Massstab und Zirkel"></div>
+        <div class="service-text"><h3>Planungsberatung</h3><p>Beratung für Neubauten, Umbauten und Sanierungen im Bereich Elektroinstallation – vom Konzept bis zur Schlussabnahme.</p></div>
+      </article>
+      <article class="service-card auf">
+        <div class="service-foto"><img src="media/karte-bau.jpg" width="1400" height="930" loading="lazy" alt="Holzbau im Rohbau mit Helm und Plänen"></div>
+        <div class="service-text"><h3>Bautreuhand / Bauherrenvertretung</h3><p>Begleitung als unabhängiger Bautreuhänder. Ich vertrete Ihre Interessen gegenüber Unternehmern und Planern – remote.</p></div>
+      </article>
+      <article class="service-card auf">
+        <div class="service-foto"><img src="media/karte-steuerung.jpg" width="1400" height="930" loading="lazy" alt="Sauber verdrahteter Schaltschrank"></div>
+        <div class="service-text"><h3>Steuerungen &amp; Rechenzentren</h3><p>Spezialwissen für MSR-Steuerungen, USV-Anlagen und Rechenzentrum-Infrastruktur aus der Bankenbranche.</p></div>
+      </article>
+      <article class="service-card auf">
+        <div class="service-foto"><img src="media/karte-second.jpg" width="1400" height="930" loading="lazy" alt="Technischer Bericht mit Stempel und Füllfeder"></div>
+        <div class="service-text"><h3>Second Opinion</h3><p>Eine unabhängige Zweitmeinung zu Ihrem Elektroprojekt, Kostenvoranschlägen oder technischen Entscheidungen.</p></div>
+      </article>
+      <article class="service-card auf">
+        <div class="service-foto"><img src="media/karte-wirtschaft.jpg" width="1400" height="930" loading="lazy" alt="Notizbuch, Rechner und Auswertungen auf einem Nussbaumtisch"><span class="service-badge">Neu</span></div>
+        <div class="service-text"><h3>Wirtschaftsberatung</h3><p>Betriebswirtschaftliche Analyse und Optimierung für KMU. Kostenstrukturen, Investitionsentscheide und strategische Planung – aus der Sicht eines Wirtschaftsingenieurs.</p></div>
+      </article>
+      <article class="service-card auf">
+        <div class="service-foto"><img src="media/karte-ki.jpg" width="1400" height="930" loading="lazy" alt="Tablet mit leuchtendem Netz auf einem Holztisch"><span class="service-badge">Neu</span></div>
+        <div class="service-text"><h3>KI-Beratung &amp; Digitalisierung</h3><p>Ich zeige Ihnen, wie Sie mit künstlicher Intelligenz Arbeitsabläufe automatisieren, Kosten senken und effizienter arbeiten. Praxisnah, ohne Buzzwords.</p></div>
+      </article>
+      <article class="service-card auf">
+        <div class="service-foto"><img src="media/karte-rgcad.jpg" width="1400" height="930" loading="lazy" alt="Eichenkorpus mit Schublade auf der Hobelbank"><span class="service-badge">Neu</span></div>
+        <div class="service-text"><h3>RG CAD – 3D-Möbel-CAD für Schreinereien</h3><p>Eigenes Softwareprodukt: Korpusmöbel in 3D konstruieren – Stückliste, Zuschnittliste, bemasster Bohrplan und Materialkosten auf Knopfdruck. Offline im Browser, Einmalkauf statt Abo.</p><a href="rgcad.html" class="btn-outline">Mehr erfahren &amp; 30 Tage gratis testen →</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FOTOBAND -->
+<div class="image-section links">
+  <div class="image-section-bg"><img src="media/chalet-haus.jpg" width="2000" height="1131" alt="Chalet in den Schweizer Alpen zur blauen Stunde" loading="lazy"></div>
+  <div class="image-section-content">
+    <h2>Schweizer Qualität. Digital verfügbar.</h2>
+    <p>Von Fislisbach aus berate ich Kunden in der ganzen Schweiz – effizient, unabhängig und mit der Präzision, die Sie von einem Schweizer Ingenieur erwarten.</p>
+  </div>
+</div>
+
+<!-- ABLAUF -->
+<section id="ablauf" class="dunkel">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">So funktioniert es</div>
+      <h2 class="section-title">In 4 Schritten zu Ihrer Lösung</h2>
+      <p class="section-subtitle">Einfach, digital und transparent – ohne Vor-Ort-Termin.</p>
+    </div>
+    <div class="steps">
+      <div class="step auf"><div class="step-number">1</div><h3>Anfrage</h3><p>Schildern Sie mir Ihr Anliegen per E-Mail oder Telefon.</p></div>
+      <div class="step auf" style="--d:.08s"><div class="step-number">2</div><h3>Offerte</h3><p>Sie erhalten ein verbindliches Angebot mit klarem Preis.</p></div>
+      <div class="step auf" style="--d:.16s"><div class="step-number">3</div><h3>Vorkasse</h3><p>Nach Ihrer Freigabe und Zahlung starte ich sofort.</p></div>
+      <div class="step auf" style="--d:.24s"><div class="step-number">4</div><h3>Ergebnis</h3><p>Sie erhalten einen detaillierten Bericht per E-Mail.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- VORTEILE -->
+<section id="vorteile">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Ihre Vorteile</div>
+      <h2 class="section-title">Warum mit mir arbeiten?</h2>
+      <p class="section-subtitle">Kompetenz aus der Praxis, digital verfügbar.</p>
+    </div>
+    <div class="advantages-grid">
+      <div class="advantage auf" style="--d:0.00s"><div class="advantage-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="12" cy="12" r=".6"/></svg></div><div><h3>100 % Unabhängig</h3><p>Kein Verkaufsinteresse – ich berate neutral und ausschliesslich in Ihrem Interesse.</p></div></div>
+      <div class="advantage auf" style="--d:0.06s"><div class="advantage-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="11" rx="1.5"/><path d="M9 20h6M12 16v4"/></svg></div><div><h3>Komplett Remote</h3><p>Alle Leistungen digital – keine Anreise nötig, schnelle Bearbeitung, tiefe Kosten.</p></div></div>
+      <div class="advantage auf" style="--d:0.12s"><div class="advantage-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="11" width="13" height="9" rx="1.5"/><path d="M8.5 11V8a3.5 3.5 0 017 0v3M12 14.5v2"/></svg></div><div><h3>Faire Vorkasse</h3><p>Transparente Preise, Zahlung vor Auftragsbeginn – klare Verhältnisse für beide Seiten.</p></div></div>
+      <div class="advantage auf" style="--d:0.18s"><div class="advantage-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10L12 4.5l8.5 5.5M5.5 10v8M10 10v8M14 10v8M18.5 10v8M3.5 20.5h17"/></svg></div><div><h3>Grossbank-Erfahrung</h3><p>Jahrelange Projektleitung in Rechenzentren und kritischer Infrastruktur.</p></div></div>
+      <div class="advantage auf" style="--d:0.24s"><div class="advantage-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9.5" r="5"/><path d="M9.2 13.8L7.8 20.5 12 18l4.2 2.5-1.4-6.7"/></svg></div><div><h3>Mehrfach qualifiziert</h3><p>Elektriker, Elektrotechniker, Wirtschaftsingenieur, Elektrokontrolleur – alles aus einer Hand.</p></div></div>
+      <div class="advantage auf" style="--d:0.30s"><div class="advantage-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3.5l1.9 5.6 5.6 1.9-5.6 1.9L11 18.5l-1.9-5.6L3.5 11l5.6-1.9zM18.3 15.2l.8 2.3 2.4.8-2.4.8-.8 2.4-.8-2.4-2.3-.8 2.3-.8z"/></svg></div><div><h3>KI-Kompetenz</h3><p>Ich nutze modernste KI-Tools für schnellere Analysen und bessere Ergebnisse – und zeige Ihnen, wie Sie das auch können.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOTOBAND -->
+<div class="image-section">
+  <div class="image-section-bg"><img src="media/chalet-werkzeug.jpg" width="2000" height="1131" alt="Massstab, Kompass und Laptop auf einem Nussbaumtisch" loading="lazy"></div>
+  <div class="image-section-content">
+    <h2>KI als Werkzeug, nicht als Spielzeug</h2>
+    <p>Ich setze künstliche Intelligenz gezielt ein – für schnellere Analysen, bessere Berichte und konkrete Mehrwerte. Und ich zeige Ihnen, wie Sie KI in Ihrem Betrieb nutzen können.</p>
+  </div>
+</div>
+
+<!-- ÜBER MICH -->
+<section id="ueber">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Über mich</div>
+      <h2 class="section-title">Erfahrung, die zählt</h2>
+    </div>
+    <div class="about-grid">
+      <div class="auf">
+        <div class="about-quals">
+          <span class="qual-tag">Gelernter Elektriker</span><span class="qual-tag">Elektrotechniker</span><span class="qual-tag">Wirtschaftsingenieur</span>
+          <span class="qual-tag">Elektrokontrolleur</span><span class="qual-tag">Erfahrener Bautreuhänder</span><span class="qual-tag">Teamleiter &amp; Projektführung</span>
+        </div>
+        <div class="about-text">
+          <p>Mit über 30 Jahren Berufserfahrung in der Elektrobranche bringe ich ein breites Spektrum an Fachwissen mit – von der Lehrlingswerkstatt bis zum Grossbank-Rechenzentrum.</p>
+          <p>Als Teamleiter habe ich komplexe Projekte mit Architekten, Ingenieuren und Unternehmern koordiniert. Meine Kernkompetenz liegt im Bereich Steuerungen, Elektrogewerk und kritischer Infrastruktur.</p>
+          <p>Heute biete ich mein Know-how als unabhängiger Berater an – vollständig digital, von meinem Büro aus. So profitieren Sie von meiner Erfahrung ohne Vor-Ort-Kosten.</p>
+        </div>
+        <div class="about-quote">«Ihre Offerte verdient eine unabhängige Prüfung – bevor Sie unterschreiben.»</div>
+      </div>
+      <div class="about-image auf" style="--d:.1s"><img src="media/chalet-ueber.jpg" width="1600" height="1195" alt="Besprechungsecke im Chalet mit Eichentisch und Kamin" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PREISE -->
+<section id="preise" style="background:var(--papier-2)">
+  <div class="section-inner">
+    <div class="section-header mitte">
+      <div class="section-tag">Preise</div>
+      <h2 class="section-title">Transparent &amp; fair</h2>
+      <p class="section-subtitle">Alle Preise in CHF, inkl. schriftlichem Bericht. Abrechnung per Vorkasse.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card featured auf">
+        <h3>Software programmieren</h3>
+        <div class="price-amount">ab 2'900 <span>CHF</span></div>
+        <div class="price-desc">Web-App pauschal · Prototyp in 5 Tagen ab CHF 1'500</div>
+        <ul class="price-features"><li>Browser-App ohne Server, offline, kein Abo</li><li>Offerten-/Kalkulationstool mit CHF &amp; PDF</li><li>Konfigurator für Ihre Homepage</li><li>Quellcode gehört Ihnen · 3 Monate Support</li></ul>
+        <a href="software.html" class="btn-outline" style="margin-top:1.4rem">Details →</a>
+      </div>
+      <div class="price-card auf" style="--d:.06s">
+        <h3>Erstgespräch</h3>
+        <div class="price-amount">Gratis</div>
+        <div class="price-desc">15 Minuten telefonisch</div>
+        <ul class="price-features"><li>Unverbindliche Kurzeinschätzung</li><li>Klärung Ihrer Fragestellung</li><li>Empfehlung zum weiteren Vorgehen</li></ul>
+      </div>
+      <div class="price-card auf" style="--d:.12s">
+        <h3>Offertvergleich</h3>
+        <div class="price-amount">ab 450 <span>CHF</span></div>
+        <div class="price-desc">Pauschal · 2–3 Offerten</div>
+        <ul class="price-features"><li>Positions- und Preisvergleich</li><li>Bewertung der Vollständigkeit</li><li>Schriftliche Empfehlung</li><li>4–6 Offerten: ab CHF 750</li></ul>
+      </div>
+      <div class="price-card auf" style="--d:.18s">
+        <h3>Analyse / Second Opinion</h3>
+        <div class="price-amount">ab 350 <span>CHF</span></div>
+        <div class="price-desc">Pauschal · je nach Umfang</div>
+        <ul class="price-features"><li>Technische Prüfung</li><li>Normenkonformität</li><li>Detaillierter Bericht</li><li>Planungsberatung: CHF 150/h</li></ul>
+      </div>
+      <div class="price-card auf" style="--d:.24s">
+        <h3>KI- &amp; Wirtschaftsberatung</h3>
+        <div class="price-amount">150 <span>CHF/h</span></div>
+        <div class="price-desc">Oder Pauschale nach Vereinbarung</div>
+        <ul class="price-features"><li>KI-Potenzialanalyse für Ihren Betrieb</li><li>Prozessoptimierung &amp; Digitalisierung</li><li>Betriebswirtschaftliche Beratung</li><li>Massgeschneiderter Massnahmenplan</li></ul>
+      </div>
+    </div>
+    <p class="price-note">Stundenansatz für Beratung und Software-Erweiterungen: CHF 150.–/h · Grössere Projekte nach Vereinbarung</p>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt">
+  <div class="contact-section">
+    <div class="contact-bg"><img src="media/chalet-kontakt.jpg" width="2000" height="857" alt="" loading="lazy"></div>
+    <div class="section-tag">Kontakt</div>
+    <h2 class="section-title">Bereit für eine unabhängige Meinung?</h2>
+    <p class="section-subtitle">Schreiben Sie mir – ich melde mich innert 24 Stunden mit einer Ersteinschätzung.</p>
+    <a href="mailto:info@rg-ing-consulting.ch" class="btn-primary" style="margin-top:2rem">E-Mail schreiben</a>
+    <div class="contact-links">
+      <div class="contact-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17zM3.5 7l8.5 6 8.5-6"/></svg><a href="mailto:info@rg-ing-consulting.ch">info@rg-ing-consulting.ch</a></div>
+      <div class="contact-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h3l1.5 4-2 1.5a11 11 0 006 6l1.5-2 4 1.5v3a1.5 1.5 0 01-1.6 1.5A15.5 15.5 0 015 5.1 1.5 1.5 0 016.5 3.5z"/></svg><a href="tel:+41792444409">+41 79 244 44 09</a></div>
+      <div class="contact-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0113 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Fislisbach, Kanton Aargau</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 RG Ing. Consulting – Software, Elektro-, Wirtschafts- &amp; KI-Beratung · Fislisbach, Schweiz
+  <div style="margin-top:.5rem"><a href="https://rg-ing-consulting.ch/impressum.html">Impressum</a> · <a href="https://rg-ing-consulting.ch/agb-dienstleistungen.html">AGB</a> · <a href="https://rg-ing-consulting.ch/agb.html">AGB RG CAD</a> · <a href="datenschutz.html">Datenschutz</a></div>
+  <span class="bildhinweis">Die Fotos auf dieser Seite sind Symbolbilder.</span>
+</footer>
+
+<script>
+document.body.classList.remove('ohne-js');
+/* Handy-Menü nach der Wahl schliessen, sonst verdeckt es den angesprungenen Abschnitt */
+(function(){
+  var liste=document.querySelector('.nav-links'),knopf=document.querySelector('.hamburger');
+  if(!liste||!knopf)return;
+  function zu(){liste.classList.remove('open');knopf.setAttribute('aria-expanded','false');}
+  liste.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('a'))zu();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&liste.classList.contains('open')){zu();knopf.focus();}});
+})();
+/* Auftritt beim Scrollen */
+(function(){
+  var auf=[].slice.call(document.querySelectorAll('.auf'));
+  var ruhig=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(ruhig||!('IntersectionObserver' in window)){auf.forEach(function(e){e.classList.add('da');});return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('da');io.unobserve(e.target);}});},{rootMargin:'0px 0px -6% 0px',threshold:.06});
+  auf.forEach(function(e){io.observe(e);});
+})();
+/* Kurzvideos erst laden und abspielen, wenn sie sichtbar sind */
+(function(){
+  var vids=[].slice.call(document.querySelectorAll('#ausprobieren video'));
+  if(!vids.length)return;
+  var ruhig=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(ruhig||!('IntersectionObserver' in window)){vids.forEach(function(v){v.src=v.dataset.src;v.controls=true;});return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;
+    if(e.isIntersecting){if(!v.src)v.src=v.dataset.src;var p=v.play();if(p&&p.catch)p.catch(function(){v.controls=true;});}
+    else if(v.src){v.pause();}});},{threshold:.35});
+  vids.forEach(function(v){io.observe(v);});
+})();
+</script>
+</body>
+</html>

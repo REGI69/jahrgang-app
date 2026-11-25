@@ -16,38 +16,49 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Dazwischen: welches Wort liegt im Alphabet dazwischen?">
 <meta property="og:url" content="https://regi69.github.io/jahrgang-app/raetsel/dazwischen.html">
-<meta name="theme-color" content="#0f1724">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f1724'/%3E%3Crect x='10' y='12' width='44' height='9' rx='4' fill='%231a73e8'/%3E%3Crect x='18' y='28' width='28' height='9' rx='4' fill='%23f5a623'/%3E%3Crect x='10' y='44' width='44' height='9' rx='4' fill='%231a73e8'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#f3f6fb">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ffffff'/%3E%3Crect x='1.5' y='1.5' width='61' height='61' rx='12.5' fill='none' stroke='%23d3dbe8' stroke-width='3'/%3E%3Crect x='10' y='12' width='44' height='9' rx='4' fill='%231a66d6'/%3E%3Crect x='18' y='28' width='28' height='9' rx='4' fill='%23f5a623' stroke='%23b36b00' stroke-width='2'/%3E%3Crect x='10' y='44' width='44' height='9' rx='4' fill='%231a66d6'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="kern.css">
 <style>
-/* Dazwischen – eigene Gestaltung. Grössen hängen an --dz-g (Grenzfeld) und --dz-e (Eingabefeld). */
-#spiel{--dz-g:clamp(34px,10.4vw,42px);--dz-e:clamp(44px,13.6vw,56px);--dz-th:52px;gap:12px}
+/* Dazwischen – eigene Gestaltung, helles Erscheinungsbild. Grössen hängen an --dz-g (Grenzfeld) und --dz-e (Eingabefeld).
+   Eigene Farben, die im Kern fehlen (auf :root, weil das Regelfenster ausserhalb von #spiel liegt):
+   --dz-gold-kante  dunkler Goldton für Rahmen und Marken, mindestens 3:1 zu Weiss, Goldhell und zur Leiste
+   --dz-gold-licht  helles Gold für den Strich auf Blau, mindestens 3:1 zu --rg-blau
+   --dz-rand        Kante der Tasten (unten) und Rahmen der blassen Tasten, mindestens 3:1 zum Seitengrund
+   --dz-streif      zweiter Ton der schraffierten Leiste (ausgeschlossener Bereich) */
+:root{--dz-gold-kante:#b36b00;--dz-gold-licht:#ffcf70;--dz-rand:#74829a;--dz-streif:#dbe3f0}
+#spiel{--dz-g:clamp(34px,10.4vw,42px);--dz-e:clamp(46px,14vw,58px);--dz-th:52px;gap:14px}
 #spiel>*{width:100%}
 .dz-nur-vorlesen{position:absolute;width:1px!important;height:1px;margin:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 
 /* Zeile mit Versuchszähler und Lückengrösse */
-.dz-kopf{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:.84rem;color:var(--rg-leise);font-variant-numeric:tabular-nums}
-.dz-kopf b{color:var(--rg-text);font-size:1rem}
-.dz-kopf .dz-luecke b{color:var(--rg-gold)}
+.dz-kopf{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.86rem;color:var(--rg-leise);font-variant-numeric:tabular-nums;white-space:nowrap}
+.dz-kopf b{color:var(--rg-text);font-size:1.05rem}
+.dz-luecke{display:inline-flex;align-items:baseline;gap:.4em;padding:3px 12px;border-radius:999px;background:var(--rg-gold-hell);border:1.5px solid var(--dz-gold-kante);color:var(--rg-gold-text);font-weight:700}
+.dz-kopf .dz-luecke b{font-size:1rem}
 
-/* Leiste A–Z: das goldene Band ist die Lücke, in der das Wort liegt */
-.dz-leiste{display:grid;gap:5px}
-.dz-bahn{position:relative;height:16px;border-radius:8px;background:
-  repeating-linear-gradient(135deg,var(--rg-flaeche) 0 5px,var(--rg-flaeche2) 5px 10px);border:1px solid var(--rg-linie);overflow:hidden}
-.dz-band{position:absolute;top:0;bottom:0;left:0;width:100%;background:var(--rg-gold);border-left:2px solid #fff;border-right:2px solid #fff;border-radius:3px;
+/* Leiste A–Z: das goldene Band ist die Lücke, in der das Wort liegt; schraffiert ist, was ausgeschlossen ist */
+.dz-leiste{display:grid;gap:6px}
+.dz-bahn{position:relative;height:18px;border-radius:9px;background:
+  repeating-linear-gradient(135deg,var(--rg-flaeche2) 0 5px,var(--dz-streif) 5px 10px);box-shadow:inset 0 0 0 1px var(--rg-linie);overflow:hidden}
+.dz-band{position:absolute;top:0;bottom:0;left:0;width:100%;background:var(--rg-gold);border:2px solid var(--dz-gold-kante);border-radius:9px;
   transition:left .55s cubic-bezier(.2,.8,.2,1),width .55s cubic-bezier(.2,.8,.2,1)}
-.dz-abc{display:grid;grid-template-columns:repeat(26,1fr);font-size:clamp(.56rem,2.5vw,.68rem);line-height:1;text-align:center;color:#7d8da4;font-weight:600}
-.dz-abc span.drin{color:var(--rg-text);font-weight:800}
+.dz-abc{display:grid;grid-template-columns:repeat(26,1fr);font-size:clamp(.58rem,2.6vw,.7rem);line-height:1;text-align:center;color:var(--rg-leise);font-weight:600}
+.dz-abc span{padding:4px 0}
+.dz-abc span.drin{color:var(--rg-text);font-weight:800;background:var(--rg-gold-hell);box-shadow:inset 0 -2px 0 var(--dz-gold-kante)}
+.dz-abc span.drin:first-child,.dz-abc span:not(.drin)+span.drin{border-radius:6px 0 0 6px}
+.dz-abc span.drin:last-child,.dz-abc span.drin:has(+span:not(.drin)){border-radius:0 6px 6px 0}
+.dz-abc span:not(.drin)+span.drin:has(+span:not(.drin)),.dz-abc span.drin:first-child:has(+span:not(.drin)),.dz-abc span:not(.drin)+span.drin:last-child{border-radius:6px}
 
-/* Zone: obere Grenze, Eingabe, untere Grenze */
-.dz-zone{display:grid;border:1px solid var(--rg-linie);border-radius:18px;background:var(--rg-flaeche);overflow:hidden}
-.dz-grenze{display:grid;justify-items:center;gap:6px;padding:10px 10px}
+/* Zone: obere Grenze, Eingabe, untere Grenze – eine weisse Karte, die Lücke darin ist golden hinterlegt */
+.dz-zone{display:grid;border:1px solid var(--rg-linie);border-radius:18px;background:var(--rg-flaeche);overflow:hidden;box-shadow:var(--rg-schatten)}
+.dz-grenze{display:grid;justify-items:center;gap:8px;padding:14px 10px}
 .dz-marke{margin:0;font-size:.7rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--rg-leise)}
 .dz-wort{display:flex;gap:5px;justify-content:center;align-items:center;min-height:var(--dz-g)}
-.dz-z{width:var(--dz-g);height:var(--dz-g);display:grid;place-items:center;position:relative;border-radius:9px;border:1.5px solid var(--rg-linie);background:var(--rg-flaeche2);
+.dz-z{width:var(--dz-g);height:var(--dz-g);display:grid;place-items:center;position:relative;border-radius:10px;border:1px solid var(--rg-linie);background:var(--rg-flaeche2);color:var(--rg-text);
   font-size:calc(var(--dz-g)*.5);font-weight:800;line-height:1;text-transform:uppercase}
-.dz-z.fest{background:var(--rg-blau);border-color:#8fbcff;color:#fff}
-.dz-z.fest::after{content:"";position:absolute;left:22%;right:22%;bottom:4px;height:3px;border-radius:2px;background:var(--rg-gold)}
+.dz-z.fest{background:var(--rg-blau);border-color:var(--rg-blau-dunkel);color:#fff;box-shadow:0 2px 6px rgba(26,102,214,.3)}
+.dz-z.fest::after{content:"";position:absolute;left:22%;right:22%;bottom:4px;height:3px;border-radius:2px;background:var(--dz-gold-licht)}
 .dz-offen{font-size:calc(var(--dz-g)*.56);font-weight:800;letter-spacing:.14em;color:var(--rg-leise);line-height:var(--dz-g)}
 .dz-offen b{color:var(--rg-text)}
 .dz-grenze.neu-oben .dz-wort{animation:dz-hoch .45s cubic-bezier(.2,.8,.2,1)}
@@ -55,18 +66,18 @@
 @keyframes dz-hoch{from{transform:translateY(46px) scale(1.12);opacity:.2}to{transform:none;opacity:1}}
 @keyframes dz-runter{from{transform:translateY(-46px) scale(1.12);opacity:.2}to{transform:none;opacity:1}}
 
-.dz-mitte{display:grid;justify-items:center;gap:7px;padding:10px 10px 11px;background:var(--rg-bg);border-top:2px dashed var(--rg-gold);border-bottom:2px dashed var(--rg-gold)}
-.dz-hier{margin:0;display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--rg-gold)}
-.dz-hier::before,.dz-hier::after{content:"";width:22px;height:2px;border-radius:1px;background:var(--rg-gold);opacity:.6}
-.dz-eingabe{display:flex;gap:6px;justify-content:center}
-.dz-e{width:var(--dz-e);height:var(--dz-e);display:grid;place-items:center;position:relative;border-radius:11px;border:2px solid var(--rg-linie);background:var(--rg-flaeche);
-  font-size:calc(var(--dz-e)*.5);font-weight:800;line-height:1;text-transform:uppercase;color:var(--rg-weiss)}
+.dz-mitte{display:grid;justify-items:center;gap:9px;padding:14px 10px 13px;background:var(--rg-gold-hell);border-top:2px dashed var(--dz-gold-kante);border-bottom:2px dashed var(--dz-gold-kante)}
+.dz-hier{margin:0;display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--rg-gold-text)}
+.dz-hier::before,.dz-hier::after{content:"";width:22px;height:2px;border-radius:1px;background:var(--dz-gold-kante)}
+.dz-eingabe{display:flex;gap:7px;justify-content:center}
+.dz-e{width:var(--dz-e);height:var(--dz-e);display:grid;place-items:center;position:relative;border-radius:13px;border:2px solid var(--dz-gold-kante);background:var(--rg-flaeche);
+  font-size:calc(var(--dz-e)*.5);font-weight:800;line-height:1;text-transform:uppercase;color:var(--rg-text);box-shadow:var(--rg-schatten-klein)}
 .dz-e.voll{border-color:var(--rg-text);animation:dz-tipp .12s ease-out}
-.dz-e.geist{color:#8494ab}
-.dz-e.jetzt{border-color:var(--rg-gold);box-shadow:0 0 0 3px rgba(245,166,35,.18)}
-.dz-e.jetzt::before{content:"";position:absolute;left:24%;right:24%;bottom:7px;height:3px;border-radius:2px;background:var(--rg-gold);animation:dz-blink 1.1s steps(2,start) infinite}
-.dz-e.treffer{background:var(--rg-blau);border-color:#8fbcff;color:#fff}
-.dz-e.verpasst{background:var(--rg-flaeche2);border-color:var(--rg-gold);color:var(--rg-weiss)}
+.dz-e.geist{color:var(--rg-blau)}
+.dz-e.jetzt{box-shadow:0 0 0 4px rgba(245,166,35,.45),var(--rg-schatten-klein)}
+.dz-e.jetzt::before{content:"";position:absolute;left:24%;right:24%;bottom:7px;height:3px;border-radius:2px;background:var(--dz-gold-kante);animation:dz-blink 1.1s steps(2,start) infinite}
+.dz-e.treffer{background:var(--rg-blau);border-color:var(--rg-blau-dunkel);color:#fff;box-shadow:0 4px 12px rgba(26,102,214,.32)}
+.dz-e.verpasst{background:var(--rg-gold);border-color:var(--dz-gold-kante);color:var(--rg-text)}
 .dz-eingabe.wackel{animation:dz-wackel .36s}
 .dz-eingabe.jubel .dz-e{animation:dz-jubel .5s cubic-bezier(.2,.8,.2,1) backwards}
 .dz-eingabe.jubel .dz-e:nth-child(2){animation-delay:.07s}.dz-eingabe.jubel .dz-e:nth-child(3){animation-delay:.14s}
@@ -77,59 +88,76 @@
 @keyframes dz-jubel{0%{transform:translateY(0)}45%{transform:translateY(-12px)}100%{transform:translateY(0)}}
 .dz-tipp{margin:0;max-width:100%;min-height:1.3em;line-height:1.3;font-size:clamp(.74rem,3.9vw,.84rem);color:var(--rg-leise);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dz-tipp b{color:var(--rg-text);letter-spacing:.04em}
+.dz-tipp:empty{display:none}
 
-/* Bildschirmtastatur */
+/* Bildschirmtastatur: weisse Tasten auf dem hellen Seitengrund */
 /* Die Zwischenräume gehören zur Tippfläche: der Knopf ist ein lückenloses Rechteck, sichtbar ist nur die Innenfläche (::before). */
 .dz-tasten{--dz-tx:2px;--dz-ty:3px;width:calc(100% + 16px + 2*var(--dz-tx))!important;margin:calc(-1*var(--dz-ty)) calc(-8px - var(--dz-tx));display:grid;gap:0;touch-action:manipulation;-webkit-user-select:none;user-select:none}
 .dz-reihe{display:flex;gap:0}
 .dz-taste{position:relative;z-index:0;flex:1 1 0;min-width:0;height:calc(var(--dz-th) + 2*var(--dz-ty));padding:0;border:0;border-radius:0;background:transparent;color:var(--rg-text);
   font-size:1.08rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.dz-taste::before{content:"";position:absolute;z-index:-1;top:var(--dz-ty);bottom:var(--dz-ty);left:var(--dz-tx);right:var(--dz-tx);border-radius:8px;background:var(--rg-flaeche2);transition:background .1s}
-.dz-taste:hover::before{background:#2b3c5c}
-.dz-taste:active::before{background:var(--rg-linie);transform:translateY(1px)}
+.dz-taste::before{content:"";position:absolute;z-index:-1;top:var(--dz-ty);bottom:var(--dz-ty);left:var(--dz-tx);right:var(--dz-tx);border-radius:9px;background:var(--rg-flaeche);
+  box-shadow:inset 0 0 0 1px var(--rg-linie),0 2px 0 var(--dz-rand),0 3px 6px rgba(21,32,51,.10);transition:background .1s}
+@media (hover:hover){
+  .dz-taste:hover::before{background:var(--rg-blau-hell)}
+  .dz-taste.los:hover::before{background:var(--rg-blau-dunkel)}
+}
+.dz-taste:active::before{background:var(--rg-blau-hell);transform:translateY(2px);box-shadow:inset 0 0 0 1.5px var(--rg-blau)}
 .dz-taste:focus-visible{outline:none}
-.dz-taste:focus-visible::before{outline:3px solid var(--rg-gold);outline-offset:1px}
+.dz-taste:focus-visible::before{outline:3px solid var(--rg-blau);outline-offset:1px}
 .dz-taste.breit{flex:1.95 1 0;font-size:clamp(.62rem,3vw,.8rem);letter-spacing:.01em}
 .dz-taste.los{color:#fff}
-.dz-taste.los::before{background:var(--rg-blau)}
-.dz-taste.los:hover::before{background:var(--rg-blau-dunkel)}
-.dz-taste.fern{color:#8494ab}
-.dz-taste.fern::before{background:var(--rg-flaeche);box-shadow:inset 0 0 0 1px var(--rg-linie)}
+.dz-taste.los::before{background:var(--rg-blau);box-shadow:0 2px 0 var(--rg-blau-dunkel),0 3px 8px rgba(26,102,214,.3)}
+.dz-taste.los:active::before{background:var(--rg-blau-dunkel);box-shadow:none}
+.dz-taste.los:focus-visible::before{outline-color:var(--rg-text)}
+.dz-taste.fern{color:var(--rg-leise);font-weight:600}
+.dz-taste.fern::before{background:transparent;box-shadow:none;border:1.5px dashed var(--dz-rand)}
 
 /* Schluss */
-.dz-schluss{display:grid;justify-items:center;gap:10px;padding:14px;border:1px solid var(--rg-linie);border-radius:var(--rg-radius);background:var(--rg-flaeche);text-align:center}
+.dz-schluss{display:grid;justify-items:center;gap:10px;padding:18px 16px;border:1px solid var(--rg-linie);border-radius:var(--rg-radius);background:var(--rg-flaeche);text-align:center;box-shadow:var(--rg-schatten)}
 .dz-schluss p{margin:0}
 .dz-schluss .gross{font-size:1.1rem;font-weight:800}
 .dz-schluss .klein{font-size:.86rem;color:var(--rg-leise)}
 [hidden]{display:none!important}
 
 /* Versuchsliste */
-.dz-liste{display:grid;gap:8px;margin-top:4px}
-.dz-liste h2{margin:0;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rg-gold);font-weight:800}
+.dz-liste{display:grid;gap:10px;margin-top:6px}
+.dz-liste h2{margin:0;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rg-gold-text);font-weight:800}
 .dz-liste p{margin:0;font-size:.84rem;color:var(--rg-leise)}
-.dz-versuche{list-style:none;margin:0;padding:0;display:grid;gap:5px}
-.dz-versuche li{display:grid;grid-template-columns:2.2em 1fr auto;align-items:center;gap:8px;padding:7px 10px;border-radius:10px;background:var(--rg-flaeche);border:1px solid var(--rg-linie)}
+.dz-versuche{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.dz-versuche li{display:grid;grid-template-columns:2.2em 1fr auto;align-items:center;gap:8px;padding:8px 10px 8px 14px;border-radius:13px;background:var(--rg-flaeche);border:1px solid var(--rg-linie);box-shadow:var(--rg-schatten-klein)}
 .dz-versuche .nr{font-size:.8rem;color:var(--rg-leise);font-variant-numeric:tabular-nums}
 .dz-versuche .w{font-weight:800;letter-spacing:.16em;font-size:1rem}
-.dz-versuche .pf{display:inline-flex;align-items:center;gap:.35em;min-width:6.6em;justify-content:center;padding:3px 10px;border-radius:999px;font-size:.82rem;font-weight:700;border:1.5px solid var(--rg-linie)}
-.dz-versuche .pf i{font-style:normal;font-size:1.05rem;line-height:1}
-.dz-versuche li[data-richtung="frueher"] .pf{border-color:#8fbcff}
-.dz-versuche li[data-richtung="spaeter"] .pf{border-color:var(--rg-gold)}
-.dz-versuche li[data-richtung="treffer"]{border-color:#8fbcff}
+/* Richtung: Pfeil in einer Marke plus Wort; die Farbe kommt nur dazu */
+.dz-versuche .pf{display:inline-flex;align-items:center;gap:.5em;min-width:7.2em;padding:3px 12px 3px 4px;border-radius:999px;font-size:.82rem;font-weight:700;border:1.5px solid var(--rg-linie)}
+.dz-versuche .pf i{display:grid;place-items:center;width:1.55em;height:1.55em;border-radius:50%;font-style:normal;font-size:.95rem;font-weight:800;line-height:1}
+.dz-versuche li[data-richtung="frueher"] .pf{background:var(--rg-blau-hell);border-color:var(--rg-blau);color:var(--rg-blau-dunkel)}
+.dz-versuche li[data-richtung="frueher"] .pf i{background:var(--rg-blau);color:#fff}
+.dz-versuche li[data-richtung="spaeter"] .pf{background:var(--rg-gold-hell);border-color:var(--dz-gold-kante);color:var(--rg-gold-text)}
+.dz-versuche li[data-richtung="spaeter"] .pf i{background:var(--rg-gold);color:var(--rg-text)}
+.dz-versuche li[data-richtung="treffer"]{border-color:var(--rg-blau);background:var(--rg-blau-hell)}
 .dz-versuche li[data-richtung="treffer"] .pf{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff}
 .dz-versuche li.frisch{animation:dz-frisch .4s ease-out}
 @keyframes dz-frisch{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 
 /* Beispiel in den Regeln */
-.dz-bsp{display:grid;justify-items:center;gap:4px;padding:10px;border-radius:12px;background:var(--rg-bg);border:1px solid var(--rg-linie);--dz-g:30px}
+.dz-bsp{display:grid;justify-items:center;gap:7px;padding:12px 10px;border-radius:14px;background:var(--rg-bg);border:1px solid var(--rg-linie);--dz-g:32px}
 .dz-bsp .dz-wort{min-height:0}
-.dz-bsp small{font-size:.74rem;color:var(--rg-gold);font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.dz-bsp .dz-z:not(.fest){background:var(--rg-flaeche)}
+.dz-bsp small{padding:2px 12px;border-radius:999px;background:var(--rg-gold-hell);border:1.5px dashed var(--dz-gold-kante);font-size:.72rem;color:var(--rg-gold-text);font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 
 @media (max-height:700px){
-  #spiel{--dz-th:46px;gap:9px;padding-top:9px}
-  .dz-grenze{padding:7px 10px;gap:4px}
-  .dz-mitte{padding:7px 10px 8px;gap:5px}
+  #spiel{--dz-th:46px;gap:9px;padding-top:6px}
+  .dz-grenze{padding:8px 10px;gap:5px}
+  .dz-mitte{padding:8px 10px 8px;gap:6px}
+  .dz-abc span{padding:3px 0}
+  .dz-bahn{height:16px}
   #spiel{--dz-g:clamp(32px,9.6vw,38px);--dz-e:clamp(42px,12.6vw,50px)}
+}
+@media (max-width:360px){
+  .dz-kopf{font-size:.76rem;gap:6px}
+  .dz-kopf b,.dz-kopf .dz-luecke b{font-size:.88rem}
+  .dz-luecke{padding:3px 9px;gap:.25em}
 }
 @media (min-width:600px){
   .dz-tasten{--dz-tx:3px;width:calc(100% + 2*var(--dz-tx))!important;margin:calc(-1*var(--dz-ty)) calc(-1*var(--dz-tx))}

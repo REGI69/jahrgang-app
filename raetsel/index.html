@@ -16,21 +16,21 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Tagesrätsel: vier Rätsel, jeden Tag neu">
-<meta name="theme-color" content="#0f1724">
+<meta name="theme-color" content="#f3f6fb">
 <link rel="stylesheet" href="kern.css">
 <style>
 .hub{width:100%;max-width:760px;padding:18px 16px 8px;display:grid;gap:18px}
 .hub-kopf{display:grid;gap:6px}
 .hub-zurueck{display:inline-flex;align-items:center;justify-self:start;min-height:40px;font-size:.9rem;color:var(--rg-leise)!important;text-decoration:none}
-.hub-kicker{margin:0;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rg-gold)}
+.hub-kicker{margin:0;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rg-gold-text)}
 .hub h1{margin:0;font-size:clamp(1.9rem,7vw,2.8rem);line-height:1.08;text-wrap:balance}
 .hub-lead{margin:0;color:var(--rg-leise);max-width:52ch}
 .hub-datum{margin:0;font-variant-numeric:tabular-nums;font-weight:700}
 .hub-gitter{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:14px}   /* breit: 2 × 2 statt 3 + 1, die Statusmarke hat Platz neben dem Titel */
 .karte{position:relative;display:grid;grid-template-columns:64px 1fr;gap:4px 14px;align-items:center;padding:24px 16px 16px;border-radius:16px;background:var(--rg-flaeche);
-  border:1px solid var(--rg-linie);text-decoration:none;transition:transform .15s,border-color .15s}
-.karte:hover{transform:translateY(-2px);border-color:var(--rg-blau)}
-.karte svg{grid-row:span 2;width:64px;height:64px;border-radius:12px;background:var(--rg-bg)}
+  border:1px solid var(--rg-linie);text-decoration:none;box-shadow:var(--rg-schatten);transition:transform .15s,border-color .15s,box-shadow .15s}
+.karte:hover{transform:translateY(-2px);border-color:var(--rg-blau);box-shadow:0 2px 4px rgba(21,32,51,.08),0 14px 32px rgba(26,102,214,.16)}
+.karte svg{grid-row:span 2;width:64px;height:64px;border-radius:14px;background:var(--rg-nacht)}
 .karte h2{margin:0;font-size:1.2rem}
 .karte p{margin:0;font-size:.88rem;color:var(--rg-leise);grid-column:2}
 .karte .status{position:absolute;top:10px;right:12px;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rg-leise)}
@@ -38,7 +38,7 @@
 .karte.erledigt .status{color:var(--rg-gruen)}
 .hub-fortschritt{margin:0;font-size:.9rem;color:var(--rg-leise)}
 .hub-fortschritt b{color:var(--rg-text)}
-.hub-extra{display:grid;gap:8px;padding:16px;border-radius:16px;border:1px dashed var(--rg-linie)}
+.hub-extra{display:grid;gap:8px;padding:16px;border-radius:16px;border:1px dashed var(--rg-linie);background:rgba(255,255,255,.6)}
 .hub-extra h2{margin:0;font-size:1.05rem}
 .hub-extra p{margin:0;font-size:.9rem;color:var(--rg-leise)}
 </style>

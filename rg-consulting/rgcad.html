@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RG CAD – 3D-Möbel-CAD für Schreinereien | RG Ing. Consulting</title>
+  <meta name="description" content="RG CAD: Korpusmöbel in 3D planen, Stückliste, Zuschnittliste und bemasste Werkstattzeichnung auf Knopfdruck. Einmalkauf ohne Abo, 30 Tage gratis testen.">
+  <meta name="theme-color" content="#1b130d">
+  <link rel="canonical" href="https://rg-ing-consulting.ch/rgcad.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="de_CH">
+  <meta property="og:title" content="RG CAD – Masse rein. Möbel raus.">
+  <meta property="og:description" content="3D-Möbel-CAD für Schreinereien. Stückliste, Zuschnitt und Werkstattzeichnung auf Knopfdruck. Einmalkauf ohne Abo, 30 Tage gratis testen.">
+  <meta property="og:url" content="https://rg-ing-consulting.ch/rgcad.html">
+  <meta property="og:image" content="https://rg-ing-consulting.ch/media/rgcad-1-kommode.jpg">
+  <link rel="preload" href="fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="media/karte-rgcad.jpg" as="image" fetchpriority="high">
+  <style>
+    /* ======================================================================
+       RG CAD – Produktseite im Chalet-Erscheinungsbild der Startseite
+       (Holz, Papier, Messing; Überschriften in Playfair Display, Fliesstext
+       in der Systemschrift). Eigenes Stilblatt, weil die Seite andere
+       Bausteine hat als die Startseite (Produktvideo, Kachelraster, Rechner,
+       Kaufleiste). Farben und Masse entsprechen chalet.css.
+       Keine fremden Schriften, Skripte oder Bilder.
+       ====================================================================== */
+    @font-face {
+      font-family: 'Playfair Display';
+      src: url('fonts/playfair-display.woff2') format('woff2');
+      font-weight: 400 700; font-style: normal; font-display: swap;
+    }
+    :root {
+      --holz: #1b130d;          /* tiefes Nussbaum, Grund der dunklen Bänder */
+      --holz-2: #2a1d14;
+      --tinte: #221910;         /* Schrift auf Hell */
+      --leise: #6b5a48;
+      --papier: #f6f1e8;        /* Grund der hellen Abschnitte */
+      --papier-2: #efe6d8;
+      --karte: #fffdf9;
+      --linie: #e2d6c3;
+      --messing: #b8924f;       /* Handeln: Knöpfe, immer mit dunkler Schrift */
+      --messing-text: #8a6526;  /* Messing als Schrift auf Hell */
+      --messing-hell: #f3e8d2;
+      --honig: #d9a65c;         /* Akzent auf Dunkel */
+      --creme: #f3e9d8;
+      --serif: 'Playfair Display', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --radius: 4px;
+      --schatten: 0 1px 2px rgba(27,19,13,.06), 0 14px 36px rgba(27,19,13,.10);
+      --schatten-hoch: 0 2px 6px rgba(27,19,13,.08), 0 30px 70px rgba(27,19,13,.22);
+      --ueberlapp: clamp(140px, 22vw, 320px);   /* so weit ragt das Video aus dem dunklen Einstieg ins Papier */
+      color-scheme: light;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 96px; -webkit-text-size-adjust: 100%; }
+    body { font-family: var(--sans); background: var(--papier); color: var(--tinte); line-height: 1.6; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    img, video { max-width: 100%; height: auto; display: block; }
+    a { color: var(--messing-text); text-decoration: none; }
+    a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid var(--honig); outline-offset: 3px; border-radius: 3px; }
+    ::selection { background: var(--messing-hell); color: var(--tinte); }
+    .wrap { width: min(1160px, 100% - 3rem); margin-inline: auto; }
+    .eng { width: min(760px, 100% - 3rem); margin-inline: auto; }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -.01em; }
+
+    /* ---------- Leiste oben: Holz, Siegel und Schriftzug ---------- */
+    .leiste { position: sticky; top: 0; z-index: 60; background: rgba(27,19,13,.84);
+      -webkit-backdrop-filter: saturate(140%) blur(16px); backdrop-filter: saturate(140%) blur(16px); border-bottom: 1px solid rgba(255,255,255,.08); }
+    .leiste-in { display: flex; align-items: center; gap: 1rem; height: 76px; width: min(1240px, 100% - 2.5rem); }
+    .marke { display: flex; align-items: center; gap: .8rem; color: #fff; font-family: var(--serif); font-weight: 600; font-size: 1.28rem; }
+    .marke img { width: 42px; height: 42px; flex-shrink: 0; }
+    .marke span { display: block; line-height: 1.1; }
+    .marke small { display: block; font-family: var(--sans); font-size: .6rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--honig); margin-top: 2px; white-space: nowrap; }
+    .leiste nav { margin-left: auto; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,.78); font-size: .84rem; letter-spacing: .02em; transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+    .leiste .rechts { display: flex; align-items: center; gap: 1rem; }
+    .leiste .ab { font-size: .84rem; color: rgba(255,255,255,.7); white-space: nowrap; }
+    .nav-cta { display: inline-flex; align-items: center; background: var(--messing); color: var(--holz); padding: .6rem 1.25rem; border-radius: 3px; font-weight: 600; font-size: .84rem; letter-spacing: .02em; white-space: nowrap; transition: background .2s; }
+    .nav-cta:hover { background: var(--honig); }
+    .hamburger { display: none; background: none; border: 0; cursor: pointer; padding: 8px; margin-right: -8px; }
+    .hamburger span { display: block; width: 24px; height: 1.5px; background: #fff; margin: 6px 0; }
+    @media (max-width: 860px) {
+      .hamburger { display: block; }
+      .leiste nav { margin-left: 0; }
+      .nav-links { display: none; flex-direction: column; align-items: stretch; gap: 0; position: absolute; top: 76px; left: 0; width: 100%;
+        background: rgba(27,19,13,.97); padding: .6rem 1.4rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,.08); }
+      .nav-links.open { display: flex; }
+      .nav-links a { display: block; padding: .8rem .2rem; font-size: 1rem; }
+      .leiste .rechts { margin-left: auto; }
+      .leiste .ab { display: none; }
+    }
+
+    /* ---------- Knöpfe: Messing auf Holz, nie weiss auf Messing ---------- */
+    .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: .85rem 1.8rem; border-radius: 3px;
+      font-weight: 600; font-size: .98rem; letter-spacing: .02em; border: 1px solid transparent; cursor: pointer; transition: background .2s, border-color .2s, color .2s; }
+    .btn-primary { background: var(--messing); color: var(--holz); }
+    .btn-primary:hover { background: var(--honig); }
+    .btn-outline { border-color: #c9b690; color: var(--tinte); background: transparent; }
+    .btn-outline:hover { background: var(--karte); border-color: var(--tinte); }
+    .btn-light { border-color: rgba(255,255,255,.45); color: #fff; background: rgba(255,255,255,.06); }
+    .btn-light:hover { background: rgba(255,255,255,.14); }
+    .weiter { color: #fff; font-weight: 500; font-size: 1rem; border-bottom: 1px solid rgba(217,166,92,.7); padding-bottom: 1px; }
+    .weiter:hover { color: var(--honig); }
+    .weiter::after { content: " ›"; }
+
+    /* ---------- Einstieg: dunkles Fotoband, das Video ragt ins Papier ---------- */
+    .start { position: relative; isolation: isolate; color: #fff; text-align: center; padding: 5rem 0 calc(var(--ueberlapp) + 2.6rem); overflow: hidden; }
+    .start-bild { position: absolute; inset: 0; z-index: -2; }
+    .start-bild img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+    .start::before { content: ''; position: absolute; inset: 0; z-index: -1;
+      background: linear-gradient(180deg, rgba(27,19,13,.72) 0%, rgba(27,19,13,.82) 55%, rgba(27,19,13,.94) 100%); }
+    .ober { display: inline-flex; align-items: center; justify-content: center; gap: .9rem; color: var(--honig); font-size: .74rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; margin-bottom: 1.6rem; }
+    .ober::before, .ober::after { content: ''; width: 44px; height: 1px; background: var(--honig); flex-shrink: 0; }
+    h1 { font-size: clamp(2.6rem, 6.2vw, 5rem); line-height: 1.05; margin: 0 0 1.4rem; text-wrap: balance; text-shadow: 0 2px 24px rgba(0,0,0,.25); }
+    .holz { color: var(--messing-text); }
+    .start .holz, .schluss-box .holz { color: var(--honig); }
+    .start .lead { font-size: clamp(1.05rem, 1.6vw, 1.22rem); line-height: 1.6; color: rgba(255,255,255,.86); max-width: 40rem; margin-inline: auto; text-wrap: balance; }
+    .tat { display: flex; flex-wrap: wrap; gap: .9rem 1.8rem; justify-content: center; align-items: center; margin-top: 2.2rem; }
+    .start .klein { margin-top: 1.3rem; font-size: .9rem; color: rgba(255,255,255,.62); max-width: 44rem; margin-inline: auto; }
+    .film-wrap { position: relative; z-index: 2; margin-top: calc(-1 * var(--ueberlapp)); padding: 0 1.25rem 4rem; }
+    .film { width: min(1180px, 100%); margin-inline: auto; border-radius: var(--radius); overflow: hidden; background: var(--karte);
+      box-shadow: var(--schatten-hoch), 0 0 0 1px rgba(27,19,13,.14); transform: scale(var(--s, 1)); transform-origin: 50% 0; will-change: transform; }
+    .film video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+    @media (max-width: 700px) { .film video { aspect-ratio: 4 / 5; object-position: 46% 100%; } .film-wrap { padding-bottom: 3rem; } .start { padding-top: 3.5rem; } .ober { letter-spacing: .16em; display: block; } .ober::before, .ober::after { display: none; } }
+
+    /* ---------- Abschnitte ---------- */
+    section { padding: 6.5rem 0; }
+    .band-2 { background: var(--papier-2); }
+    .dunkel { background: var(--holz); color: #fff; }
+    .kopf { margin-bottom: 3.2rem; max-width: 760px; }
+    .kopf.mitte { margin-inline: auto; text-align: center; }
+    .tag { color: var(--messing-text); font-size: .72rem; letter-spacing: .26em; text-transform: uppercase; font-weight: 600; margin-bottom: 1.1rem; display: flex; align-items: center; gap: 1rem; }
+    .tag::before { content: ''; width: 44px; height: 1px; background: var(--messing); flex-shrink: 0; }
+    .mitte .tag { justify-content: center; }
+    .mitte .tag::after { content: ''; width: 44px; height: 1px; background: var(--messing); flex-shrink: 0; }
+    h2 { font-size: clamp(2rem, 4.2vw, 3.2rem); line-height: 1.1; color: var(--tinte); text-wrap: balance; }
+    .sub { color: var(--leise); font-size: 1.1rem; margin-top: 1rem; max-width: 640px; text-wrap: pretty; }
+    .mitte .sub { margin-inline: auto; }
+    .dunkel h2 { color: #fff; }
+    .dunkel .sub { color: rgba(255,255,255,.7); }
+    .dunkel .tag { color: var(--honig); }
+    .dunkel .tag::before, .dunkel .tag::after { background: var(--honig); }
+
+    /* Auftritt beim Scrollen */
+    .auf { opacity: 0; transform: translateY(26px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+    .auf.da { opacity: 1; transform: none; }
+    .ohne-js .auf { opacity: 1; transform: none; }
+
+    /* Einleitung und drei Nutzen */
+    .einleitung { max-width: 46rem; margin: 0 auto 3rem; text-align: center; }
+    .einleitung h2 { font-size: clamp(1.9rem, 3.6vw, 2.6rem); }
+    .einleitung p { margin-top: 1.1rem; color: var(--leise); font-size: 1.06rem; }
+    .nutzen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+    .nutz { background: var(--karte); border: 1px solid var(--linie); border-radius: var(--radius); padding: 1.8rem; }
+    .nutz-ic { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #d6c39c; color: var(--messing-text); margin-bottom: 1.2rem; }
+    .nutz-ic svg { width: 24px; height: 24px; }
+    .nutz h3 { font-weight: 600; font-size: 1.35rem; line-height: 1.22; }
+    .nutz p { margin-top: .5rem; color: var(--leise); font-size: .97rem; }
+    @media (max-width: 860px) { .nutzen { grid-template-columns: 1fr; } }
+
+    /* Ablauf: dunkles Band, zehn Schritte */
+    .schritte { list-style: none; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 3.5rem; border-top: 1px solid rgba(255,255,255,.12); }
+    .schritte li { display: flex; gap: 1.2rem; align-items: flex-start; padding: 1.6rem 0 1.4rem; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .schritte li b { flex-shrink: 0; min-width: 2.6rem; font-family: var(--serif); font-weight: 500; font-size: 2.4rem; line-height: 1; color: var(--honig); }
+    .schritte strong { display: block; font-family: var(--serif); font-weight: 600; font-size: 1.2rem; line-height: 1.25; color: #fff; }
+    .schritte span { display: block; margin-top: .35rem; color: rgba(255,255,255,.7); font-size: .95rem; }
+    .ehrlich { margin: 2.4rem auto 0; max-width: 46rem; text-align: center; color: rgba(255,255,255,.68); font-size: .95rem; }
+    @media (max-width: 860px) { .schritte { grid-template-columns: 1fr; } }
+
+    /* Grosser Satz und Kennzahlen */
+    .satz { font-family: var(--serif); font-weight: 500; font-size: clamp(1.7rem, 3.8vw, 2.8rem); line-height: 1.25; color: #a08f78; text-wrap: balance; max-width: 900px; }
+    .satz b { color: var(--tinte); font-weight: 500; }
+    .satz em { font-style: italic; }
+    .zahlen { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem 1rem; margin-top: 3.4rem; text-align: center; border-top: 1px solid var(--linie); padding-top: 2.4rem; }
+    @media (min-width: 820px) { .zahlen { grid-template-columns: repeat(4, 1fr); gap: 0; } .zahl + .zahl { border-left: 1px solid var(--linie); } }
+    .zahl b { display: block; font-family: var(--serif); font-weight: 500; font-size: clamp(2.6rem, 5vw, 3.6rem); line-height: 1.1; color: var(--messing-text); }
+    .zahl span { display: block; margin-top: .5rem; color: var(--leise); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; }
+
+    /* Kachelraster */
+    .raster { display: grid; gap: 1.4rem; grid-template-columns: 1fr; }
+    @media (min-width: 820px) { .raster { grid-template-columns: repeat(6, 1fr); } .k-4 { grid-column: span 4; } .k-3 { grid-column: span 3; } .k-2 { grid-column: span 2; } }
+    .kachel { background: var(--karte); border: 1px solid var(--linie); border-radius: var(--radius); overflow: hidden; position: relative; display: flex; flex-direction: column;
+      transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
+    @media (hover: hover) { .kachel:hover { transform: translateY(-4px); box-shadow: var(--schatten-hoch); } }
+    .kachel .text { padding: 1.8rem 1.8rem 1.4rem; }
+    .kachel .text small { display: block; font-size: .66rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--messing-text); margin-bottom: .7rem; }
+    .kachel h3 { font-weight: 600; font-size: clamp(1.35rem, 2.2vw, 1.7rem); line-height: 1.2; text-wrap: balance; }
+    .kachel p { color: var(--leise); margin-top: .55rem; font-size: .97rem; }
+    .kachel .bild { margin-top: auto; padding: 0 1.4rem; }
+    .kachel .bild img { width: 100%; border-radius: 3px 3px 0 0; border: 1px solid var(--linie); border-bottom: 0; background: var(--karte);
+      aspect-ratio: var(--ar, 16 / 10); object-fit: cover; object-position: 50% 0; }
+    .kachel.frei .bild { padding: 0; }
+    .kachel.frei .bild img { border: 0; border-radius: 0; background: transparent; object-position: 50% 40%;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%); mask-image: linear-gradient(to bottom, transparent 0, #000 16%); }
+    .kachel.nur-text { justify-content: flex-end; min-height: 230px; background: var(--papier-2); }
+    .kachel.nur-text .text { padding-bottom: 1.8rem; }
+    @media (max-width: 819px) { .kachel.nur-text { min-height: 0; } }
+    .kachel.eiche { background: linear-gradient(160deg, var(--creme) 0%, #e4cb9e 100%); border-color: #d6c39c; }
+    .kachel .masse { margin: 1.8rem 1.8rem 0; font-family: var(--serif); font-weight: 500; font-size: clamp(2.6rem, 5vw, 3.6rem); line-height: 1.02; color: var(--messing-text); font-variant-numeric: tabular-nums; }
+    .kachel .masse span { display: block; }
+    .kachel .masse span:nth-child(2) { opacity: .66; }
+    .kachel .masse span:nth-child(3) { opacity: .38; }
+    .kachel .masse small { display: block; font-family: var(--sans); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; margin-top: .6rem; color: var(--messing-text); }
+    .kachel.eiche .text { margin-top: auto; padding-bottom: 1.8rem; }
+
+    /* Fotobänder (Werkstatt) */
+    .fotoband { position: relative; min-height: 520px; display: flex; align-items: center; padding: 7rem 1.5rem; overflow: hidden; color: #fff; isolation: isolate; }
+    .fotoband-bild { position: absolute; inset: 0; z-index: -2; }
+    .fotoband-bild img { width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; }
+    .fotoband-bild::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(27,19,13,.78) 0%, rgba(27,19,13,.4) 55%, rgba(27,19,13,.12) 100%); }
+    .fotoband-text { position: relative; width: min(1160px, 100%); margin: 0 auto; }
+    .fotoband-text > * { max-width: 560px; }
+    .fotoband-text h2 { color: #fff; font-size: clamp(2rem, 4.4vw, 3.4rem); line-height: 1.12; text-shadow: 0 2px 20px rgba(0,0,0,.3); }
+    .fotoband-text h2::after { content: ''; display: block; width: 56px; height: 1px; background: var(--honig); margin: 1.4rem 0 1.2rem; }
+    .fotoband-text p { color: rgba(255,255,255,.85); font-size: 1.12rem; }
+    .marke-bild { position: absolute; right: 14px; bottom: 12px; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.75); background: rgba(27,19,13,.55); padding: .25rem .6rem; border-radius: 2px; }
+    @media (max-width: 760px) { .fotoband { min-height: 420px; padding: 5rem 1.2rem; } .fotoband-bild::after { background: linear-gradient(180deg, rgba(27,19,13,.55), rgba(27,19,13,.78)); } }
+
+    /* Rechner */
+    .rechner { display: grid; gap: 2.4rem; align-items: center; background: var(--karte); border: 1px solid var(--linie); border-radius: var(--radius); padding: clamp(1.4rem, 4vw, 3rem); box-shadow: var(--schatten); }
+    @media (min-width: 860px) { .rechner { grid-template-columns: 1fr 1fr; } }
+    .regler { display: grid; gap: 1.7rem; }
+    .regler label { display: flex; justify-content: space-between; align-items: baseline; font-weight: 600; margin-bottom: .6rem; gap: 1rem; font-size: .97rem; }
+    .regler output { font-family: var(--serif); font-size: 1.15rem; font-variant-numeric: tabular-nums; color: var(--messing-text); font-weight: 600; white-space: nowrap; }
+    input[type=range] { width: 100%; height: 30px; accent-color: var(--messing); cursor: pointer; }
+    .wahl { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .wahl label { display: inline-flex; margin: 0; }
+    .wahl input { position: absolute; opacity: 0; pointer-events: none; }
+    .wahl span { padding: .55rem 1.1rem; border-radius: 3px; background: var(--papier); border: 1px solid var(--linie); font-weight: 600; font-size: .93rem; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; transition: background .2s, color .2s, border-color .2s; }
+    .wahl span:hover { border-color: #c9b690; }
+    .wahl input:checked + span { background: var(--holz); color: #fff; border-color: var(--holz); }
+    .wahl input:focus-visible + span { outline: 3px solid var(--honig); outline-offset: 3px; }
+    .ergebnis { position: relative; text-align: center; background: var(--holz); color: #fff; border-radius: var(--radius); padding: 2.6rem 1.4rem 2.4rem; isolation: isolate; }
+    .ergebnis::before { content: ''; position: absolute; inset: 10px; border: 1px solid rgba(217,166,92,.5); pointer-events: none; }
+    .ergebnis small { display: block; color: var(--honig); font-weight: 600; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; }
+    .ergebnis b { display: block; font-family: var(--serif); font-weight: 500; font-size: clamp(4rem, 11vw, 6.2rem); line-height: 1; margin: .5rem 0 .2rem; color: #fff; font-variant-numeric: tabular-nums; }
+    .ergebnis p { color: rgba(255,255,255,.8); font-size: 1.05rem; }
+    .ergebnis .btn { margin-top: 1.5rem; position: relative; }
+    .fuss { font-size: .88rem; color: var(--leise); margin-top: 1.4rem; text-align: center; }
+
+    /* Preise */
+    .preise { display: grid; gap: 1.4rem; grid-template-columns: 1fr; align-items: stretch; text-align: left; }
+    @media (min-width: 880px) { .preise { grid-template-columns: repeat(3, 1fr); } }
+    .preis { background: var(--karte); border: 1px solid var(--linie); border-radius: var(--radius); padding: 2.3rem 2rem; display: flex; flex-direction: column; position: relative; }
+    .preis.haupt { border-color: var(--messing); border-top: 3px solid var(--messing); box-shadow: var(--schatten); }
+    @media (max-width: 879px) { .preis.haupt { order: -1; } }
+    .preis .marke-p { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--messing-text); font-weight: 600; margin-bottom: .9rem; }
+    .preis h3 { font-weight: 600; font-size: 1.6rem; line-height: 1.15; }
+    .preis .fuer { color: var(--leise); margin-top: .3rem; min-height: 3em; font-size: .95rem; }
+    .betrag { font-family: var(--serif); font-weight: 500; font-size: 2.8rem; line-height: 1.1; margin-top: 1rem; color: var(--tinte); }
+    .betrag small { font-family: var(--sans); font-size: .9rem; font-weight: 500; letter-spacing: .08em; color: var(--leise); }
+    .statt { color: var(--messing-text); font-weight: 600; font-size: .92rem; margin-top: .5rem; min-height: 1.5em; }
+    .preis ul { list-style: none; margin: 1rem 0 1.8rem; padding-top: .9rem; border-top: 1px solid var(--linie); display: grid; gap: .45rem; }
+    .preis li { display: flex; gap: .7rem; align-items: baseline; color: var(--leise); font-size: .93rem; }
+    .preis li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--messing); flex-shrink: 0; transform: translateY(-3px); }
+    .preis .btn { margin-top: auto; width: 100%; }
+    .preis-hinweis { margin-top: 2rem; font-size: .9rem; color: var(--leise); text-align: center; }
+    .preis-hinweis a { text-decoration: underline; text-underline-offset: 2px; }
+
+    /* Fragen */
+    .fragen { margin-top: 2.4rem; border-top: 1px solid var(--linie); }
+    details { border-bottom: 1px solid var(--linie); }
+    summary { cursor: pointer; padding: 1.25rem 0; font-family: var(--serif); font-weight: 600; font-size: 1.2rem; line-height: 1.3; list-style: none; display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: ""; width: 10px; height: 10px; border-right: 1px solid var(--messing-text); border-bottom: 1px solid var(--messing-text); transform: rotate(45deg); flex-shrink: 0; margin-right: 6px; transition: transform .25s; }
+    details[open] summary::after { transform: rotate(-135deg); }
+    details p { padding: 0 0 1.4rem; color: var(--leise); font-size: 1rem; max-width: 40rem; }
+
+    /* Schluss: Fotokarte mit Messingrahmen */
+    .schluss { padding-top: 0; }
+    .schluss-box { position: relative; border-radius: var(--radius); overflow: hidden; color: #fff; padding: 5rem 2rem; text-align: center; isolation: isolate; box-shadow: var(--schatten-hoch); }
+    .schluss-bild { position: absolute; inset: 0; z-index: -1; }
+    .schluss-bild img { width: 100%; height: 100%; object-fit: cover; }
+    .schluss-bild::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(27,19,13,.6), rgba(27,19,13,.82)); }
+    .schluss-box::before { content: ''; position: absolute; inset: 16px; border: 1px solid rgba(217,166,92,.55); pointer-events: none; }
+    .schluss-box .tag { justify-content: center; color: var(--honig); }
+    .schluss-box .tag::before, .schluss-box .tag::after { content: ''; width: 44px; height: 1px; background: var(--honig); }
+    .schluss-box h2 { color: #fff; font-size: clamp(2.2rem, 5vw, 3.6rem); text-shadow: 0 2px 20px rgba(0,0,0,.3); }
+    .schluss-box .sub { color: rgba(255,255,255,.82); margin-inline: auto; }
+    @media (max-width: 760px) { .schluss-box { padding: 3.6rem 1.4rem; } }
+
+    footer { padding: 2.6rem 0 7rem; text-align: center; font-size: .85rem; color: var(--leise); border-top: 1px solid var(--linie); background: var(--papier); }
+    footer a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    footer .bildhinweis { display: block; margin-top: .6rem; font-size: .76rem; opacity: .8; }
+    @media (min-width: 761px) { footer { padding-bottom: 3rem; } }
+
+    /* Kaufleiste unten, nur schmal: Holz und Messing */
+    .kaufleiste { position: fixed; left: 0; right: 0; bottom: 0; z-index: 55; display: flex; align-items: center; gap: .7rem; padding: .7rem 1rem calc(.7rem + env(safe-area-inset-bottom));
+      background: rgba(27,19,13,.94); -webkit-backdrop-filter: saturate(140%) blur(16px); backdrop-filter: saturate(140%) blur(16px); border-top: 1px solid rgba(255,255,255,.1); color: #fff;
+      transform: translateY(110%); transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+    .kaufleiste.da { transform: none; }
+    .kaufleiste div { line-height: 1.2; margin-right: auto; }
+    .kaufleiste b { display: block; font-family: var(--serif); font-size: 1rem; }
+    .kaufleiste span { font-size: .78rem; color: rgba(255,255,255,.65); }
+    .kaufleiste .btn { min-height: 44px; padding: .5rem 1.1rem; font-size: .92rem; }
+    @media (min-width: 761px) { .kaufleiste { display: none; } }
+
+    @media (max-width: 760px) {
+      section { padding: 4.5rem 0; }
+      .kopf { margin-bottom: 2.4rem; }
+      .leiste-in { height: 68px; } .nav-links { top: 68px; } html { scroll-padding-top: 84px; }
+      .marke { font-size: 1.1rem; } .marke img { width: 38px; height: 38px; }
+    }
+    @media (max-width: 480px) { .marke small { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .auf { opacity: 1; transform: none; transition: none; }
+      .film { transform: none; }
+      .btn, .kachel, .kaufleiste { transition: none; }
+    }
+  </style>
+</head>
+<body class="ohne-js">
+
+<header class="leiste">
+  <div class="wrap leiste-in">
+    <a class="marke" href="#oben">
+      <img src="logo-rg.svg" alt="" width="42" height="42">
+      <span>RG CAD<small>3D-Möbel-CAD · Schweiz</small></span>
+    </a>
+    <nav aria-label="Seitennavigation">
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#ablauf">Ablauf</a></li>
+        <li><a href="#funktionen">Funktionen</a></li>
+        <li><a href="#rechner">Rechner</a></li>
+        <li><a href="#preise">Preise</a></li>
+        <li><a href="#fragen">Fragen</a></li>
+        <li><a href="index.html">RG Ing. Consulting</a></li>
+      </ul>
+    </nav>
+    <div class="rechts">
+      <span class="ab">ab CHF 490</span>
+      <a class="nav-cta" href="#preise">Kaufen</a>
+    </div>
+    <button class="hamburger" aria-label="Menü" aria-expanded="false" aria-controls="nav-links" onclick="this.setAttribute('aria-expanded', document.querySelector('.nav-links').classList.toggle('open'))">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="oben">
+
+<section class="start">
+  <div class="start-bild"><img src="media/karte-rgcad.jpg" width="1400" height="930" alt="" fetchpriority="high"></div>
+  <div class="wrap">
+    <p class="ober auf">RG CAD · Die 3D-Möbel-Software für Schreiner und Tischler</p>
+    <h1 class="auf" style="--d:.05s">Planen, zeigen, bauen.<br><span class="holz">Vom Mass bis zum Zuschnitt.</span></h1>
+    <p class="lead auf" style="--d:.12s">Du gibst Breite, Höhe und Tiefe ein. RG CAD zeichnet das Möbel in 3D und liefert Stückliste, Zuschnitt, Bohrplan und Preis. Durchgängig, ohne Abtippen.</p>
+    <div class="tat auf" style="--d:.2s">
+      <a class="btn btn-primary" href="demo/">30 Tage gratis testen</a>
+      <a class="weiter" href="mailto:info@rg-ing-consulting.ch?subject=RG%20CAD%20%E2%80%93%20Live-Demo%20anfragen&amp;body=Guten%20Tag%0A%0AIch%20m%C3%B6chte%20RG%20CAD%20in%20einer%20Live-Demo%20sehen.%0A%0AFirma%3A%20%0ATelefon%3A%20%0AWunschtermin%3A%20%0A%0AFreundliche%20Gr%C3%BCsse">Kostenlose Live-Demo anfragen</a>
+    </div>
+    <p class="klein auf" style="--d:.26s">Einmal kaufen, kein Abo. Keine Registrierung für den Test. Live-Demo: 20 Minuten per Video-Anruf, ich zeige dir dein eigenes Möbel.</p>
+  </div>
+</section>
+<div class="film-wrap">
+  <div class="film" id="film">
+    <video id="film-video" muted loop playsinline preload="metadata" poster="media/rgcad-film.jpg" width="1280" height="720"
+           aria-label="RG CAD in Bedienung: eine Kommode wird gedreht, die Auszüge öffnen sich, danach die Explosionsansicht">
+      <source src="media/rgcad-film.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<section id="warum" style="padding-top:2rem">
+  <div class="wrap">
+    <div class="einleitung auf">
+      <h2>Die CAD-Software für Schreiner und Tischler</h2>
+      <p>Du willst Möbel nach Mass schnell und sauber umsetzen und deine Kunden überzeugen? Mit RG CAD arbeitest du vom Aufmass bis zum Zuschnitt in einem Durchgang. Du konzentrierst dich auf dein Handwerk, RG CAD übernimmt Rechnen, Listen und Zeichnungen. So bleibt wieder mehr Zeit für das, was du an deinem Beruf magst: Schönes aus Holz bauen.</p>
+    </div>
+    <div class="nutzen">
+      <article class="nutz auf">
+        <span class="nutz-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>
+        <h3>Spare Zeit</h3>
+        <p>Konstruktion, Beratung und Arbeitsvorbereitung in einem Werkzeug. Ein Mass ändern, und Stückliste, Zuschnitt und Bohrplan rechnen neu. Das spart je Möbel eine bis zwei Stunden.</p>
+      </article>
+      <article class="nutz auf" style="--d:.08s">
+        <span class="nutz-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l5-5 4 4 7-8"/><path d="M15 8h5v5"/></svg></span>
+        <h3>Steigere deinen Umsatz</h3>
+        <p>Offerte mit Preis in Franken, Bild in 3D und Beschlägen mit Artikelnummer, noch am selben Tag. Wer schnell und klar offeriert, bekommt auch die grösseren Aufträge.</p>
+      </article>
+      <article class="nutz auf" style="--d:.16s">
+        <span class="nutz-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.5c2.8.3 5 2.6 5 5.5"/></svg></span>
+        <h3>Entlaste dein Personal</h3>
+        <p>Ein durchgängiger Ablauf vom Modell bis zur Werkstattzeichnung. Keine handgeschriebenen Zettel an der Säge, keine doppelt getippten Listen, weniger Fehlerquellen.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="ablauf" class="dunkel">
+  <div class="wrap">
+    <div class="kopf">
+      <div class="tag">Ablauf</div>
+      <h2 class="auf">Durchgängig von Plan bis Zuschnitt</h2>
+      <p class="sub auf" style="--d:.08s">RG CAD begleitet dich von der Konstruktion über die Arbeitsvorbereitung bis zur Übergabe an Werkstatt und Maschine.</p>
+    </div>
+    <ol class="schritte">
+      <li class="auf"><b>1</b><div><strong>Parametrisch: Der Korpus rechnet mit.</strong><span>Breite, Höhe, Tiefe, Plattenstärke, Rückwand, Sockel: alles bleibt verknüpft. Ein Mass ändern, das ganze Möbel folgt.</span></div></li>
+      <li class="auf" style="--d:.05s"><b>2</b><div><strong>Praktisch: Vorlagen und Möbeltypen.</strong><span>Unterschrank, Oberschrank, Hochschrank, Regal und Tisch. Dazu Vorlagen wie Doppeltür, Kommode oder Sideboard als Startpunkt.</span></div></li>
+      <li class="auf" style="--d:.1s"><b>3</b><div><strong>Flexibel: Spalten, Fächer und Fronten.</strong><span>Türen mit Anschlag, Schubkästen, offene Fächer und Böden je Spalte. Griffe und Knöpfe aus der Auswahl.</span></div></li>
+      <li class="auf" style="--d:.15s"><b>4</b><div><strong>Direkt: Katalog und Warenkorb.</strong><span>Blum-Beschläge mit Artikelnummer und Richtpreis, Nennlänge passend zur Tiefe. Der Warenkorb fasst Platten, Kanten und Beschläge mit Preisen und MwSt zusammen. Mengen und Preise passt du an, die Bestellung geht per E-Mail an deinen Händler.</span></div></li>
+      <li class="auf" style="--d:.2s"><b>5</b><div><strong>Material: Holzart je Platte, Preise vom Händler.</strong><span>Jede Platte einzeln in Eiche, Nussbaum, Buche, Multiplex oder beschichteter Spanplatte. Preisliste deines Holzhändlers einlesen, die Kalkulation rechnet in Franken.</span></div></li>
+      <li class="auf" style="--d:.25s"><b>6</b><div><strong>Ökologisch: Verschnittoptimierung.</strong><span>Alle Teile je Material auf 2800 × 2070 gelegt, mit Schnittfuge und Faserrichtung. Plattenzahl, Nutzung und Schnittplan zum Drucken, Zuschnittliste als CSV.</span></div></li>
+      <li class="auf" style="--d:.3s"><b>7</b><div><strong>Präzise: Bemasster Bohrplan.</strong><span>Verbinder, Bodenträger und Beschlagbohrungen mit Massen, für Werkstatt und Lochreihe. Minifix, Dübel, Confirmat oder Lamello wählbar.</span></div></li>
+      <li class="auf" style="--d:.35s"><b>8</b><div><strong>Vollständig: Zeichnungen, Schnitt, Etiketten.</strong><span>Werkstattzeichnung, Schnitt A–A mit Schraffur und Massketten, Montageanleitung mit deinem Firmenkopf. Dazu Etiketten mit Barcode je Bauteil, A4 mit 12 Stück.</span></div></li>
+      <li class="auf" style="--d:.4s"><b>9</b><div><strong>Präzise: DXF für CAM und CNC.</strong><span>Jedes Teil mit Kontur, Bohrungen auf Layern je Durchmesser und Nuten als DXF in Millimetern. Für WoodWOP, Maestro, BiesseWorks oder Fusion 360. Dazu Export nach SchreinerProfi.</span></div></li>
+      <li class="auf" style="--d:.45s"><b>10</b><div><strong>Überzeugend: 3D-Ansicht und Foto-Modus.</strong><span>Auszüge und Türen öffnen sich im Modell, die Explosionsansicht zeigt jedes Teil. Der Foto-Modus rechnet die Ansicht mit Raytracing: weiche Schatten, Licht in offenen Schubladen, Glanz auf den Griffen. Das Bild bis 2560 Pixel geht direkt in Offerte und Präsentation.</span></div></li>
+    </ol>
+    <p class="ehrlich auf">Ehrlich gesagt: RG CAD steuert keine Maschine direkt, sondern übergibt DXF an dein CAM. Das Raytracing rechnet auf deinem Gerät und braucht je nach Grösse ein bis einige Minuten. Bestellt wird per E-Mail beim Händler, bezahlt wird dort, nicht im Programm. Dafür läuft alles offline im Browser, kostet einmal CHF 490 bis 990 und gehört dir.</p>
+  </div>
+</section>
+
+<section class="band-2">
+  <div class="wrap">
+    <p class="satz auf"><b>Eine Eingabe.</b> Daraus entstehen <b>Stückliste</b>, <b>Zuschnitt</b>, <b>Bohrbild</b> und <b>Materialkosten</b>. <em>Ohne Abtippen, ohne Taschenrechner.</em></p>
+    <div class="zahlen">
+      <div class="zahl auf"><b>30</b><span>Tage gratis testen,<br>voller Funktionsumfang</span></div>
+      <div class="zahl auf" style="--d:.08s"><b>0</b><span>Franken Abo.<br>Einmal kaufen, behalten</span></div>
+      <div class="zahl auf" style="--d:.16s"><b>24</b><span>Monate Updates<br>inbegriffen</span></div>
+      <div class="zahl auf" style="--d:.24s"><b>1</b><span>Datei. Läuft offline<br>im Browser</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="funktionen">
+  <div class="wrap">
+    <div class="kopf mitte">
+      <div class="tag">Funktionen</div>
+      <h2 class="auf">Sieh jedes Teil,<br>bevor du sägst.</h2>
+      <p class="sub auf" style="--d:.08s">Dein Möbel steht in 3D vor dir. Auszüge und Türen öffnen sich im Modell. Jede Platte hat ihr Mass.</p>
+    </div>
+    <div class="raster">
+      <article class="kachel frei k-4 auf" style="--ar: 16 / 11">
+        <div class="text"><small>Explosionsansicht</small><h3>Alles auseinander. Alles klar.</h3><p>Ein Klick zieht das Möbel in seine Teile. So siehst du den Aufbau, bevor die erste Platte auf der Säge liegt.</p></div>
+        <div class="bild"><img src="media/rgcad-teil-explosion.jpg" width="1200" height="1038" loading="lazy" alt="Explosionsansicht einer Kommode: Seiten, Böden und Schubkästen auseinandergezogen"></div>
+      </article>
+      <article class="kachel eiche k-2 auf" style="--d:.08s">
+        <p class="masse" aria-hidden="true"><span>600</span><span>720</span><span>560</span><small>Breite · Höhe · Tiefe in mm</small></p>
+        <div class="text"><small>Parametrisch</small><h3>Mass ändern. Alles rechnet neu.</h3><p>Unterschrank, Oberschrank, Hochschrank, Regal und Tisch. Dazu Vorlagen wie Kommode, Sideboard und Bücherregal.</p></div>
+      </article>
+      <article class="kachel k-3 auf">
+        <div class="text"><small>Werkstattzeichnung</small><h3>Druckfertig für die Werkstatt.</h3><p>3D-Ansicht, Stückliste und bemasste Teile mit Bohrungen, Nuten und Kanten. Mit deinem Firmenkopf und Logo.</p></div>
+        <div class="bild"><img src="media/rgcad-teil-werkstatt.jpg" width="1200" height="863" loading="lazy" alt="Werkstattzeichnung mit 3D-Ansicht, Materialkosten und Stückliste"></div>
+      </article>
+      <article class="kachel k-3 auf" style="--d:.08s">
+        <div class="text"><small>Blum-Auszüge</small><h3>Mit Artikelnummer und Richtpreis.</h3><p>Nennlänge wählen, Beschlag steht in der Liste. Preise passt du an oder importierst die Liste deines Händlers.</p></div>
+        <div class="bild"><img src="media/rgcad-teil-blum.jpg" width="1200" height="1185" loading="lazy" alt="Blum-Auszug-Katalog mit Nennlängen, Artikelnummern und Richtpreisen"></div>
+      </article>
+      <article class="kachel nur-text k-2 auf">
+        <div class="text"><small>Zuschnitt</small><h3>Als CSV direkt weiter.</h3><p>Länge, Breite, Stärke, Anzahl und Kante je Bauteil.</p></div>
+      </article>
+      <article class="kachel nur-text k-2 auf" style="--d:.08s">
+        <div class="text"><small>Materialkosten</small><h3>In Franken, mit deinen Preisen.</h3><p>Platten, Kantenumleimer und Beschläge. Holzpreise je Händler hinterlegt.</p></div>
+      </article>
+      <article class="kachel nur-text k-2 auf" style="--d:.16s">
+        <div class="text"><small>Montage und Export</small><h3>Anleitung dazu. Fusion 360 auch.</h3><p>Montageanleitung Schritt für Schritt und Export nach Fusion 360.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="fotoband">
+  <div class="fotoband-bild"><img src="media/rgcad-werkstatt.jpg" width="1344" height="752" loading="lazy" alt="Heller Werkstattraum mit einem Eichenkorpus auf der Hobelbank"></div>
+  <div class="fotoband-text auf">
+    <h2>Von einem Praktiker entwickelt.</h2>
+    <p>Selbst programmiert und an der eigenen CNC erprobt. Für Leute, die Möbel bauen wollen, nicht Software bedienen.</p>
+  </div>
+  <span class="marke-bild">Symbolbild</span>
+</div>
+
+<section id="rechner" class="band-2">
+  <div class="wrap">
+    <div class="kopf mitte">
+      <div class="tag">Rechner</div>
+      <h2 class="auf">Wann ist RG CAD <span class="holz">bezahlt?</span></h2>
+      <p class="sub auf" style="--d:.08s">Rechne es mit deinen eigenen Zahlen aus.</p>
+    </div>
+    <div class="rechner auf">
+      <div class="regler">
+        <div>
+          <label for="r-zeit">Gesparte Arbeitsvorbereitung pro Möbel <output id="o-zeit">1,0 Std.</output></label>
+          <input type="range" id="r-zeit" min="0.25" max="3" step="0.25" value="1">
+        </div>
+        <div>
+          <label for="r-satz">Dein Stundenansatz <output id="o-satz">CHF 100</output></label>
+          <input type="range" id="r-satz" min="50" max="180" step="5" value="100">
+        </div>
+        <div>
+          <label id="l-liz" style="display:block">Lizenz</label>
+          <div class="wahl" role="radiogroup" aria-labelledby="l-liz">
+            <label><input type="radio" name="liz" value="490"><span>Hobby · 490</span></label>
+            <label><input type="radio" name="liz" value="990" checked><span>Profi · 990</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="ergebnis" aria-live="polite">
+        <small>Die Lizenz ist bezahlt nach</small>
+        <b id="e-zahl">10</b>
+        <p id="e-wort">Möbeln</p>
+        <a class="btn btn-primary" href="#preise">Jetzt kaufen</a>
+      </div>
+    </div>
+    <p class="fuss">Beispielrechnung: Lizenzpreis geteilt durch gesparte Zeit mal Stundenansatz. Wie viel Zeit du sparst, hängt von deinem Betrieb ab.</p>
+  </div>
+</section>
+
+<section id="preise">
+  <div class="wrap">
+    <div class="kopf mitte">
+      <div class="tag">Preise</div>
+      <h2 class="auf">Einmal kaufen.<br>Für immer behalten.</h2>
+      <p class="sub auf" style="--d:.08s">Dauerlizenz mit 24 Monaten Updates. Danach läuft dein Programm unbegrenzt weiter, es wird nichts abgeschaltet.</p>
+    </div>
+    <div class="preise">
+      <div class="preis auf">
+        <span class="marke-p">Privat</span>
+        <h3>Hobby</h3>
+        <p class="fuer">Für private Holzwerker.</p>
+        <div class="betrag"><small>CHF</small> 490</div>
+        <p class="statt">&nbsp;</p>
+        <ul>
+          <li>Voller Funktionsumfang</li>
+          <li>Dauerlizenz, 24 Monate Updates</li>
+          <li>Nur für private, nicht kommerzielle Nutzung</li>
+        </ul>
+        <a class="btn btn-outline" href="mailto:info@rg-ing-consulting.ch?subject=RG%20CAD%20%E2%80%93%20Hobby-Lizenz%20bestellen&amp;body=Guten%20Tag%0A%0AIch%20bestelle%20RG%20CAD%20als%20Hobby-Lizenz.%0A%0AName%20f%C3%BCr%20die%20Lizenz%3A%20%0ATelefon%3A%20%0A%0AFreundliche%20Gr%C3%BCsse">Hobby kaufen</a>
+      </div>
+      <div class="preis haupt auf" style="--d:.08s">
+        <span class="marke-p">Für Betriebe</span>
+        <h3>Profi</h3>
+        <p class="fuer">Für Schreinereien. Firmenlizenz für die kommerzielle Nutzung.</p>
+        <div class="betrag"><small>CHF</small> 990</div>
+        <p class="statt">Einführungspreis statt <s>CHF 1'290</s></p>
+        <ul>
+          <li>Voller Funktionsumfang</li>
+          <li>Dauerlizenz, 24 Monate Updates</li>
+          <li>Lizenz auf deinen Betrieb ausgestellt</li>
+        </ul>
+        <a class="btn btn-primary" href="mailto:info@rg-ing-consulting.ch?subject=RG%20CAD%20%E2%80%93%20Profi-Lizenz%20bestellen&amp;body=Guten%20Tag%0A%0AIch%20bestelle%20RG%20CAD%20als%20Profi-Lizenz.%0A%0AFirmenname%20(genau%20so%20f%C3%BCr%20die%20Lizenz)%3A%20%0ATelefon%3A%20%0A%0AFreundliche%20Gr%C3%BCsse">Profi kaufen</a>
+      </div>
+      <div class="preis auf" style="--d:.16s">
+        <span class="marke-p">Weiterer Platz</span>
+        <h3>Zweitplatz</h3>
+        <p class="fuer">Zusätzlicher Arbeitsplatz im gleichen Betrieb.</p>
+        <div class="betrag"><small>CHF</small> 645</div>
+        <p class="statt">&nbsp;</p>
+        <ul>
+          <li>Für einen weiteren Rechner</li>
+          <li>Setzt eine Profi-Lizenz im Betrieb voraus</li>
+          <li>Dauerlizenz, 24 Monate Updates</li>
+        </ul>
+        <a class="btn btn-outline" href="mailto:info@rg-ing-consulting.ch?subject=RG%20CAD%20%E2%80%93%20Zweitplatz-Lizenz%20bestellen&amp;body=Guten%20Tag%0A%0AIch%20bestelle%20eine%20Zweitplatz-Lizenz%20f%C3%BCr%20RG%20CAD.%0A%0AFirmenname%20der%20bestehenden%20Profi-Lizenz%3A%20%0ATelefon%3A%20%0A%0AFreundliche%20Gr%C3%BCsse">Zweitplatz kaufen</a>
+      </div>
+    </div>
+    <p class="preis-hinweis">Preise in Schweizer Franken, ohne Ausweis der Mehrwertsteuer. Bestellung per E-Mail, Zahlung per TWINT, Karte oder auf Rechnung.<br>Lieferung digital, in der Regel am selben Werktag. Es gelten die <a href="https://rg-ing-consulting.ch/agb.html">AGB für RG CAD</a>.</p>
+  </div>
+</section>
+
+<section id="fragen" class="band-2">
+  <div class="eng">
+    <div class="kopf">
+      <div class="tag">Fragen</div>
+      <h2 class="auf">Kurz beantwortet.</h2>
+    </div>
+    <div class="fragen">
+      <details><summary>Wie funktioniert der Test?</summary><p>Du öffnest die Online-Demo und arbeitest 30 Tage mit dem vollen Funktionsumfang, ohne Registrierung. Nach Ablauf erscheint ein Sperrbildschirm. Mit Firmenname und Freischalt-Schlüssel wird daraus die Vollversion.</p></details>
+      <details><summary>Ist das ein Abo?</summary><p>Nein. Du zahlst einmal und erhältst ein zeitlich unbegrenztes Nutzungsrecht an der gekauften Version.</p></details>
+      <details><summary>Was passiert nach den 24 Monaten Updates?</summary><p>Dein Programm läuft unbegrenzt weiter. Es wird nichts deaktiviert. Ein Anspruch auf weitere Updates besteht danach nicht.</p></details>
+      <details><summary>Brauche ich Internet?</summary><p>Die Vollversion ist eine einzelne HTML-Datei und läuft vollständig offline im Browser. Es gibt keinen Lizenzserver, kein Kundenkonto und keine Cloud. Nur die Online-Demo braucht eine Verbindung.</p></details>
+      <details><summary>Wie bestelle und bezahle ich?</summary><p>Du bestellst per E-Mail mit der gewünschten Lizenz und dem Namen, auf den sie lauten soll. Bezahlen kannst du per TWINT, mit Karte oder auf Rechnung mit 14 Tagen Zahlungsfrist.</p></details>
+      <details><summary>Wie schnell erhalte ich die Vollversion?</summary><p>Die Lieferung ist digital. Du bekommst per E-Mail den Download-Link und deinen Freischalt-Schlüssel, in der Regel am selben Werktag, spätestens innert zwei Werktagen.</p></details>
+      <details><summary>Darf ich die Hobby-Lizenz im Betrieb nutzen?</summary><p>Nein. Die Hobby-Lizenz gilt nur für private, nicht kommerzielle Zwecke. Für den Betrieb braucht es die Profi-Lizenz, für jeden weiteren Arbeitsplatz eine Zweitplatz-Lizenz.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="schluss">
+  <div class="wrap">
+    <div class="schluss-box">
+      <div class="schluss-bild"><img src="media/chalet-werkzeug.jpg" width="2000" height="1131" alt="" loading="lazy"></div>
+      <div class="tag">Jetzt testen</div>
+      <h2 class="auf">Dein nächster Auftrag.<br><span class="holz">Schon mit RG CAD.</span></h2>
+      <p class="sub auf" style="--d:.08s">Teste 30 Tage gratis mit einem echten Möbel. Fragen beantworte ich persönlich.</p>
+      <div class="tat auf" style="--d:.16s">
+        <a class="btn btn-primary" href="demo/">30 Tage gratis testen</a>
+        <a class="weiter" href="mailto:info@rg-ing-consulting.ch?subject=Frage%20zu%20RG%20CAD">Frage stellen</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <b>RG CAD</b> · ein Produkt von RG Ing. Consulting, Fislisbach, Schweiz<br>
+    <a href="index.html">Startseite</a> · <a href="software.html">Software nach Mass</a> · <a href="https://rg-ing-consulting.ch/agb.html">AGB RG CAD</a> · <a href="https://rg-ing-consulting.ch/impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+    <span class="bildhinweis">Die Stimmungsfotos auf dieser Seite sind Symbolbilder. Die Bildschirmfotos und das Video zeigen das Programm selbst.</span>
+  </div>
+</footer>
+
+<div class="kaufleiste" id="kaufleiste">
+  <div><b>RG CAD</b><span>ab CHF 490 · kein Abo</span></div>
+  <a class="btn btn-light" href="demo/">Testen</a>
+  <a class="btn btn-primary" href="#preise">Kaufen</a>
+</div>
+
+<script>
+(function () {
+  var d = document, ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  d.body.classList.remove('ohne-js');
+
+  // Handy-Menü nach der Wahl schliessen, sonst verdeckt es den angesprungenen Abschnitt
+  var liste = d.querySelector('.nav-links'), knopf = d.querySelector('.hamburger');
+  function zu() { liste.classList.remove('open'); knopf.setAttribute('aria-expanded', 'false'); }
+  liste.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('a')) zu(); });
+  d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && liste.classList.contains('open')) { zu(); knopf.focus(); } });
+
+  // Auftritt beim Scrollen
+  var auf = [].slice.call(d.querySelectorAll('.auf'));
+  if (ruhig || !('IntersectionObserver' in window)) { auf.forEach(function (e) { e.classList.add('da'); }); }
+  else {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('da'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    auf.forEach(function (e) { io.observe(e); });
+  }
+
+  // Video: läuft nur, solange es sichtbar ist. Wächst beim Scrollen auf volle Grösse.
+  var film = d.getElementById('film'), video = d.getElementById('film-video');
+  if (!ruhig) {
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { var p = video.play(); if (p && p.catch) p.catch(function () {}); } else video.pause(); });
+      }, { threshold: 0.25 }).observe(video);
+    } else { video.autoplay = true; }
+    var wartet = false;
+    function masse() {
+      wartet = false;
+      var r = film.getBoundingClientRect(), h = window.innerHeight;
+      var t = Math.min(1, Math.max(0, (h - r.top) / (h * 0.75)));
+      film.style.setProperty('--s', (0.88 + 0.12 * t).toFixed(4));
+    }
+    window.addEventListener('scroll', function () { if (!wartet) { wartet = true; requestAnimationFrame(masse); } }, { passive: true });
+    window.addEventListener('resize', masse);
+    masse();
+  } else { video.controls = true; }
+
+  // Rechner: Lizenzpreis / (gesparte Stunden × Stundenansatz), aufgerundet
+  var zeit = d.getElementById('r-zeit'), satz = d.getElementById('r-satz');
+  function rechne() {
+    var z = parseFloat(zeit.value), s = parseFloat(satz.value);
+    var liz = parseFloat(d.querySelector('input[name=liz]:checked').value);
+    var n = Math.max(1, Math.ceil(liz / (z * s)));
+    d.getElementById('o-zeit').textContent = z.toFixed(2).replace(/0$/, '').replace('.', ',') + ' Std.';
+    d.getElementById('o-satz').textContent = 'CHF ' + s;
+    d.getElementById('e-zahl').textContent = n;
+    d.getElementById('e-wort').textContent = n === 1 ? 'Möbel' : 'Möbeln';
+  }
+  zeit.addEventListener('input', rechne); satz.addEventListener('input', rechne);
+  [].forEach.call(d.querySelectorAll('input[name=liz]'), function (r) { r.addEventListener('change', rechne); });
+  rechne();
+
+  // Kaufleiste (schmal): erscheint nach dem Einstieg, verschwindet bei den Preisen
+  var leiste = d.getElementById('kaufleiste'), preise = d.getElementById('preise');
+  function kauf() {
+    var p = preise.getBoundingClientRect();
+    var beiPreisen = p.top < window.innerHeight * 0.7 && p.bottom > 120;
+    leiste.classList.toggle('da', window.scrollY > 520 && !beiPreisen);
+  }
+  window.addEventListener('scroll', kauf, { passive: true }); kauf();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fbf9f6">
+  <meta name="color-scheme" content="light">
+  <title>RG CAD – Möbel-Konfigurator</title>
+  <link rel="stylesheet" href="css/style.css?v=62">
+</head>
+<body>
+  <div id="splash" aria-hidden="true">
+    <div class="sp-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
+    <div class="sp-name">RG CAD</div>
+    <div class="sp-sub">Möbel-Konfigurator für Schreiner</div>
+    <div class="sp-bar"><i></i></div>
+  </div>
+  <header class="appbar">
+    <div class="ab-cluster">
+      <span class="ab-logo" title="RG CAD"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></span>
+      <button class="ab-ic" id="btn-reset" title="Ansicht zurücksetzen / Möbel einpassen">⌂</button>
+      <button class="ab-ic" id="btn-load" title="Projekte (laden/löschen)">▦</button>
+      <button class="ab-ic" id="btn-save" title="Projekt speichern">🖫</button>
+      <span class="ab-sep"></span>
+      <button class="ab-ic ab-dim" id="ab-undo" title="Rückgängig (noch nicht belegt)">↶</button>
+      <button class="ab-ic ab-dim" id="ab-redo" title="Wiederholen (noch nicht belegt)">↷</button>
+    </div>
+    <div class="ab-title"><span class="ab-cube">◧</span><span id="ab-doc">RG CAD – Projekt</span></div>
+    <div class="ab-cluster ab-right">
+      <button class="ab-ic" id="btn-firma" title="Firmendaten &amp; Logo">🏢</button>
+      <span class="ab-avatar">RG</span>
+    </div>
+  </header>
+
+  <nav class="ribbon-tabs" id="ribbon-tabs">
+    <button class="rt on" data-tab="solid">VOLUMENKÖRPER</button>
+    <button class="rt" data-tab="sketch">SKIZZE</button>
+    <button class="rt" data-tab="surface">FLÄCHE</button>
+    <button class="rt" data-tab="sheet">BLECH</button>
+    <button class="rt" data-tab="assemble">ZUSAMMENFÜGEN</button>
+    <button class="rt" data-tab="drawing">ZEICHNUNG</button>
+    <button class="rt" data-tab="utility">DIENSTPROGRAMME</button>
+  </nav>
+
+  <div class="ribbon" id="ribbon">
+    <button class="ws-btn" title="Arbeitsbereich">KONSTRUKTION<span class="ws-caret">▾</span></button>
+    <div class="rb-sep"></div>
+
+    <div class="rb-group">
+      <div class="rb-icons">
+        <button class="ri" id="btn-quader" title="Quader erstellen (B×T×H)"><span class="ri-ic">⬛</span><span class="ri-tx">Quader</span></button>
+        <button class="ri" id="btn-grundriss" title="Grundriss skizzieren → Extrudieren"><span class="ri-ic">✏️</span><span class="ri-tx">Skizze</span></button>
+        <button class="ri" id="btn-moebel-add" title="Möbel hinzufügen"><span class="ri-ic">🗄️</span><span class="ri-tx">Möbel</span></button>
+      </div>
+      <div class="rb-glabel">ERSTELLEN ▾</div>
+    </div>
+    <div class="rb-sep"></div>
+
+    <div class="rb-group">
+      <div class="rb-icons">
+        <button class="ri" id="btn-bohrung" title="Bohrung in gewählten Körper"><span class="ri-ic">⊙</span><span class="ri-tx">Bohren</span></button>
+        <button class="ri" id="btn-nut" title="Nut / Ausschnitt"><span class="ri-ic">▭</span><span class="ri-tx">Nut</span></button>
+        <button class="ri" id="btn-mat" title="Material-Modus: Bauteil anklicken, Holzart wählen"><span class="ri-ic">🎨</span><span class="ri-tx">Holzart</span></button>
+        <button class="ri" id="btn-griffe" title="Griffe & Knöpfe auswählen"><span class="ri-ic">🔘</span><span class="ri-tx">Griffe</span></button>
+        <button class="ri" id="btn-explode" title="Explosionsansicht"><span class="ri-ic">✺</span><span class="ri-tx">Explosion</span></button>
+      </div>
+      <div class="rb-glabel">ÄNDERN ▾</div>
+    </div>
+    <div class="rb-sep"></div>
+
+    <div class="rb-group">
+      <div class="rb-icons">
+        <button class="ri on" id="btn-dims" title="Bemassung ein/aus"><span class="ri-ic">⊞</span><span class="ri-tx">Masse</span></button>
+        <button class="ri" id="btn-wire" title="Drahtgitter"><span class="ri-ic">◫</span><span class="ri-tx">Gitter</span></button>
+        <button class="ri" id="btn-shot" title="Screenshot"><span class="ri-ic">▢</span><span class="ri-tx">Bild</span></button>
+        <button class="ri" id="btn-foto" title="Foto-Modus: Raytracing der aktuellen Ansicht"><span class="ri-ic"></span><span class="ri-tx">Foto</span></button>
+      </div>
+      <div class="rb-glabel">ANSICHT</div>
+    </div>
+    <div class="rb-sep"></div>
+
+    <div class="rb-group">
+      <div class="rb-icons">
+        <button class="ri" id="btn-drawers" title="Auszüge auf/zu"><span class="ri-ic">🗄</span><span class="ri-tx">Auszüge</span></button>
+        <button class="ri" id="btn-doors" title="Türen auf/zu"><span class="ri-ic">🚪</span><span class="ri-tx">Türen</span></button>
+        <button class="ri" id="btn-flaps" title="Klappen auf/zu"><span class="ri-ic">🔼</span><span class="ri-tx">Klappen</span></button>
+      </div>
+      <div class="rb-glabel">ANIMATION</div>
+    </div>
+    <div class="rb-sep"></div>
+
+    <div class="rb-group">
+      <div class="rb-icons">
+        <button class="ri" id="btn-shop" title="Werkstattzeichnung"><span class="ri-ic">📐</span><span class="ri-tx">Werkstatt</span></button>
+        <button class="ri" id="btn-cons" title="Konstruktionszeichnung"><span class="ri-ic">🏗</span><span class="ri-tx">Konstr.</span></button>
+        <button class="ri" id="btn-montage" title="Montageanleitung"><span class="ri-ic">🪛</span><span class="ri-tx">Montage</span></button>
+        <button class="ri" id="btn-print" title="Übersicht 3D + Stückliste"><span class="ri-ic">⎙</span><span class="ri-tx">Übersicht</span></button>
+        <button class="ri" id="btn-csv" title="Zuschnitt CSV"><span class="ri-ic">⇩</span><span class="ri-tx">CSV</span></button>
+        <button class="ri" id="btn-verschnitt" title="Verschnittoptimierung: Teile auf Platten legen"><span class="ri-ic"></span><span class="ri-tx">Verschnitt</span></button>
+        <button class="ri" id="btn-etiketten" title="Etiketten mit Barcode drucken"><span class="ri-ic"></span><span class="ri-tx">Etiketten</span></button>
+        <button class="ri" id="btn-dxf" title="DXF für CAM und CNC exportieren"><span class="ri-ic"></span><span class="ri-tx">DXF / CNC</span></button>
+      </div>
+      <div class="rb-glabel">DOKUMENTE ▾</div>
+    </div>
+    <div class="rb-sep"></div>
+
+    <div class="rb-group">
+      <div class="rb-icons">
+        <button class="ri" id="btn-blum" title="Blum Auszug-Katalog"><span class="ri-ic">🧩</span><span class="ri-tx">Blum</span></button>
+        <button class="ri" id="btn-holz" title="Holzhändler & Preise"><span class="ri-ic">🪵</span><span class="ri-tx">Holz</span></button>
+        <button class="ri" id="btn-profi" title="An SchreinerProfi übergeben"><span class="ri-ic">🔗</span><span class="ri-tx">Profi</span></button>
+        <button class="ri" id="btn-fusion" title="Fusion 360 Export"><span class="ri-ic">🧊</span><span class="ri-tx">Fusion</span></button>
+        <button class="ri" id="btn-bestellung" title="Warenkorb: Platten, Kanten, Beschläge mit Preisen, Bestellung an den Händler"><span class="ri-ic"></span><span class="ri-tx">Warenkorb</span></button>
+      </div>
+      <div class="rb-glabel">EINFÜGEN ▾</div>
+    </div>
+  </div>
+
+  <main class="layout">
+    <aside id="panel-left" class="panel-left"></aside>
+
+    <section class="stage">
+      <div id="viewport" class="viewport"></div>
+      <div id="sel-info" class="sel-info" style="display:none"></div>
+      <div id="warnings" class="warnings"></div>
+
+      <div id="viewcube" class="viewcube" title="ViewCube – Fläche klicken für Standardansicht">
+        <div class="vc-cube">
+          <div class="vc-face vc-front"  data-view="front">VORN</div>
+          <div class="vc-face vc-back"   data-view="back">HINTEN</div>
+          <div class="vc-face vc-right"  data-view="right">RECHTS</div>
+          <div class="vc-face vc-left"   data-view="left">LINKS</div>
+          <div class="vc-face vc-top"    data-view="top">OBEN</div>
+          <div class="vc-face vc-bottom" data-view="bottom">UNTEN</div>
+        </div>
+        <button class="vc-home" data-view="iso" title="Start-/Iso-Ansicht">⌂</button>
+      </div>
+
+      <div id="timeline" class="timeline"></div>
+      <div class="stage-hint">Maus ziehen: drehen · Rad: zoomen · Rechtsklick: verschieben · Klick auf Schublade/Tür: öffnen · Klick auf Bauteil: Detail</div>
+    </section>
+
+    <aside class="panel-right">
+      <div class="pr-head">Stückliste / Zuschnitt</div>
+      <div class="table-scroll">
+        <table class="cutlist">
+          <thead>
+            <tr><th>#</th><th>Bezeichnung</th><th>Material</th><th>L</th><th>B</th><th>St</th><th>Anz</th><th>Kante</th><th>Gruppe</th></tr>
+          </thead>
+          <tbody id="cutlist-body"></tbody>
+        </table>
+      </div>
+      <div class="pr-head">Holzart je Platte <span class="pr-sub">· jede Platte einzeln</span></div>
+      <div class="table-scroll small"><div id="plate-mat-body" class="plate-mat"></div></div>
+      <div class="pr-head">Beschläge</div>
+      <div class="table-scroll small">
+        <table class="cutlist">
+          <thead><tr><th>Artikel</th><th>Anz</th><th>CHF</th><th>Total</th></tr></thead>
+          <tbody id="hardware-body"></tbody>
+        </table>
+      </div>
+      <div class="pr-head">Zusammenfassung</div>
+      <div id="summary" class="summary"></div>
+    </aside>
+  </main>
+
+  <nav class="m-nav" id="m-nav" aria-label="Ansicht wechseln">
+    <button class="m-left" data-view="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M3 10h6"/></svg>Bauen</button>
+    <button class="m-model on" data-view="model"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>Modell</button>
+    <button class="m-right" data-view="right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Liste</button>
+  </nav>
+  <script>
+    // Startbild ausblenden, sobald Programm und Modell geladen sind
+    (function () {
+      var sp = document.getElementById("splash");
+      function weg() { if (!sp) return; var e = sp; sp = null; e.classList.add("weg"); setTimeout(function () { e.remove(); }, 400); }
+      if (document.readyState === "complete") setTimeout(weg, 250); else window.addEventListener("load", function () { setTimeout(weg, 250); });
+      setTimeout(weg, 6000);   // Notbremse, falls ein Skript hängt
+    })();
+    // Handy und Tablet: eine Ansicht auf einmal (Bauen · Modell · Liste). Am Schreibtisch ohne Wirkung.
+    (function () {
+      var nav = document.getElementById("m-nav");
+      nav.addEventListener("click", function (e) {
+        var b = e.target.closest("button"); if (!b) return;
+        var v = b.getAttribute("data-view");
+        document.body.classList.toggle("view-left", v === "left");
+        document.body.classList.toggle("view-right", v === "right");
+        nav.querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", x === b); });
+        window.dispatchEvent(new Event("resize"));
+      });
+    })();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+  <script src="lib/OrbitControls.js"></script>
+  <script src="lib/RoomEnvironment.js"></script>
+  <script src="lib/RoundedBoxGeometry.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alasql@4.17.3/dist/alasql.min.js"></script>
+  <script src="lib/csg.js?v=62"></script>
+  <script src="js/icons.js?v=62"></script>
+  <script src="js/materials.js?v=62"></script>
+  <script src="js/blum.js?v=62"></script>
+  <script src="js/db.js?v=62"></script>
+  <script src="js/builder.js?v=62"></script>
+  <script src="js/drawing.js?v=62"></script>
+  <script src="js/fertigung.js?v=62"></script>
+  <script src="js/raytrace.js?v=62"></script>
+  <script src="js/viewer.js?v=62"></script>
+  <script src="js/app.js?v=62"></script>
+  <script src="js/license.js?v=62"></script>
+</body>
+</html>

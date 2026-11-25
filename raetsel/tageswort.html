@@ -23,7 +23,8 @@
    Drei Zustände, immer Farbe UND Zeichen: Treffer ● (Blau gefüllt, weisser Buchstabe), Dabei ◐ (helles Gold mit Gold-Rahmen),
    Fehlt ○ (helle, zurückgenommene Fläche mit gedämpftem Buchstaben).
    Nachgerechnete Kontraste (WCAG): Weiss auf --rg-blau 5.4:1 · --rg-text auf --rg-gold-hell 14.9:1 · Zeichen ◐ (--rg-gold-text) auf --rg-gold-hell 5.8:1 ·
-   --rg-leise auf --rg-flaeche2 5.2:1 · --tw-rand auf Weiss 3.5:1 · --rg-blau-dunkel auf --rg-blau-hell 6.2:1 · --rg-blau auf --rg-flaeche2 4.6:1.
+   --rg-leise auf --rg-flaeche2 5.2:1 · --tw-rand auf Weiss 3.5:1 · --rg-blau-dunkel auf --rg-blau-hell 6.2:1 · --rg-blau-dunkel auf --tw-druck 5.5:1 ·
+   --rg-text auf --tw-druck 12.2:1 · --rg-text auf --rg-blau-hell 13.8:1 · --rg-leise auf --rg-bg (Zahl auf der Schiene) 5.6:1 · --rg-blau auf --rg-bg (Rahmen) 4.9:1.
    Der Gold-Rahmen (--rg-gold) ist Firmenfarbe und Schmuck (zu Weiss nur 2:1); den Zustand «Dabei» tragen Zeichen und Buchstabe. */
 :root{
   --tw-g:6px;                                   /* Abstand zwischen den Feldern */
@@ -69,12 +70,15 @@
 .tw-feld[data-z="dabei"]{background:var(--rg-gold-hell);border-color:var(--rg-gold);box-shadow:inset 0 0 0 1.5px var(--rg-gold),0 3px 8px rgba(245,166,35,.2)}
 .tw-feld[data-z="fehlt"]{background:var(--rg-flaeche2);border-color:var(--tw-fehlt-rand);color:var(--rg-leise)}
 
-/* Aufdecken: Feld kippt, die neue Fläche erscheint in der Mitte der Drehung */
+/* Aufdecken: Feld kippt, die neue Fläche erscheint in der Mitte der Drehung.
+   Bis 50 % bleibt das getippte Feld stehen, dann springen Fläche, Rahmen und Schrift auf den Zustand (step-start):
+   kein Überblenden, sonst stünde beim Treffer kurz ein grauer Buchstabe auf blassem Blau. */
 .tw-feld.dreh{animation:tw-dreh .44s ease-in-out both;animation-delay:calc(var(--i)*.13s)}
 .tw-feld.dreh .tw-z{animation:tw-zeichen .44s linear both;animation-delay:calc(var(--i)*.13s)}
 @keyframes tw-dreh{
   0%{transform:rotateX(0);background:var(--rg-flaeche);border-color:var(--rg-text);box-shadow:none;color:var(--rg-text)}
-  46%{transform:rotateX(90deg);background:var(--rg-flaeche);border-color:var(--rg-text);box-shadow:none;color:var(--rg-text)}
+  46%{transform:rotateX(90deg)}
+  50%{transform:rotateX(90deg);background:var(--rg-flaeche);border-color:var(--rg-text);box-shadow:none;color:var(--rg-text);animation-timing-function:step-start}
   54%{transform:rotateX(90deg)}
   100%{transform:rotateX(0)}
 }
@@ -105,7 +109,7 @@
   -webkit-tap-highlight-color:transparent;transition:background .12s,transform .06s}
 .tw-taste:not([data-z]):active,.tw-taste.gedrueckt:not([data-z]){background:var(--tw-druck)}
 .tw-taste:active,.tw-taste.gedrueckt{transform:scale(.93)}
-@media(hover:hover){.tw-taste:not([data-z]):hover{background:var(--rg-blau-hell)}}
+@media(hover:hover){.tw-taste:not([data-z]):hover{background:var(--rg-blau-hell)}.tw-taste.eingabe:hover{background:var(--tw-druck)}}
 .tw-taste.breit{grid-column:span 2;font-size:clamp(.66rem,2.9vw,.82rem);letter-spacing:.01em}
 .tw-taste.eingabe{background:var(--rg-blau-hell);border-color:var(--rg-blau);color:var(--rg-blau-dunkel);box-shadow:0 1.5px 0 var(--rg-blau),var(--rg-schatten-klein)}
 .tw-tzn{position:absolute;top:4px;right:4px;--p:8px;pointer-events:none}
@@ -115,7 +119,7 @@
 .tw-taste[data-z="fehlt"]{background:var(--rg-flaeche2);border-color:var(--tw-fehlt-rand);color:var(--rg-leise);box-shadow:none}
 
 /* ---------- Abschluss (ersetzt die Tastatur) ---------- */
-.tw-ende{width:100%;display:grid;justify-items:center;gap:12px;padding:20px 16px;border-radius:18px;background:var(--rg-flaeche);border:1px solid var(--rg-linie);
+.tw-ende{width:100%;display:grid;justify-items:center;gap:12px;padding:20px 16px;border-radius:var(--rg-radius);background:var(--rg-flaeche);border:1px solid var(--rg-linie);
   box-shadow:var(--rg-schatten);text-align:center}
 .tw-ende h2{margin:0;font-size:1.2rem;font-weight:800;letter-spacing:-.01em}
 .tw-ende p{margin:0;font-size:.88rem;color:var(--rg-leise)}
@@ -130,7 +134,9 @@
 .tw-vz{display:grid;grid-template-columns:1.1em 1fr;align-items:center;gap:8px;font-size:.82rem;font-variant-numeric:tabular-nums}
 .tw-vz::after{content:"";grid-column:2;grid-row:1;height:22px;border-radius:7px;background:var(--rg-bg)}   /* helle Schiene hinter dem Balken */
 .tw-vn{grid-column:1;grid-row:1;font-weight:800;color:var(--rg-leise);text-align:center}
-.tw-vb{grid-column:2;grid-row:1;position:relative;z-index:1;display:flex;justify-content:flex-end;align-items:center;min-width:2.1em;height:22px;padding:0 7px;border-radius:7px;
+/* Ein Balken ist nie schmaler als seine Beschriftung (max-content): Sonst ragt «1 · heute» bei einem kurzen Balken links hinaus,
+   weisse Schrift stünde auf weissem Grund und über der Zeilennummer. */
+.tw-vb{grid-column:2;grid-row:1;position:relative;z-index:1;display:flex;justify-content:flex-end;align-items:center;min-width:2.1em;min-width:max-content;height:22px;padding:0 8px;border-radius:7px;
   background:var(--rg-blau-hell);border:1.5px solid var(--rg-blau);color:var(--rg-blau-dunkel);font-weight:800;white-space:nowrap}
 .tw-vb[style*="width:0%"]{background:transparent;border-color:transparent;color:var(--rg-leise)}   /* noch nie: nur die Zahl auf der Schiene */
 .tw-vz.heute .tw-vb{background:var(--rg-blau);border-color:var(--rg-blau);color:#fff}

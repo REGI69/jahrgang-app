@@ -27,7 +27,7 @@
   --lt-kontur:#152033;           /* Kontur von Adern und Klemmen */
   --lt-raster:#d0d9e7;           /* Feldlinien */
   --lt-raster-fein:#e9eef6;      /* feines Zwischenraster */
-  --lt-kreuz:#8fa0b9;            /* Passkreuze an den Feldecken */
+  --lt-kreuz:#8292ad;            /* Passkreuze an den Feldecken, 3.1:1 zum Blatt */
   --lt-auge:#6b7c98;             /* Lötauge in freien Feldern, 4.2:1 zum Blatt */
   --lt-metall:#dbe2ec;           /* Stift der Aderendhülse */
 }
@@ -69,7 +69,7 @@
 .lt-ader-kern{stroke:#fff;stroke-width:2.6;opacity:.7}
 .lt-ader.aktiv .lt-ader-rand{stroke-width:22.5}
 .lt-ader.aktiv .lt-ader-kern{opacity:1}
-.lt-geist{stroke-width:5.5;stroke-dasharray:1 13}
+.lt-geist{stroke-width:7;stroke-dasharray:1 13}
 /* offenes Ende: Aderendhülse in Zugrichtung */
 .lt-ende-stift{fill:var(--lt-metall);stroke:var(--lt-kontur);stroke-width:2.5}
 .lt-ende-kragen{stroke:var(--lt-kontur);stroke-width:2.5}
@@ -96,7 +96,7 @@
 .lt-brett.frisch .lt-ader-kern{animation:lt-strom .8s ease-out}
 @keyframes lt-puls{0%{transform:scale(1)}45%{transform:scale(1.12)}100%{transform:scale(1)}}
 @keyframes lt-strom{0%{stroke-width:2.6;opacity:.7}40%{stroke-width:8;opacity:1}100%{stroke-width:2.6;opacity:1}}
-@keyframes lt-blink{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes lt-blink{0%,100%{opacity:1}50%{opacity:.7}}   /* auch am tiefsten Punkt bleibt die Messmarke über 3:1 zum Blatt */
 
 .lt-klemme{position:absolute;appearance:none;-webkit-appearance:none;margin:0;padding:0;border:0;border-radius:18%;background:transparent;color:transparent;cursor:pointer;touch-action:none}
 .lt-klemme:focus-visible{outline:3px solid var(--rg-blau);outline-offset:-2px}
@@ -155,8 +155,9 @@
 
   /* Kräftige Aderfarben für das helle Blatt, frei gewählt (keine Aussage über genormte Leiterfarben). Die Zuordnung trägt immer der Buchstabe.
      Jede Farbe hat mindestens 3:1 zum Blatt. Helligkeit und Blau-Gelb-Anteil sind so gestaffelt, dass sich alle acht
-     auch bei Rot-Grün-Schwäche voneinander abheben (Rot dunkler als Grün, Violett satter als Blau, Pink dunkler als Hellblau). */
-  var FARBEN = ['#d27c01', '#1a66d6', '#c8102e', '#27a16a', '#610af3', '#049cc8', '#bc0281', '#222d3d'];
+     auch bei Rot-Grün-Schwäche voneinander abheben (Rot dunkler als Grün, Pink dunkler als Hellblau). Das Violett ist ein
+     dunkles Indigo: mit Rot-Grün-Schwäche erscheint es wie das Blau als Blauton, der Helligkeitsabstand hält die beiden auseinander. */
+  var FARBEN = ['#d27c01', '#1a66d6', '#c8102e', '#27a16a', '#3c00e0', '#049cc8', '#bc0281', '#222d3d'];
   var BUCHSTABEN = 'ABCDEFGH';
 
   /* ---------- Zeichenhelfer (Brett und Beispielbild nutzen dieselben Bausteine) ---------- */

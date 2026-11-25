@@ -112,6 +112,11 @@
 .dz-taste.los:focus-visible::before{outline-color:var(--rg-text)}
 .dz-taste.fern{color:var(--rg-leise);font-weight:600}
 .dz-taste.fern::before{background:transparent;box-shadow:none;border:1.5px dashed var(--dz-rand)}
+/* Auch blasse Tasten antworten auf Maus und Finger; der gestrichelte Rahmen bleibt */
+@media (hover:hover){
+  .dz-taste.fern:hover::before{background:var(--rg-blau-hell)}
+}
+.dz-taste.fern:active::before{background:var(--rg-blau-hell);border-color:var(--rg-blau)}
 
 /* Schluss */
 .dz-schluss{display:grid;justify-items:center;gap:10px;padding:18px 16px;border:1px solid var(--rg-linie);border-radius:var(--rg-radius);background:var(--rg-flaeche);text-align:center;box-shadow:var(--rg-schatten)}
@@ -153,6 +158,16 @@
   .dz-abc span{padding:3px 0}
   .dz-bahn{height:16px}
   #spiel{--dz-g:clamp(32px,9.6vw,38px);--dz-e:clamp(42px,12.6vw,50px)}
+}
+/* Sehr niedrige Bildschirme (Handy mit eingeblendeten Leisten des Browsers): enger, damit auch die unterste Tastenreihe ohne Scrollen sichtbar ist */
+@media (max-height:600px){
+  #spiel{--dz-th:44px;gap:6px;padding-top:2px}
+  .dz-leiste{gap:4px}
+  .dz-luecke{padding:2px 10px}
+  .dz-abc span{padding:2px 0}
+  .dz-bahn{height:14px}
+  .dz-grenze{padding:6px 10px;gap:4px}
+  .dz-mitte{padding:6px 10px;gap:5px}
 }
 @media (max-width:360px){
   .dz-kopf{font-size:.76rem;gap:6px}
